@@ -1,0 +1,5 @@
+.project-list{
+    display: grid;
+    grid-template-columns: repeat(5, minmax(auto, 1fr));
+    /* justify-content: space-between; */
+}
