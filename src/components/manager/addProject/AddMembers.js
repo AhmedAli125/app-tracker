@@ -23,8 +23,8 @@ function AddMembers() {
                     <Member member='Ahmed Ali' designation='Developer'/>
                 </div>
                 <ButtonGroup variant='contained' fullWidth={true}  align='right'>
-                    <Button color='secondary'>Cancel</Button>
                     <Button color='primary'>Add</Button>
+                    <Button color='secondary'>Cancel</Button>
                 </ButtonGroup>
             </div>
         </Modal>
