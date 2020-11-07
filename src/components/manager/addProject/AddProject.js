@@ -7,7 +7,7 @@ function AddProject() {
     
     return (
         <div className='project-container'>
-            <AddButton type= "button" />
+            <AddButton />
         </div>
     )
 }
