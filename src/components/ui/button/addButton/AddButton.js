@@ -2,9 +2,9 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 
-function AddButton() {
+function AddButton({showAddButton}) {
   const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
@@ -24,7 +24,7 @@ function AddButton() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    showAddButton && <div className={classes.root}>
       <Fab color="primary" aria-label="add" className={classes.fab}>
         <AddIcon />
       </Fab>

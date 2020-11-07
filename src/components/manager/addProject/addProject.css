@@ -21,3 +21,7 @@
 .flex-grow1{
     flex: 1;
 }
+
+.margin{
+    margin: 10px 0;
+}
