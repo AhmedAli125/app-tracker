@@ -33,6 +33,7 @@ function AddTask({showAddTask}) {
         }
         return getYear() + "-" + getMonth() + "-" + "0"+getDate();
     }
+    
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
     const [assignDate, setAssignDate] = useState(currentDate);
@@ -53,7 +54,7 @@ function AddTask({showAddTask}) {
                         value={title} 
                         placeholder="Enter Task Title"
                         onChange={changeTitle}
-                        id="outlined-basic" label="Task Title" variant="outlined"
+                        id="outlined-basic" label="Task Title" variant="filled"
                      />
 
                     <TextField 
@@ -64,7 +65,7 @@ function AddTask({showAddTask}) {
                         value={desc} 
                         placeholder="Enter Task Description"
                         onChange={changeDesc}
-                        id="outlined-basic" label="Task Description" variant="outlined"
+                        id="outlined-basic" label="Task Description" variant="filled"
                      />
 
                     <TextField
@@ -73,7 +74,7 @@ function AddTask({showAddTask}) {
                             label="Assign Date"
                             type="date"
                             fullWidth={true}
-                            variant='outlined'
+                            variant='filled'
                             defaultValue={assignDate}
                             onChange={changeDate}
                             InputLabelProps={{
