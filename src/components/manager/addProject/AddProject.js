@@ -12,7 +12,9 @@ function AddProject({addProject}) {
     return (
         addProject && <div className='project-container'>
             {/* <AddButton showAddButton={!showCreateProject} createWindow={handleCreate}/> */}
-            {showCreateProject ? <CreateProject /> : <AddButton showAddButton={!showCreateProject} createWindow={handleCreate}/> } 
+            {showCreateProject ? <CreateProject /> :
+                <AddButton showAddButton={!showCreateProject} createWindow={handleCreate} />
+            } 
             {/* <CreateProject show={!createWindow}/> */}
             {/* <AddMembers showAddMember={false}/>
             <AddTask showAddTask={false} /> */}

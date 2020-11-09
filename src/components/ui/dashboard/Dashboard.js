@@ -9,7 +9,7 @@ function Dashboard() {
     return (
         <div className='dashboard-container'>
             <AddProject addProject={true} />
-            <ProjectList projectList={false} />           
+            <ProjectList projectList={false} />
         </div>
     );
 }

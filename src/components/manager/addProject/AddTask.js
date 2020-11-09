@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button'
 import Modal from '../../ui/modal/ModalWindow'
 import './addProject.css'
 
-function AddTask({showAddTask}) {
+function AddTask({showAddTask, reset}) {
     let currentDate =() =>{
         let now = new Date();
         let getMonth = () => {
@@ -36,13 +36,14 @@ function AddTask({showAddTask}) {
     
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
+    // const [member, setMember] = useState()
     const [assignDate, setAssignDate] = useState(currentDate);
     const changeTitle = e => setTitle(e.target.value);
     const changeDesc = e => setDesc(e.target.value);
     const changeDate = e => setAssignDate(e.target.value);
 
     return (
-        <Modal show={showAddTask}>
+        showAddTask && <Modal show={true} clicked={reset}>
             <Typography variant='h5' align='left' display='block' >
                     Add Task
             </Typography>
@@ -85,7 +86,7 @@ function AddTask({showAddTask}) {
                         {/* yahan tujhe Select Box Dalna hai */}
                     <ButtonGroup variant='contained' fullWidth={true}>
                         <Button color='primary'>Add</Button>
-                        <Button color='secondary'>Cancel</Button>
+                        <Button color='secondary' onClick={reset}>Cancel</Button>
                     </ButtonGroup>
                 </form>
             </div>

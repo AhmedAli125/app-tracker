@@ -4,7 +4,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 // import clsx from 'clsx';
 
-function AddButton({showAddButton, createWindow}) {
+function AddButton({ showAddButton, createWindow }) {
   const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {

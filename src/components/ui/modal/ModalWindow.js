@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
 function ModalWindow(props) {
+    const { clicked, show } = props;
     const useStyles = makeStyles((theme) => ({
         modalStyle: {
             display: 'flex',
@@ -20,7 +21,7 @@ function ModalWindow(props) {
     }));
 
     const classes = useStyles();
-    const [open, setOpen] = React.useState(props.show);
+    const [open, setOpen] = React.useState(show);
 
     // const handleOpen = () => {
     //   setOpen(true);
@@ -28,6 +29,7 @@ function ModalWindow(props) {
 
     const handleClose = () => {
         setOpen(false);
+        clicked();
     };
 
     return (
