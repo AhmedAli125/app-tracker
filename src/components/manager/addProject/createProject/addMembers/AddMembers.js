@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Modal from '../../ui/modal/ModalWindow';
+import React from 'react';
+import Modal from '../../../../ui/modal/ModalWindow';
 import Typography from '@material-ui/core/Typography';
 import Member from './Member';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
-// import Container from '@material-ui/core/Container'
+import './addMember.css';
 
 function AddMembers({ showAddMember, reset }) {
 
@@ -22,7 +22,7 @@ function AddMembers({ showAddMember, reset }) {
                 </div>
                 <ButtonGroup variant='contained' fullWidth={true}>
                     <Button color='primary'>Add</Button>
-                    <Button color='secondary'  onClick={reset}>Cancel</Button>
+                    <Button color='secondary' onClick={reset}>Cancel</Button>
                 </ButtonGroup>
             </div>
         </Modal>

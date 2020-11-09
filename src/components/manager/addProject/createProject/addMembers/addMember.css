@@ -1,0 +1,10 @@
+.member-container{
+    height: 60vh;
+    overflow: auto;
+    margin: 10px;
+}
+
+.member-paper{
+    padding:5px;
+    margin: 5px;
+}

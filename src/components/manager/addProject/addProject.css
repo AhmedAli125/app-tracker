@@ -1,9 +1,4 @@
-/* .project-container{
-    margin: 0 !important;
-    padding: 0 !important;
-} */
-
-.member-paper{
+/* .member-paper{
     padding:5px;
     margin: 5px;
 }
@@ -12,7 +7,7 @@
     height: 60vh;
     overflow: auto;
     margin: 10px;
-}
+} */
 
 .flex{
     display: flex;

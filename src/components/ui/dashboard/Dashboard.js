@@ -1,6 +1,5 @@
 import React from 'react';
 import AddProject from '../../manager/addProject/AddProject';
-// import Modal from '../modal/ModalWindow';
 import ProjectList from '../projects/ProjectList';
 
 import './dashboard.css';

@@ -3,15 +3,13 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Modal from '../../ui/modal/ModalWindow';
-import './addProject.css';
-import { CompareArrowsOutlined } from '@material-ui/icons';
+import Modal from '../../../../ui/modal/ModalWindow';
 
 function AddTask({ showAddTask, reset }) {
+
     let currentDate = () => {
         let now = new Date();
         let getMonth = () => {
@@ -67,13 +65,12 @@ function AddTask({ showAddTask, reset }) {
         }
     ];
 
-
     return (
         showAddTask && <Modal show={true} clicked={reset}>
             <Typography variant='h5' align='left' display='block' >
                 Add Task
             </Typography>
-            <div className='task-container'>
+            <div>
                 <form noValidate>
                     <TextField
                         margin='normal'
@@ -132,7 +129,6 @@ function AddTask({ showAddTask, reset }) {
                         }}
                     />
 
-                    {/* yahan tujhe Select Box Dalna hai */}
                     <ButtonGroup
                         style={{ marginTop: '10px' }}
                         variant='contained'

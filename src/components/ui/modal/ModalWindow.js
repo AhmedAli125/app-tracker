@@ -23,10 +23,6 @@ function ModalWindow(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(show);
 
-    // const handleOpen = () => {
-    //   setOpen(true);
-    // };
-
     const handleClose = () => {
         setOpen(false);
         clicked();
