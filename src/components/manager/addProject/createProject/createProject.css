@@ -1,0 +1,8 @@
+.task-list{
+    margin: 5px 0;
+    height: 60vh;
+    overflow: auto;
+    width: 100%;
+    padding: 0;
+    /* border: 2px solid; */
+}

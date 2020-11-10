@@ -1,12 +1,11 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-// import Container from '@material-ui/core/Container'
-import Project from './project/Project';
-import './projectList.css';
+import Task from './task/Task.js';
+// import './projectList.css';
 
-function ProjectList({ projectList }) {
+function TaskList() {
     return (
-        projectList && <div>
+        true && <div>
             <Grid
                 style={{
                     width: '100%'
@@ -16,35 +15,30 @@ function ProjectList({ projectList }) {
                 spacing='2'
             >
                 <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
                 </Grid>
                 <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
                 </Grid>
                 <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
                 </Grid>
                 <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
                 </Grid>
                 <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
                 </Grid>
                 <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
                 </Grid>
                 <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
                 </Grid>
-                <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
-                </Grid>
-                <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
-                </Grid>
+                
             </Grid>
         </div>
     );
 }
 
-export default ProjectList;
+export default TaskList;

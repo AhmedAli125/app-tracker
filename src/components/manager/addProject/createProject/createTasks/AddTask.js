@@ -37,17 +37,24 @@ function AddTask({ showAddTask, reset }) {
     };
 
     const [title, setTitle] = useState('');
-    const [desc, setDesc] = useState('');
-    const [member, setMember] = useState('');
-    const [assignDate, setAssignDate] = useState(currentDate);
-
     const changeTitle = e => setTitle(e.target.value);
+    
+    const [desc, setDesc] = useState('');
     const changeDesc = e => setDesc(e.target.value);
-    const changeDate = e => setAssignDate(e.target.value);
-    const selectMember = (e) => setMember(e.target.value);
+    
+    const [developer, setDeveloper] = useState('');
+    const selectDeveloper = (e) => setDeveloper(e.target.value);
+    
+    const [tester, setTester] = useState('');
+    const selectTester = (e) => setTester(e.target.value);
+    
+    const [developerDeadline, setDeveloperDeadline] = useState(currentDate);
+    const setDeveloperDate = e => setDeveloperDeadline(e.target.value);
+    
+    const [testerDeadline, setTesterDeadline] = useState(currentDate);   
+    const setTesterDate = e => setTesterDeadline(e.target.value);
 
-
-    const membersArray = [
+    const developersArray = [
         {
             id: '1',
             name: 'mem1',
@@ -61,6 +68,23 @@ function AddTask({ showAddTask, reset }) {
         {
             id: '3',
             name: 'mem3',
+            desig: 'desig'
+        }
+    ];
+    const testersArray = [
+        {
+            id: '1',
+            name: 'tester1',
+            desig: 'desig'
+        },
+        {
+            id: '2',
+            name: 'tester2',
+            desig: 'desig'
+        },
+        {
+            id: '3',
+            name: 'tester3',
             desig: 'desig'
         }
     ];
@@ -97,18 +121,55 @@ function AddTask({ showAddTask, reset }) {
                         fullWidth={true}
                         variant='outlined'>
                         <Select
-                            value={member}
-                            onChange={selectMember}
+                            value={developer}
+                            onChange={selectDeveloper}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}
                         >
                             <MenuItem value="" disabled>
-                                None
+                                Select Developer
                             </MenuItem>
-                            {membersArray.map((value) => {
+                            {developersArray.map((value) => {
                                 return <MenuItem
                                     value={value.id}
                                     key={value.id}
+                                    >{value.name}
+                                </MenuItem>;
+                            })}
+                        </Select>
+                    </FormControl>
+
+                    <TextField
+                        id="date"
+                        margin='normal'
+                        label="Developer's Deadline"
+                        type="date"
+                        fullWidth={true}
+                        variant='outlined'
+                        defaultValue={developerDeadline}
+                        onChange={setDeveloperDate}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+
+                    <FormControl
+                        margin='normal'
+                        fullWidth={true}
+                        variant='outlined'>
+                        <Select
+                            value={tester}
+                            onChange={selectTester}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                            <MenuItem value="" disabled>
+                                Select Tester
+                            </MenuItem>
+                            {testersArray.map((value) => {
+                                return <MenuItem
+                                value={value.id}
+                                key={value.id}
                                 >{value.name}
                                 </MenuItem>;
                             })}
@@ -118,12 +179,12 @@ function AddTask({ showAddTask, reset }) {
                     <TextField
                         id="date"
                         margin='normal'
-                        label="Assign Date"
+                        label="Tester's Deadline"
                         type="date"
                         fullWidth={true}
                         variant='outlined'
-                        defaultValue={assignDate}
-                        onChange={changeDate}
+                        defaultValue={testerDeadline}
+                        onChange={setTesterDate}
                         InputLabelProps={{
                             shrink: true,
                         }}
