@@ -7,8 +7,8 @@ import './dashboard.css';
 function Dashboard() {
     return (
         <div className='dashboard-container'>
-            <AddProject addProject={true} />
-            <ProjectList projectList={false} />
+            <AddProject />
+            <ProjectList />
         </div>
     );
 }
