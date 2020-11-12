@@ -8,6 +8,7 @@ function Dashboard() {
     return (
         <div className='dashboard-container'>
             <AddProject addProject={true} />
+            <h1>test</h1>
             <ProjectList projectList={false} />
         </div>
     );
