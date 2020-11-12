@@ -23,7 +23,7 @@ function AddTask({ showAddTask, reset }) {
             let current = (now.getDate());
             if (current < 10) {
                 return current.toString();
-                return current.toString();
+                // return current.toString();
             } else return current.toString();
 
         };
@@ -88,6 +88,8 @@ function AddTask({ showAddTask, reset }) {
             desig: 'desig'
         }
     ];
+
+    console.log(currentDate)
 
     return (
         showAddTask && <Modal show={true} clicked={reset}>
@@ -183,7 +185,7 @@ function AddTask({ showAddTask, reset }) {
                         type="date"
                         fullWidth={true}
                         variant='outlined'
-                        defaultValue={testerDeadline}
+                        defaultValue={currentDate}
                         onChange={setTesterDate}
                         InputLabelProps={{
                             shrink: true,

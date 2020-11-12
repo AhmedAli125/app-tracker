@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Container, Typography, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import AddMembers from './addMembers/AddMembers';
 import AddTask from './createTasks/AddTask';
 import TaskList from '../../../ui/projectTasks/TaskList';
+import ManagerContext from '../../../../context/manager/ManagerContext'
 import './createProject.css'
 
 function CreateProject() {
+
+    const managerContext = useContext(ManagerContext)
+    const { cancelProject } = managerContext;
+
     const [showMember, setShowMember] = useState(false);
     const [showTask, setShowTask] = useState(false);
 
@@ -71,7 +76,11 @@ function CreateProject() {
                 ></p>
                 <Button variant='contained' color='primary'>Create</Button>
                 <span style={{width:'10px'}}></span>
-                <Button variant='contained' color='secondary'>Cancel</Button>
+                <Button 
+                    variant='contained' 
+                    color='secondary' 
+                    onClick={cancelProject}
+                    >Cancel</Button>
                 </div>
         </Container>
     );

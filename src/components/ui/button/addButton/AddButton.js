@@ -2,9 +2,10 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+// import ProjectManagerContext from '../../../../context/ProjectManager/ProjectManagerContext'
 // import clsx from 'clsx';
 
-function AddButton({ showAddButton, createWindow }) {
+function AddButton({ clicked }) {
   const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
@@ -24,8 +25,14 @@ function AddButton({ showAddButton, createWindow }) {
   const classes = useStyles();
 
   return (
-    showAddButton && <div className={classes.root}>
-      <Fab color="primary" aria-label="add" className={classes.fab} onClick={createWindow}>
+    // showAddButton sirf manager k login hony k bad manager ko show hoga
+    // showAddButton && 
+    <div className={classes.root}> 
+      <Fab 
+        color="primary" 
+        aria-label="add" 
+        className={classes.fab} 
+        onClick={clicked}>
         <AddIcon />
       </Fab>
     </div>

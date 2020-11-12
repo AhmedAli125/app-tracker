@@ -1,0 +1,2 @@
+export const PROJECT_CREATE = 'PROJECT_CREATE';
+export const CANCEL_PROJECT = 'CANCEL_PROJECT';
