@@ -1,12 +1,12 @@
 import React, {useState, useContext} from 'react'
 import AddButton from '../../ui/button/addButton/AddButton'
 import CreateProject from './createProject/CreateProject'
-import ProjectManagerContext from '../../../context/ProjectManager/ProjectManagerContext'
+import ManagerContext from '../../../context/manager/ManagerContext'
 import './addProject.css'
 
 function AddProject() {
 
-    const managerContext = useContext(ProjectManagerContext)
+    const managerContext = useContext(ManagerContext)
     const {showAddButton, showCreateProject, projectCreate} = managerContext
   
     // console.log('btn '+managerContext)

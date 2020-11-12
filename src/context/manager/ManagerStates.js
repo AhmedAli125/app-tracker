@@ -1,14 +1,14 @@
 import React, { useReducer } from 'react'
-import ProjectManagerContext from './ProjectManagerContext'
-import ProjectManagerReducer from './ProjectManagerReducer'
+import ManagerContext from './ManagerContext'
+import ManagerReducer from './ManagerReducer'
 // axios
 //firebase
 import {
     PROJECT_CREATE,
-    PROJECT_CANCEL
+    CANCEL_PROJECT
 } from '../Type'
 
-const ProjectManagerStates = props => {
+const ManagerStates = props => {
         
     const initialState = {
         projects: true,
@@ -16,25 +16,30 @@ const ProjectManagerStates = props => {
         showCreateProject: false
     }
     
-    const [state, dispatch] = useReducer(ProjectManagerReducer, initialState)
+    const [state, dispatch] = useReducer(ManagerReducer, initialState)
 
     const projectCreate = () => {
         dispatch({ type: PROJECT_CREATE})
         // console.log('project Cancel')
     }
 
+    const cancelProject = () => {
+        dispatch({type: CANCEL_PROJECT});
+    }
+
     return (
-        <ProjectManagerContext.Provider
+        <ManagerContext.Provider
             value = {{
                 projects: state.projects,
                 showAddButton: state.addProjectButton,
                 showCreateProjectWindow: state.showCreateProject,
-                projectCreate
+                projectCreate,
+                cancelProject
             }}
         >
             {props.children}
-        </ProjectManagerContext.Provider>
+        </ManagerContext.Provider>
     )
 }
 
-export default ProjectManagerStates
+export default ManagerStates

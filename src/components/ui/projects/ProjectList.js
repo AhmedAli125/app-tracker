@@ -1,12 +1,12 @@
 import React, {useContext} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Project from './project/Project';
-import ProjectManagerContext from '../../../context/ProjectManager/ProjectManagerContext';
+import ManagerContext from '../../../context/manager/ManagerContext';
 import './projectList.css';
 
 function ProjectList() {
 
-    const managerContext = useContext(ProjectManagerContext)
+    const managerContext = useContext(ManagerContext)
     const {projects} = managerContext
     // console.log('list '+ projects)
 

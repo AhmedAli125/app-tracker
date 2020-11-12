@@ -1,6 +1,6 @@
 import {
     PROJECT_CREATE,
-    PROJECT_CANCEL
+    CANCEL_PROJECT
 } from '../Type'
 
 export default (state, action) => {
@@ -11,6 +11,13 @@ export default (state, action) => {
                 projects: false,
                 addProjectButton: false,
                 showCreateProject: true               
+            };
+        case CANCEL_PROJECT:
+            return {
+                ...state,
+                projects: true,
+                addProjectButton: true,
+                showCreateProject: false               
             };
         default:
             return state;

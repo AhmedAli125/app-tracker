@@ -4,13 +4,13 @@ import TextField from '@material-ui/core/TextField';
 import AddMembers from './addMembers/AddMembers';
 import AddTask from './createTasks/AddTask';
 import TaskList from '../../../ui/projectTasks/TaskList';
-import ProjectManagerContext from '../../../../context/ProjectManager/ProjectManagerContext'
+import ManagerContext from '../../../../context/manager/ManagerContext'
 import './createProject.css'
 
 function CreateProject() {
 
-    const managerContext = useContext(ProjectManagerContext)
-    // const { projectCreate } = managerContext
+    const managerContext = useContext(ManagerContext)
+    const { cancelProject } = managerContext;
 
     const [showMember, setShowMember] = useState(false);
     const [showTask, setShowTask] = useState(false);
@@ -79,7 +79,7 @@ function CreateProject() {
                 <Button 
                     variant='contained' 
                     color='secondary' 
-                    // onClick={projectCancel}
+                    onClick={cancelProject}
                     >Cancel</Button>
                 </div>
         </Container>
