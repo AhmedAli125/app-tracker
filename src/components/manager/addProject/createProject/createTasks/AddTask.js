@@ -95,7 +95,8 @@ function AddTask({ reset }) {
     console.log(currentDate)
 
     return (
-        showTaskModal && <Modal show={true} clicked={reset}>
+        showTaskModal && 
+        <Modal show={true} clicked={reset}>
             <Typography variant='h5' align='left' display='block' >
                 Add Task
             </Typography>
