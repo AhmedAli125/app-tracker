@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Container, Typography, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import AddMembers from './addMembers/AddMembers';
@@ -10,23 +10,13 @@ import './createProject.css'
 function CreateProject() {
 
     const managerContext = useContext(ManagerContext)
-    const { cancelProject } = managerContext;
-
-    const [showMember, setShowMember] = useState(false);
-    const [showTask, setShowTask] = useState(false);
-
-    const toggleMember = () => {
-        setShowMember(true);
-    };
-
-    const toggleTasks = () => {
-        setShowTask(true);
-    }
-    
-    const resetToggle = () => {
-        setShowMember(false);
-        setShowTask(false);
-    };
+    const { 
+        cancelProject, 
+        openMemberModal, 
+        closeMemberModal,
+        openTaskModal,
+        closeTaskModal
+     } = managerContext;
 
     return (
         <Container>            
@@ -53,12 +43,12 @@ function CreateProject() {
                         flexGrow: '1'
                         }}
                 ></p>
-                <Button variant='contained' color='primary' onClick={toggleMember}>Add Member</Button>
+                <Button variant='contained' color='primary' onClick={openMemberModal}>Add Member</Button>
                 <span style={{width:'10px'}}></span>
-                <Button variant='contained' color='primary' onClick={toggleTasks}>Add Tasks</Button>
+                <Button variant='contained' color='primary' onClick={openTaskModal}>Add Tasks</Button>
             </div>
-            <AddMembers showAddMember={showMember} reset={() => resetToggle()} />
-            <AddTask showAddTask={showTask} reset={() => resetToggle()} />
+            <AddMembers reset={closeMemberModal} />
+            <AddTask reset={closeTaskModal} />
 
             <div className='task-list'> 
                 <TaskList />

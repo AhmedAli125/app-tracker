@@ -1,6 +1,10 @@
 import {
     PROJECT_CREATE,
-    CANCEL_PROJECT
+    CANCEL_PROJECT,
+    OPEN_MEMBER_MODAL,
+    CLOSE_MEMBER_MODAL,
+    OPEN_TASK_MODAL,
+    CLOSE_TASK_MODAL
 } from '../Type'
 
 export default (state, action) => {
@@ -19,6 +23,27 @@ export default (state, action) => {
                 addProjectButton: true,
                 showCreateProject: false               
             };
+        case OPEN_MEMBER_MODAL:
+            return{
+                ...state,
+                showAddMemberModal :  true
+            }
+        case CLOSE_MEMBER_MODAL:
+            return{
+                    ...state,
+                    showAddMemberModal: false
+            }
+        case OPEN_TASK_MODAL:
+            return{
+                ...state,
+                showTaskModal: true
+            }
+        case CLOSE_TASK_MODAL:
+            return{
+                ...state,
+                showTaskModal: false
+            }
+            
         default:
             return state;
     }

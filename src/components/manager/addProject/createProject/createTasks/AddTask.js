@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -7,8 +7,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Modal from '../../../../ui/modal/ModalWindow';
+import ManagerContext from '../../../../../context/manager/ManagerContext'
 
-function AddTask({ showAddTask, reset }) {
+function AddTask({ reset }) {
+    const managerContext = useContext(ManagerContext);
+    const {showTaskModal} = managerContext;
 
     let currentDate = () => {
         let now = new Date();
@@ -92,7 +95,7 @@ function AddTask({ showAddTask, reset }) {
     console.log(currentDate)
 
     return (
-        showAddTask && <Modal show={true} clicked={reset}>
+        showTaskModal && <Modal show={true} clicked={reset}>
             <Typography variant='h5' align='left' display='block' >
                 Add Task
             </Typography>

@@ -1,15 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Modal from '../../../../ui/modal/ModalWindow';
 import Typography from '@material-ui/core/Typography';
 import Member from './Member';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
+import ManagerContext from '../../../../../context/manager/ManagerContext'
 import './addMember.css';
 
-function AddMembers({ showAddMember, reset }) {
-
+function AddMembers() {
+    const managerContext = useContext(ManagerContext);
+    const {showAddMemberModal, closeMemberModal} = managerContext;
     return (
-        showAddMember && <Modal show={true} clicked={reset}>
+        showAddMemberModal && <Modal show={true} clicked={closeMemberModal}>
             <div>
                 <Typography variant='h5' align='left' display='block' >
                     Add Members
@@ -22,7 +24,7 @@ function AddMembers({ showAddMember, reset }) {
                 </div>
                 <ButtonGroup variant='contained' fullWidth={true}>
                     <Button color='primary'>Add</Button>
-                    <Button color='secondary' onClick={reset}>Cancel</Button>
+                    <Button color='secondary' onClick={closeMemberModal}>Cancel</Button>
                 </ButtonGroup>
             </div>
         </Modal>
