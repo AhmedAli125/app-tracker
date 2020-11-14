@@ -96,12 +96,14 @@ function FilterMember() {
                         <MenuItem value="" disabled>
                             Select Designation
                         </MenuItem>
-                            {designationsArray.map((value) => {
-                                return <MenuItem
+                        {designationsArray.map((value) => {
+                            return (
+                                <MenuItem
                                     value={value.id}
                                     key={value.id}
                                     >{value.desig}
-                        </MenuItem>;
+                                </MenuItem>
+                             );
                         })}
                     </Select>
 
