@@ -16,7 +16,7 @@ function App() {
       <ManagerStates>
         <div className="App">
           <AdminDashboard>
-            <FilterMember />
+            {/* <FilterMember /> */}
             <AddOrganization />
           </AdminDashboard>    
           {/* <Header /> */}
