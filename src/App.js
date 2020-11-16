@@ -7,6 +7,7 @@ import Dashboard from './components/ui/dashboard/Dashboard';
 import AdminDashboard from './components/admin/adminDashboard/AdminDashboard'
 import FilterMember from './components/admin/member/filterMember/FilterMember';
 import './App.css';
+import AddOrganization from './components/admin/addOrganization/AddOrganization';
 
 
 function App() {
@@ -15,8 +16,8 @@ function App() {
       <ManagerStates>
         <div className="App">
           <AdminDashboard>
-            <h1>Admin Dashboard is here</h1>
-            <FilterMember />
+            {/* <FilterMember /> */}
+            <AddOrganization />
           </AdminDashboard>    
           {/* <Header /> */}
           {/* <Dashboard /> */}
