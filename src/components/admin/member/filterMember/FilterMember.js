@@ -44,7 +44,7 @@ function FilterMember() {
     
     return (
         filterModal &&
-        <Modal show={true}>
+        <Modal show={true} clicked={closeFilterModal}>
             <Typography variant='h6'>
                 Search By
             </Typography>

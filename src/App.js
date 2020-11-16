@@ -16,7 +16,7 @@ function App() {
         <div className="App">
           <AdminDashboard>
             <h1>Admin Dashboard is here</h1>
-            {/* <FilterMember /> */}
+            <FilterMember />
           </AdminDashboard>    
           {/* <Header /> */}
           {/* <Dashboard /> */}
