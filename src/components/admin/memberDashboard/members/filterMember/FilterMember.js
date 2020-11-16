@@ -1,9 +1,9 @@
 import React, {useContext, useState} from 'react'
-import Modal from '../../../ui/modal/ModalWindow'
+import Modal from '../../../../ui/modal/ModalWindow'
 import {Typography, TextField, Button, ButtonGroup, FormControl, MenuItem, Select} from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
-import AdminContext from '../../../../context/admin/AdminContext'
+import AdminContext from '../../../../../context/admin/AdminContext'
 
 
 function FilterMember() {
