@@ -5,7 +5,8 @@ import Task from './task/Task.js';
 
 function TaskList() {
     return (
-        true && <div>
+        true &&
+        <div>
             <Grid
                 style={{
                     width: '100%'
@@ -35,7 +36,27 @@ function TaskList() {
                 <Grid item sm-12 md-4 lg-3 xl-2>
                     <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
                 </Grid>
-                
+                <Grid item sm-12 md-4 lg-3 xl-2>
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
+                </Grid>
+                <Grid item sm-12 md-4 lg-3 xl-2>
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
+                </Grid>
+                <Grid item sm-12 md-4 lg-3 xl-2>
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
+                </Grid>
+                <Grid item sm-12 md-4 lg-3 xl-2>
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
+                </Grid>
+                <Grid item sm-12 md-4 lg-3 xl-2>
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
+                </Grid>
+                <Grid item sm-12 md-4 lg-3 xl-2>
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
+                </Grid>
+                <Grid item sm-12 md-4 lg-3 xl-2>
+                    <Task creating={true} buttonClicked={()=>{alert('rippleEffect')}}/>
+                </Grid>
             </Grid>
         </div>
     );

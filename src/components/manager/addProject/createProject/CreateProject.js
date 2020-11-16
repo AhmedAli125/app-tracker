@@ -4,23 +4,23 @@ import TextField from '@material-ui/core/TextField';
 import AddMembers from './addMembers/AddMembers';
 import AddTask from './createTasks/AddTask';
 import TaskList from '../../../ui/projectTasks/TaskList';
-import ManagerContext from '../../../../context/manager/ManagerContext'
-import './createProject.css'
+import ManagerContext from '../../../../context/manager/ManagerContext';
+import './createProject.css';
 
 function CreateProject() {
 
-    const managerContext = useContext(ManagerContext)
-    const { 
-        cancelProject, 
-        openMemberModal, 
+    const managerContext = useContext(ManagerContext);
+    const {
+        cancelProject,
+        openMemberModal,
         closeMemberModal,
         openTaskModal,
         closeTaskModal
-     } = managerContext;
+    } = managerContext;
 
     return (
-        <Container>            
-            <Typography variant='h4' gutterBottom='true'>
+        <Container>
+            <Typography variant='h5' gutterBottom='true'>
                 Create Project
             </Typography>
             <form
@@ -32,46 +32,49 @@ function CreateProject() {
                     label="Project Title"
                     variant="outlined" />
             </form>
-            <div 
+            <div
                 style={{
                     marginTop: '10px',
                     display: 'flex'
                 }}
             >
-                <p 
+                <p
                     style={{
                         flexGrow: '1'
-                        }}
-                ></p>
+                    }}
+                >
+                </p>
                 <Button variant='contained' color='primary' onClick={openMemberModal}>Add Member</Button>
-                <span style={{width:'10px'}}></span>
+                <span style={{ width: '10px' }}></span>
                 <Button variant='contained' color='primary' onClick={openTaskModal}>Add Tasks</Button>
             </div>
             <AddMembers reset={closeMemberModal} />
             <AddTask reset={closeTaskModal} />
 
-            <div className='task-list'> 
+            <div className='task-list'>
                 <TaskList />
             </div>
-            <div 
+            <div
                 style={{
                     marginTop: '10px',
                     display: 'flex'
                 }}
             >
-                <p 
+                <p
                     style={{
                         flexGrow: '1'
-                        }}
+                    }}
                 ></p>
                 <Button variant='contained' color='primary'>Create</Button>
-                <span style={{width:'10px'}}></span>
-                <Button 
-                    variant='contained' 
-                    color='secondary' 
+                <span style={{ width: '10px' }}></span>
+                <Button
+                    variant='contained'
+                    color='secondary'
                     onClick={cancelProject}
-                    >Cancel</Button>
-                </div>
+                >
+                    Cancel
+                </Button>
+            </div>
         </Container>
     );
 }

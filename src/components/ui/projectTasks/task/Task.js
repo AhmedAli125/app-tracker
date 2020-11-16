@@ -60,7 +60,8 @@ function Task({buttonClicked, creating}) {
           </CardContent>
         </Card>
        </Button> 
-        {creating && <div className='icon-buttons'>
+      {creating &&
+        <div className='icon-buttons'>
               <UpdateButton clicked={()=>{alert('updatev BUtton')}}/>
               <DeleteButton clicked={()=>{alert('Delete Button')}}/>
         </div>

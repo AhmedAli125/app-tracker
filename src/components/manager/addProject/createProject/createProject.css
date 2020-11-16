@@ -1,8 +1,9 @@
-.task-list{
-    margin: 5px 0;
-    height: 60vh;
-    overflow: auto;
-    width: 100%;
-    padding: 0;
-    /* border: 2px solid; */
+.task-list {
+  margin: 5px 0;
+  height: 60vh;
+  overflow: auto;
+  width: 100%;
+  padding: 0;
+  margin-top: 10px;
+  /* border: 1px solid; */
 }
