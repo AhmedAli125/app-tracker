@@ -1,21 +1,22 @@
 import React, { useContext } from 'react';
-import Typography from '@material-ui/core/Typography';
+import { Container, Typography } from '@material-ui/core';
 import MemberList from './members/MemberList';
 import FilterButton from '../../ui/button/filterButton/FilterButton';
 import AdminContext from '../../../context/admin/AdminContext';
 import FilterMember from './members/filterMember/FilterMember';
+import EditMember from './members/member/editMember/EditMember';
 
 function ViewMember() {
 
     const adminContext = useContext(AdminContext);
-    const { filterModal, openFilterModalHandler } = adminContext;
+    const { showFilterMemberModal, showEditMemberModal, openFilterModalHandler } = adminContext;
 
     return (
-        <div
+        <Container
+            maxWidth="md"
             style={{
-                maxWidth: '1000px',
-                margin: '0 auto',
-                // border:'1px solid'
+                marginTop: '10px',
+                height: '80vh'
             }}
         >
             <div
@@ -45,10 +46,13 @@ function ViewMember() {
             >
                 <MemberList />
             </div>
-            {filterModal &&
+            {showFilterMemberModal &&
                 <FilterMember />
             }
-        </div>
+            {showEditMemberModal &&
+                <EditMember />
+            }
+        </Container>
     );
 }
 

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import UpdateButton from '../../../../ui/button/updateButton/UpdateButton';
+import AdminContext from '../../../../../context/admin/AdminContext'
 import './member.css';
 
 function Member() {
+
+    const adminContext = useContext(AdminContext);
+    const { openEditMemberModalHandler } = adminContext;
 
     const useStyles = makeStyles({
         root: {
@@ -53,7 +57,7 @@ function Member() {
                 </Typography>
             </CardContent>
             <div className='icon-button'>
-                <UpdateButton clicked={() => { alert('updatev BUtton'); }} />
+                <UpdateButton clicked={openEditMemberModalHandler} />
             </div>
         </Card>
     );

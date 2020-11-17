@@ -3,12 +3,15 @@ import AdminReducer from './AdminReducer'
 import AdminContext from './AdminContext'
 import {
     OPEN_FILTER_MODAL,
-    CLOSE_FILTER_MODAL
+    CLOSE_FILTER_MODAL,
+    OPEN_EDIT_MEMBER_MODAL,
+    CLOSE_EDIT_MEMBER_MODAL
 } from '../Type'
 
 const AdminStates = props => {
     const initialState = {
-        filterModal : false
+        showFilterMemberModal: false,
+        showEditMemberModal: false
     }
     
     const [state, dispatch] = useReducer(AdminReducer, initialState);
@@ -21,12 +24,23 @@ const AdminStates = props => {
         dispatch({type: CLOSE_FILTER_MODAL});
     }
 
+    const openEditMemberModalHandler = () => {
+        dispatch({type: OPEN_EDIT_MEMBER_MODAL});
+    }
+
+    const closeEditMemberModalHandler =  () => {
+        dispatch({type: CLOSE_EDIT_MEMBER_MODAL});
+    }
+
     return (
         <AdminContext.Provider
             value={{
-                filterModal: state.filterModal,
+                showFilterMemberModal: state.showFilterMemberModal,
+                showEditMemberModal: state.showEditMemberModal,
                 openFilterModalHandler,
-                closeFilterModalHandler
+                closeFilterModalHandler,
+                openEditMemberModalHandler,
+                closeEditMemberModalHandler
             }}
         >
             {props.children}

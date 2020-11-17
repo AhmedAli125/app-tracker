@@ -48,7 +48,7 @@ function AddOrganization() {
   };
 
   return (
-    <div>
+    // <div>
       <Container
         maxWidth="md"
         style={{
@@ -170,7 +170,7 @@ function AddOrganization() {
           </ButtonGroup>
         </form>
       </Container>
-    </div>
+    // </div> 
   );
 }
 

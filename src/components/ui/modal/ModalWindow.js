@@ -29,17 +29,15 @@ function ModalWindow(props) {
     };
 
     return (
-        <div>
-            <Modal
-                className={classes.modalStyle}
-                open={open}
-                onClose={handleClose}
-            >
-                <div className={classes.paper} >
-                    {props.children}
-                </div>
-            </Modal>
-        </div>
+        <Modal
+            className={classes.modalStyle}
+            open={open}
+            onClose={handleClose}
+        >
+            <div className={classes.paper} >
+                {props.children}
+            </div>
+        </Modal>
     );
 }
 
