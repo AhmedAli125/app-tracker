@@ -7,7 +7,7 @@ import {
 
 const AdminStates = props => {
     const initialState = {
-        filterModal : true
+        filterModal : false
     }
     
     const [state, dispatch] = useReducer(AdminReducer, initialState);

@@ -1,8 +1,9 @@
 import React from 'react';
-import Fab from '@material-ui/core/Fab';
-import FilterListIcon from '@material-ui/icons/FilterList';
+// import Fab from '@material-ui/core/Fab';
+// import FilterListIcon from '@material-ui/icons/FilterList';
 import Typography from '@material-ui/core/Typography';
 import MemberList from './members/MemberList'
+import FilterButton from '../../ui/button/filterButton/FilterButton'
 
 function ViewMember() {
     return (
@@ -28,9 +29,10 @@ function ViewMember() {
                 >
                     Members
                 </Typography>
-                <Fab color="default" aria-label="filter">
+                <FilterButton clicked={`pass state`} />
+                {/* <Fab color="default" aria-label="filter">
                     <FilterListIcon />
-                </Fab>
+                </Fab> */}
             </div>
             <div
                 style={{

@@ -7,7 +7,7 @@ import './addProject.css'
 function AddProject() {
 
     const managerContext = useContext(ManagerContext)
-    const {showAddButton, showCreateProject, projectCreate} = managerContext
+    const { showAddButton, showCreateProject, createProjectHandler} = managerContext
   
     // console.log('btn '+managerContext)
 
@@ -23,7 +23,7 @@ function AddProject() {
         showAddButton ? 
             <div>
                 <AddButton 
-                clicked={projectCreate} 
+                    clicked={createProjectHandler} 
                 // showAddButton={!showCreateProject} 
             />
             </div> :

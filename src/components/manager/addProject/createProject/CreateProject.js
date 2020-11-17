@@ -11,11 +11,11 @@ function CreateProject() {
 
     const managerContext = useContext(ManagerContext);
     const {
-        cancelProject,
-        openMemberModal,
-        closeMemberModal,
-        openTaskModal,
-        closeTaskModal
+        cancelProjectHandler,
+        openMemberModalHandler,
+        // closeMemberModal,
+        openTaskModalHandler,
+        // closeTaskModalHandler
     } = managerContext;
 
     return (
@@ -44,12 +44,28 @@ function CreateProject() {
                     }}
                 >
                 </p>
-                <Button variant='contained' color='primary' onClick={openMemberModal}>Add Member</Button>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={openMemberModalHandler}
+                >
+                    Add Member
+                </Button>
                 <span style={{ width: '10px' }}></span>
-                <Button variant='contained' color='primary' onClick={openTaskModal}>Add Tasks</Button>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={openTaskModalHandler}
+                >
+                    Add Tasks
+                </Button>
             </div>
-            <AddMembers reset={closeMemberModal} />
-            <AddTask reset={closeTaskModal} />
+            <AddMembers
+                // reset={closeMemberModalHandler}
+            />
+            <AddTask
+                // reset={closeTaskModalHandler}
+            />
 
             <div className='task-list'>
                 <TaskList />
@@ -70,7 +86,7 @@ function CreateProject() {
                 <Button
                     variant='contained'
                     color='secondary'
-                    onClick={cancelProject}
+                    onClick={cancelProjectHandler}
                 >
                     Cancel
                 </Button>

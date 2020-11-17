@@ -9,9 +9,9 @@ import Select from '@material-ui/core/Select';
 import Modal from '../../../../ui/modal/ModalWindow';
 import ManagerContext from '../../../../../context/manager/ManagerContext'
 
-function AddTask({ reset }) {
+function AddTask() {
     const managerContext = useContext(ManagerContext);
-    const {showTaskModal} = managerContext;
+    const { showTaskModal, closeTaskModalHandler } = managerContext;
 
     let currentDate = () => {
         let now = new Date();
@@ -96,7 +96,7 @@ function AddTask({ reset }) {
 
     return (
         showTaskModal && 
-        <Modal show={true} clicked={reset}>
+        <Modal show={true} clicked={closeTaskModalHandler}>
             <Typography variant='h5' align='left' display='block' >
                 Add Task
             </Typography>
@@ -201,7 +201,7 @@ function AddTask({ reset }) {
                         variant='contained'
                         fullWidth={true}>
                         <Button color='primary'>Add</Button>
-                        <Button color='secondary' onClick={reset}>Cancel</Button>
+                        <Button color='secondary' onClick={closeTaskModalHandler}>Cancel</Button>
                     </ButtonGroup>
                 </form>
             </div>

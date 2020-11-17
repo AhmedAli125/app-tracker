@@ -24,28 +24,28 @@ const ManagerStates = props => {
     
     const [state, dispatch] = useReducer(ManagerReducer, initialState)
 
-    const projectCreate = () => {
+    const createProjectHandler = () => {
         dispatch({ type: PROJECT_CREATE})
         // console.log('project Cancel')
     }
 
-    const cancelProject = () => {
+    const cancelProjectHandler = () => {
         dispatch({type: CANCEL_PROJECT});
     }
 
-    const openMemberModal = () => {
+    const openMemberModalHandler = () => {
         dispatch({type: OPEN_MEMBER_MODAL});
     }
 
-    const closeMemberModal =  () => {
+    const closeMemberModalHandler =  () => {
         dispatch({type:CLOSE_MEMBER_MODAL});
     }
 
-    const openTaskModal = () =>{
+    const openTaskModalHandler = () =>{
         dispatch({type:OPEN_TASK_MODAL});
     }
 
-    const closeTaskModal = () =>{
+    const closeTaskModalHandler = () =>{
         dispatch({type:CLOSE_TASK_MODAL});
     }
 
@@ -54,15 +54,15 @@ const ManagerStates = props => {
             value = {{
                 projects: state.projects,
                 showAddButton: state.addProjectButton,
-                showCreateProjectWindow: state.showCreateProject,
+                showCreateProject: state.showCreateProject,
                 showAddMemberModal: state.showAddMemberModal,
                 showTaskModal: state.showTaskModal,
-                projectCreate,
-                cancelProject,
-                openMemberModal,
-                closeMemberModal,
-                openTaskModal,
-                closeTaskModal
+                createProjectHandler,
+                cancelProjectHandler,
+                openMemberModalHandler,
+                closeMemberModalHandler,
+                openTaskModalHandler,
+                closeTaskModalHandler
             }}
         >
             {props.children}

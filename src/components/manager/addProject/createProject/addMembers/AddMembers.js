@@ -9,9 +9,10 @@ import './addMember.css';
 
 function AddMembers() {
     const managerContext = useContext(ManagerContext);
-    const {showAddMemberModal, closeMemberModal} = managerContext;
+    const { showAddMemberModal, closeMemberModalHandler} = managerContext;
     return (
-        showAddMemberModal && <Modal show={true} clicked={closeMemberModal}>
+        showAddMemberModal &&
+        <Modal show={true} clicked={closeMemberModalHandler}>
             <div>
                 <Typography variant='h5' align='left' display='block' >
                     Add Members
@@ -24,7 +25,7 @@ function AddMembers() {
                 </div>
                 <ButtonGroup variant='contained' fullWidth={true}>
                     <Button color='primary'>Add</Button>
-                    <Button color='secondary' onClick={closeMemberModal}>Cancel</Button>
+                    <Button color='secondary' onClick={closeMemberModalHandler}>Cancel</Button>
                 </ButtonGroup>
             </div>
         </Modal>
