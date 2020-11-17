@@ -1,8 +1,15 @@
 import React, { useContext } from 'react';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography, TextField } from '@material-ui/core';
+import OrganizationList from './organizations/OrganizationList';
+import AdminContext from '../../../context/admin/AdminContext';
+import OrganizationData from './organizations/organization/organizationData/OrganizationData';
 
 
-function organizationsDashboard() {
+function OrganizationsDashboard() {
+
+    const adminContext = useContext(AdminContext);
+    const { showSoftwareHouseModal } = adminContext;
+
     return (
         <Container
             maxWidth="md"
@@ -11,12 +18,12 @@ function organizationsDashboard() {
                 height: '80vh'
             }}
         >
-            {/* <div
+            <div
                 style={{
-                    border: '1px solid',
+                    // border: '1px solid',
                     display: 'flex',
                     alignItems: 'center',
-                    marginBottom: '20px'
+                    marginBottom: '40px'
                 }}
             >
                 <Typography variant='h5'
@@ -24,21 +31,27 @@ function organizationsDashboard() {
                         flexGrow: '1'
                     }}
                 >
-                    Members
+                    Organizations
                 </Typography>
-                
+                <form noValidate autoComplete="off">
+                    <TextField id="search" label="Search by Name" variant="outlined" size='small'/>
+                </form>
             </div>
             <div
                 style={{
                     // border: '1px solid',
-                    height: '70vh',
+                    height: '64vh',
                     overflow: 'auto',
-                    paddingTop: '20px'
+                    paddingTop: '10px'
                 }}
             >
-            </div> */}
+                <OrganizationList />
+            </div>
+            {showSoftwareHouseModal &&
+                <OrganizationData />
+            }
         </Container>
-    )
+    );
 }
 
-export default organizationsDashboard
+export default OrganizationsDashboard;

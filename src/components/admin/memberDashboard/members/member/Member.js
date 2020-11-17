@@ -14,8 +14,7 @@ function Member() {
 
     const useStyles = makeStyles({
         root: {
-            minWidth: 275,
-            maxWidth: 275,
+            Width: 275,
             height: 150
         },
         bullet: {
@@ -30,10 +29,6 @@ function Member() {
             marginBottom: 12,
             marginTop: 12,
         },
-        textJustify: {
-            textAlign: "justify",
-            textTransform: 'none'
-        }
     });
 
     const classes = useStyles();

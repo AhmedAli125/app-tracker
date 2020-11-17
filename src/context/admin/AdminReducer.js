@@ -2,7 +2,9 @@ import {
     OPEN_FILTER_MODAL,
     CLOSE_FILTER_MODAL,
     OPEN_EDIT_MEMBER_MODAL,
-    CLOSE_EDIT_MEMBER_MODAL
+    CLOSE_EDIT_MEMBER_MODAL,
+    OPEN_SOFTWARE_HOUSE_MODAL,
+    CLOSE_SOFTWARE_HOUSE_MODAL
 } from '../Type'
 
 export default (state, action)=>{
@@ -26,6 +28,16 @@ export default (state, action)=>{
             return{
                 ...state,
                 showEditMemberModal : false
+            }
+        case OPEN_SOFTWARE_HOUSE_MODAL:
+            return{
+                ...state,
+                showSoftwareHouseModal : true
+            }
+        case CLOSE_SOFTWARE_HOUSE_MODAL:
+            return{
+                ...state,
+                showSoftwareHouseModal : false
             }
         default:
             return{

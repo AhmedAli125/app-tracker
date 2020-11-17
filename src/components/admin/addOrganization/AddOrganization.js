@@ -59,7 +59,7 @@ function AddOrganization() {
         <Typography variant='h5'>
           Add Organization
         </Typography>
-        <form noValidate>
+        <form noValidate autoComplete='off'>
 
           <TextField
             id="organizationName"

@@ -24,7 +24,7 @@ function ViewMember() {
                     // border: '1px solid',
                     display: 'flex',
                     alignItems: 'center',
-                    marginBottom: '20px'
+                    marginBottom: '40px'
                 }}
             >
                 <Typography variant='h5'
@@ -39,9 +39,9 @@ function ViewMember() {
             <div
                 style={{
                     // border: '1px solid',
-                    height: '70vh',
+                    height: '66vh',
                     overflow: 'auto',
-                    paddingTop: '20px'
+                    paddingTop: '10px'
                 }}
             >
                 <MemberList />
