@@ -2,6 +2,7 @@ import React, {useReducer} from 'react';
 import AdminReducer from './AdminReducer'
 import AdminContext from './AdminContext'
 import {
+    OPEN_FILTER_MODAL,
     CLOSE_FILTER_MODAL
 } from '../Type'
 
@@ -12,15 +13,20 @@ const AdminStates = props => {
     
     const [state, dispatch] = useReducer(AdminReducer, initialState);
     
-    const closeFilterModal =  () => {
+    const openFilterModalHandler =  () => {
+        dispatch({type: OPEN_FILTER_MODAL});
+    }
+
+    const closeFilterModalHandler =  () => {
         dispatch({type: CLOSE_FILTER_MODAL});
     }
 
     return (
         <AdminContext.Provider
             value={{
-                filterModal : state.filterModal,
-                closeFilterModal
+                filterModal: state.filterModal,
+                openFilterModalHandler,
+                closeFilterModalHandler
             }}
         >
             {props.children}

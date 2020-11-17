@@ -4,7 +4,7 @@ import ManagerReducer from './ManagerReducer'
 // axios
 //firebase
 import {
-    PROJECT_CREATE,
+    CREATE_PROJECT,
     CANCEL_PROJECT,
     OPEN_MEMBER_MODAL,
     CLOSE_MEMBER_MODAL,
@@ -25,7 +25,7 @@ const ManagerStates = props => {
     const [state, dispatch] = useReducer(ManagerReducer, initialState)
 
     const createProjectHandler = () => {
-        dispatch({ type: PROJECT_CREATE})
+        dispatch({ type: CREATE_PROJECT})
         // console.log('project Cancel')
     }
 

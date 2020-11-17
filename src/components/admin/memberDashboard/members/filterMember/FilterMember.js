@@ -11,7 +11,7 @@ function FilterMember() {
     console.log(adminContext)
     const {
         filterModal,
-        closeFilterModal
+        closeFilterModalHandler
     } = adminContext;
     
     const [firstName, setFirstName] = useState('');
@@ -44,7 +44,7 @@ function FilterMember() {
     
     return (
         filterModal &&
-        <Modal show={true} clicked={closeFilterModal}>
+        <Modal show={true} clicked={closeFilterModalHandler}>
             <Typography variant='h6'>
                 Search By
             </Typography>
@@ -120,9 +120,9 @@ function FilterMember() {
                         <Button 
                             startIcon={<CloseIcon />} 
                             color='secondary'
-                            onClick={closeFilterModal}
+                            onClick={closeFilterModalHandler}
                         >
-                                Cancel
+                            Cancel
                         </Button>
                     </ButtonGroup>
                 </FormControl>

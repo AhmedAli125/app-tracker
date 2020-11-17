@@ -16,13 +16,12 @@ function App() {
     <AdminStates>
       <ManagerStates>
         <div className="App">
-          {/* <AdminDashboard> */}
-            {/* <MemberDashboard /> */}
-            {/* <FilterMember /> */}
+          <AdminDashboard>
+            <MemberDashboard />
             {/* <AddOrganization /> */}
-          {/* </AdminDashboard>     */}
-          <Header />
-          <Dashboard />
+          </AdminDashboard>    
+          {/* <Header /> */}
+          {/* <Dashboard /> */}
         </div>
       </ManagerStates>
     </AdminStates>

@@ -27,11 +27,11 @@ function AddButton({ clicked }) {
   return (
     // showAddButton sirf manager k login hony k bad manager ko show hoga
     // showAddButton && 
-    <div className={classes.root}> 
-      <Fab 
-        color="primary" 
-        aria-label="add" 
-        className={classes.fab} 
+    <div className={classes.root}>
+      <Fab
+        color="primary"
+        aria-label="add"
+        className={classes.fab}
         onClick={clicked}>
         <AddIcon />
       </Fab>

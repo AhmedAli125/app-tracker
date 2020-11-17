@@ -1,5 +1,5 @@
 import {
-    PROJECT_CREATE,
+    CREATE_PROJECT,
     CANCEL_PROJECT,
     OPEN_MEMBER_MODAL,
     CLOSE_MEMBER_MODAL,
@@ -9,7 +9,7 @@ import {
 
 export default (state, action) => {
     switch(action.type) {
-        case PROJECT_CREATE:
+        case CREATE_PROJECT:
             return {
                 ...state,
                 projects: false,

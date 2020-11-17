@@ -13,9 +13,7 @@ function CreateProject() {
     const {
         cancelProjectHandler,
         openMemberModalHandler,
-        // closeMemberModal,
         openTaskModalHandler,
-        // closeTaskModalHandler
     } = managerContext;
 
     return (
@@ -60,12 +58,8 @@ function CreateProject() {
                     Add Tasks
                 </Button>
             </div>
-            <AddMembers
-                // reset={closeMemberModalHandler}
-            />
-            <AddTask
-                // reset={closeTaskModalHandler}
-            />
+            <AddMembers />
+            <AddTask />
 
             <div className='task-list'>
                 <TaskList />

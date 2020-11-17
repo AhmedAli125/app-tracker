@@ -1,6 +1,6 @@
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 function FilterButton({clicked}) {
@@ -16,11 +16,14 @@ function FilterButton({clicked}) {
     const classes = useStyles();
 
     return (
-        <IconButton onClick={clicked} aria-label="filter"
-            // color='primary'
-            className={classes.margin}>
+        <Fab
+            onClick={clicked}
+            color="primary"
+            aria-label="filter"
+            size='small'
+        >
             <FilterListIcon />
-        </IconButton>
+        </Fab>
     )
 }
 
