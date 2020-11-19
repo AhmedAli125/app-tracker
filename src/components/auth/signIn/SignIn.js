@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-    Avatar,
-    Button,
-    CssBaseline,
-    TextField,
-    Link,
-    Typography,
-    Container
+  makeStyles,
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Link,
+  Typography,
+  Container
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,14 +32,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
+
   const classes = useStyles();
+
+  const [email, setEmail] = useState('');
+  const handleEmail = e => setEmail(e.target.value);
+
+  const [password, setPassword] = useState('');
+  const handlePassword = e => setPassword(e.target.value);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component='h1' variant='h4'>
-            Project Tracker
+          Project Tracker
         </Typography>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -57,6 +64,8 @@ export default function SignIn() {
             label="Email Address"
             name="email"
             autoComplete="email"
+            value={email}
+            onChange={handleEmail}
             autoFocus
           />
           <TextField
@@ -68,6 +77,8 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
+            value={password}
+            onChange={handlePassword}
             autoComplete="current-password"
           />
           <Button
@@ -79,17 +90,14 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-            <div style={{display:'flex'}}>
-              <span style={{flexGrow:1}}></span>
-              <Link href="#" variant="body2" style={{marginRight: '1rem'}}>
-                {"Sign Up"}
-              </Link>
-            </div>
+          <div style={{ display: 'flex' }}>
+            <span style={{ flexGrow: 1 }}></span>
+            <Link href="#" variant="body2" style={{ marginRight: '1rem' }}>
+              {"Sign Up"}
+            </Link>
+          </div>
         </form>
       </div>
-      {/* <Box mt={8}>
-        <Copyright />
-      </Box> */}
     </Container>
   );
 }

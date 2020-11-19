@@ -40,7 +40,7 @@ function OrganizationsDashboard() {
             <div
                 style={{
                     // border: '1px solid',
-                    height: '64vh',
+                    height: '65vh',
                     overflow: 'auto',
                     paddingTop: '10px'
                 }}

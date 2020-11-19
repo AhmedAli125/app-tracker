@@ -1,17 +1,16 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import React, {useState} from 'react';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import {
+  makeStyles,
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Link,
+  Grid,
+  Typography,
+  Container
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,7 +33,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  
   const classes = useStyles();
+
+  const [firstName, setFirstName] = useState('');
+  const handleFirstName = e => setFirstName(e.target.value);
+
+  const [lastName, setLastName] = useState('');
+  const handleLastName = e => setLastName(e.target.value);
+
+  const [email, setEmail] = useState('');
+  const handleEmail = e => setEmail(e.target.value);
+
+  const [password, setPassword] = useState('');
+  const handlePassword = e => setPassword(e.target.value);
+
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const handleConfirmPassword = e => setConfirmPassword(e.target.value);
+
+  const [softwareHouseKey, setSoftwareHouseKey] = useState('');
+  const handleSoftwareHouseKey = e => setSoftwareHouseKey(e.target.value);
+
+  const [designationKey, setDesignationKey] = useState('');
+  const handleDesignationKey = e => setDesignationKey(e.target.value);
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -53,6 +75,8 @@ export default function SignUp() {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
+                value={firstName}
+                onChange={handleFirstName}
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
@@ -71,6 +95,8 @@ export default function SignUp() {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
+                value={lastName}
+                onChange={handleLastName}
                 autoComplete="lname"
               />
             </Grid>
@@ -80,6 +106,8 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="email"
+                value={email}
+                onChange={handleEmail}
                 label="Email Address"
                 name="email"
                 autoComplete="email"
@@ -94,6 +122,8 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
+                value={password}
+                onChange={handlePassword}
                 autoComplete="off"
               />
             </Grid>
@@ -104,8 +134,10 @@ export default function SignUp() {
                 fullWidth
                 name="confirmPassword"
                 label="Confirm Password"
-                type="confirmPassword"
+                type="password"
                 id="confirmPassword"
+                value={confirmPassword}
+                onChange={handleConfirmPassword}
                 autoComplete="off"
               />
             </Grid>
@@ -115,8 +147,10 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                name="desgnationKey"
+                name="designationKey"
                 label="Designation Key"
+                value={designationKey}
+                onChange={handleDesignationKey}
                 // type="password"
                 id="designationKey"
                 autoComplete="off"
@@ -129,6 +163,8 @@ export default function SignUp() {
                 fullWidth
                 name="softwareHouseKey"
                 label="Software House Key"
+                value={softwareHouseKey}
+                onChange={handleSoftwareHouseKey}
                 // type="password"
                 id="softwareHouseKey"
                 autoComplete="off"

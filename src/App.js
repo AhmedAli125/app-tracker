@@ -19,8 +19,8 @@ function App() {
     <AdminStates>
       <ManagerStates>
         <div className="App">
-          <SignIn />
-          {/* <SignUp /> */}
+          {/* <SignIn /> */}
+          <SignUp />
           {/* <AdminDashboard> */}
             {/* <AddOrganization /> */}
             {/* <OrganizationsDashboard /> */}
