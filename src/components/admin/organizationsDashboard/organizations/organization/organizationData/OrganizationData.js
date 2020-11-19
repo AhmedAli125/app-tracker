@@ -8,11 +8,15 @@ function OrganizationData() {
     const adminContext = useContext(AdminContext);
     const { showSoftwareHouseModal, closeSoftwareHouseModalHandler } = adminContext;
 
-    const [organization, setOrganization] = useState('');
+    const [organization, setOrganization] = useState('Dummy Name');
     // const handleOrganization = (e) => setOrganization(e.target.value);
 
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState('Dummy Email');
     // const handleEmail = (e) => setEmail(e.target.value);
+
+    const [address, setAddress] = useState('dummy address');
+
+    const [projectCount, setProjectCount] = useState(12);
 
     const [managerKey, setManagerKey] = useState('');
     const [developerKey, setDeveloperKey] = useState('');
@@ -58,7 +62,7 @@ function OrganizationData() {
                     fullWidth={true}
                     // type='email'
                     autoComplete='off'
-                    value={email}
+                    value={address}
                     disabled
                     // onChange={handleEmail}
                 />
@@ -70,7 +74,7 @@ function OrganizationData() {
                     fullWidth={true}
                     // type='email'
                     autoComplete='off'
-                    value={email}
+                    // value={email}
                     disabled
                     // onChange={handleEmail}
                 />

@@ -16,11 +16,11 @@ function EditMember() {
     const [lastName, setLastName] = useState('');
     const handleLastName = (e) => setLastName(e.target.value);
 
-    const [organization, setOrganization] = useState('');
-    const handleOrganization = (e) => setOrganization(e.target.value);
+    const [organization, setOrganization] = useState('from database based on key');
+    // const handleOrganization = (e) => setOrganization(e.target.value);
 
-    const [email, setEmail] = useState('');
-    const handleEmail = (e) => setEmail(e.target.value);
+    const [email, setEmail] = useState('from database');
+    // const handleEmail = (e) => setEmail(e.target.value);
 
     const [designation, setDesignation] = useState('');
     const handelDesignation = (e) => setDesignation(e.target.value);
@@ -61,12 +61,12 @@ function EditMember() {
                     margin="normal"
                     type='email'
                     value={email}
-                    onChange={handleEmail}
+                    // onChange={handleEmail}
                     disabled
                 />
                 <TextField
-                    id="designation"
-                    label="Designation"
+                    id="designationKey"
+                    label="Designation Key"
                     variant="outlined"
                     fullWidth={true}
                     margin="normal"
@@ -80,7 +80,8 @@ function EditMember() {
                     fullWidth={true}
                     margin="normal"
                     value={organization}
-                    onChange={handleOrganization}
+                    disabled
+                    // onChange={handleOrganization}
                 />
                 {/* <TextField
                     id="gender"

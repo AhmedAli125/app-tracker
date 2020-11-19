@@ -9,6 +9,8 @@ import FilterMember from './components/admin/memberDashboard/members/filterMembe
 import AddOrganization from './components/admin/addOrganization/AddOrganization';
 import MemberDashboard from './components/admin/memberDashboard/MemberDashboard';
 import OrganizationsDashboard from './components/admin/organizationsDashboard/OrganizationsDashboard';
+import SignIn from './components/auth/signIn/SignIn';
+import SignUp from './components/auth/signUp/SignUp';
 import './App.css';
 
 
@@ -17,11 +19,13 @@ function App() {
     <AdminStates>
       <ManagerStates>
         <div className="App">
-          <AdminDashboard>
+          <SignIn />
+          {/* <SignUp /> */}
+          {/* <AdminDashboard> */}
             {/* <AddOrganization /> */}
-            <OrganizationsDashboard />
+            {/* <OrganizationsDashboard /> */}
             {/* <MemberDashboard /> */}
-          </AdminDashboard>    
+          {/* </AdminDashboard>     */}
           {/* <Header /> */}
           {/* <Dashboard /> */}
         </div>

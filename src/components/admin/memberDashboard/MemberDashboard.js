@@ -13,7 +13,7 @@ function ViewMember() {
 
     return (
         <Container
-            maxWidth="md"
+            maxWidth="lg"
             style={{
                 marginTop: '10px',
                 height: '80vh'
@@ -32,7 +32,7 @@ function ViewMember() {
                         flexGrow: '1'
                     }}
                 >
-                    Members
+                    View Members
                     </Typography>
                 <FilterButton clicked={openFilterModalHandler} />
             </div>

@@ -12,7 +12,7 @@ function OrganizationsDashboard() {
 
     return (
         <Container
-            maxWidth="md"
+            maxWidth="lg"
             style={{
                 marginTop: '10px',
                 height: '80vh'
