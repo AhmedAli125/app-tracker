@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -67,28 +68,34 @@ function ResponsiveDrawer(props) {
         <div>
             <div className={classes.toolbar} />
             <List>
-                <ListItem button >
-                    <ListItemIcon>
-                        <AssignmentIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'Register'} />
-                </ListItem>
+                <Link to='/register-organazition'>
+                    <ListItem button >
+                        <ListItemIcon>
+                            <AssignmentIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Register'} />
+                    </ListItem>
+                </Link>
             </List>
             <List>
+                <Link to='/view-organazitions'>
                 <ListItem button >
                     <ListItemIcon>
                         <HomeWorkIcon />
                     </ListItemIcon>
                     <ListItemText primary={'View Organizations'} />
-                </ListItem>
+                    </ListItem>
+                </Link>
             </List>
             <List>
+                <Link to='/view-members'>
                 <ListItem button >
                     <ListItemIcon>
                         <PeopleIcon />
                     </ListItemIcon>
                     <ListItemText primary={'View Members'} />
-                </ListItem>
+                    </ListItem>
+                </Link>
             </List>
             <List>
                 <ListItem button >
