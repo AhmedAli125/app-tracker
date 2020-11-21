@@ -4,8 +4,7 @@ import ManagerStates from './context/manager/ManagerStates'
 import Admin from './components/admin/Admin';
 import Header from './components/header/Header'
 import Dashboard from './components/ui/dashboard/Dashboard';
-import SignIn from './components/auth/signIn/SignIn';
-import SignUp from './components/auth/signUp/SignUp';
+import Auth from './components/auth/Auth';
 import './App.css';
 
 
@@ -14,8 +13,7 @@ function App() {
     <AdminStates>
       <ManagerStates>
         <div className="App">
-          <SignIn />
-          {/* <SignUp /> */}
+          <Auth />
           {/* <Admin /> */}
           {/* <Header /> */}
           {/* <Dashboard /> */}

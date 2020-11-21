@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {
   makeStyles,
@@ -6,11 +7,11 @@ import {
   Button,
   CssBaseline,
   TextField,
-  Link,
   Grid,
   Typography,
   Container
 } from '@material-ui/core';
+import '../auth.css';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,13 +28,16 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
+  grid: {
+    marginBottom: theme.spacing(0),
+  },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(1, 0, 0),
   },
 }));
 
 export default function SignUp() {
-  
+
   const classes = useStyles();
 
   const [firstName, setFirstName] = useState('');
@@ -72,7 +76,7 @@ export default function SignUp() {
           Sign up
         </Typography>
         <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
+          <Grid className={classes.grid} container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 value={firstName}
@@ -141,7 +145,6 @@ export default function SignUp() {
                 autoComplete="off"
               />
             </Grid>
-            
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -175,17 +178,21 @@ export default function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
           >
             Sign Up
-          </Button>
-          <div style={{display:'flex'}}>
-              <span style={{flexGrow:1}}></span>
-              <Link href="#" variant="body2" style={{marginRight: '1rem'}}>
-                {"Sign In"}
-              </Link>
-            </div>
+            </Button>
+          <Link className='link' to='/sign-in'>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+          </Link>
         </form>
       </div>
     </Container>

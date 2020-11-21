@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import {
   makeStyles,
   Avatar,
   Button,
   CssBaseline,
   TextField,
-  Link,
   Typography,
   Container
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import AuthContext from '../../../context/auth/AuthContext'
+import '../auth.css';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,11 +29,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(1, 0, 0),
   },
 }));
 
-export default function SignIn() {
+function SignIn() {
+
+  const authContext = useContext(AuthContext);
+
+  const {
+    userLogin
+  }= authContext;
 
   const classes = useStyles();
 
@@ -40,6 +48,20 @@ export default function SignIn() {
 
   const [password, setPassword] = useState('');
   const handlePassword = e => setPassword(e.target.value);
+
+  const login = (e) => {
+    e.preventDefault();
+
+    let data = {
+      email: email,
+      password: password
+    }
+
+    userLogin(data);
+    setEmail('');
+    setPassword('');
+    // console.log(`${email} => ${password}`)
+  } 
 
   return (
     <Container component="main" maxWidth="xs">
@@ -54,7 +76,7 @@ export default function SignIn() {
         <Typography component="h2" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={(e) => login(e)} method='post'>
           <TextField
             variant="outlined"
             margin="normal"
@@ -81,23 +103,30 @@ export default function SignIn() {
             onChange={handlePassword}
             autoComplete="current-password"
           />
+            <Button
+              type="submit"
+              // onSubmit
+              fullWidth
+              variant="contained"
+              color="primary"
+            className={classes.submit}
+            >
+              Sign In
+            </Button>
+          <Link className='link' to='/sign-up'>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
           >
-            Sign In
-          </Button>
-          <div style={{ display: 'flex' }}>
-            <span style={{ flexGrow: 1 }}></span>
-            <Link href="#" variant="body2" style={{ marginRight: '1rem' }}>
-              {"Sign Up"}
-            </Link>
-          </div>
+              Sign Up
+            </Button>
+          </Link>
         </form>
       </div>
     </Container>
   );
 }
+
+export default SignIn; 
