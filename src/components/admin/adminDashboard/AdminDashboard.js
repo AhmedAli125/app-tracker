@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,6 +18,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import './adminDashboard.css';
 
 const drawerWidth = 240;
 
@@ -68,7 +69,7 @@ function ResponsiveDrawer(props) {
         <div>
             <div className={classes.toolbar} />
             <List>
-                <Link to='/register-organazition'>
+                <Link className='link' to='/register-organazition'>
                     <ListItem button >
                         <ListItemIcon>
                             <AssignmentIcon />
@@ -78,22 +79,22 @@ function ResponsiveDrawer(props) {
                 </Link>
             </List>
             <List>
-                <Link to='/view-organazitions'>
-                <ListItem button >
-                    <ListItemIcon>
-                        <HomeWorkIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'View Organizations'} />
+                <Link className='link' to='/view-organazitions' >
+                    <ListItem button >
+                        <ListItemIcon>
+                            <HomeWorkIcon />
+                        </ListItemIcon>
+                        <ListItemText className='link-text' primary={'View Organizations'} />
                     </ListItem>
                 </Link>
             </List>
             <List>
-                <Link to='/view-members'>
-                <ListItem button >
-                    <ListItemIcon>
-                        <PeopleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'View Members'} />
+                <Link className='link' to='/view-members'>
+                    <ListItem button >
+                        <ListItemIcon>
+                            <PeopleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'View Members'} />
                     </ListItem>
                 </Link>
             </List>

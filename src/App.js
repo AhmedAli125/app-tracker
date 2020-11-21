@@ -14,9 +14,9 @@ function App() {
     <AdminStates>
       <ManagerStates>
         <div className="App">
-          {/* <SignIn /> */}
+          <SignIn />
           {/* <SignUp /> */}
-          <Admin />
+          {/* <Admin /> */}
           {/* <Header /> */}
           {/* <Dashboard /> */}
         </div>
