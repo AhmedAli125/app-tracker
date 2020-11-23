@@ -5,13 +5,13 @@ import {
 export default (state, action) => {
     switch (action.type) {
         case SET_USER_DATA:
-            // console.log(`action.payload`);
+            // console.log(state);
             // console.log(action.payload);
             return {
-                ...state,
-                user: { ...action.payload },
+                // ...state,
+                user: action.payload,
                 isLoggedIn: true
-            }
+            };
 
         default:
             return state

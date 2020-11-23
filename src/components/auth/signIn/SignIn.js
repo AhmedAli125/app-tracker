@@ -38,14 +38,19 @@ function SignIn() {
   const authContext = useContext(AuthContext);
 
   const {
+    user,
     userLogin,
     getUserData
   }= authContext;
-
+  
+  
   useEffect(() => {
     getUserData();
+    // console.log(user);
+    
   },[])
-
+  
+  console.log(user)
 
   const classes = useStyles();
 

@@ -17,25 +17,23 @@ const AuthStates = props => {
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
     const getUserData = async () => {
-
+        let userData;
         Database.auth().onAuthStateChanged(await function (user) {
             if (user) {
-                console.log(`user.uid`);
-                console.log(user.uid);
-
+                // key=user.uid
                 Database.database().ref(`/registered-users/${user.uid}`).once('value')
-                    .then(
-                        (data) => {
-                            // data.val();
-                            console.log(data.val());
-                            dispatch({ type: SET_USER_DATA, payload: data.val()});
-                        }
-                    );
+                .then(
+                    (data) => {
+                        userData = {...data.val()};
+                        console.log(userData);
+                        dispatch({ type: SET_USER_DATA, payload: userData});     
+                    }
+                );
+                
             } else {
                 console.log(user.uid);
             }
         });
-
     };
 
     const userLogin = async (formData) => {
@@ -49,8 +47,8 @@ const AuthStates = props => {
             });
     };
 
-    console.log('initialState');
-    console.log(initialState);
+    // console.log('initialState');
+    // console.log(initialState);
 
     return (
         <AuthContext.Provider
