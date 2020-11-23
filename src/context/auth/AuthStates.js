@@ -25,7 +25,7 @@ const AuthStates = props => {
                 .then(
                     (data) => {
                         userData = {...data.val()};
-                        console.log(userData);
+                        // console.log(userData);
                         dispatch({ type: SET_USER_DATA, payload: userData});     
                     }
                 );
@@ -54,6 +54,7 @@ const AuthStates = props => {
         <AuthContext.Provider
             value={{
                 user: state.user,
+                isLoggedIn: state.isLoggedIn,
                 userLogin,
                 getUserData
             }}

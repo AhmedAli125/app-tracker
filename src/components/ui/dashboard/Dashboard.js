@@ -1,16 +1,34 @@
-import React from 'react';
-import AddProject from '../../manager/addProject/AddProject';
-import ProjectList from '../projects/ProjectList';
+import React, {useContext} from 'react'
+import Admin from '../../admin/Admin'
 
-import './dashboard.css';
+import Manager from '../../manager/Manager'
+import AuthContext from '../../../context/auth/AuthContext'
 
-function Dashboard() {
+function Dashboard(props) {
+
+    const authContext = useContext(AuthContext);
+
+    const {
+        user,
+        isLoggedIn
+    } =  authContext;
+
     return (
-        <div className='dashboard-container'>
-            <AddProject />
-            <ProjectList />
-        </div>
-    );
+        <>
+            {
+                isLoggedIn ? (
+                    user.designation === 'admin' ? 
+                        (<Admin />) : user.designation === 'manager' ?
+                            (<Manager />) : null
+                            // user.designation === 'developer' ?
+
+                ) : props.history.push('/') 
+            
+            }
+            {/* <h1>test</h1> */}
+            
+        </>
+    )
 }
 
-export default Dashboard;
+export default Dashboard

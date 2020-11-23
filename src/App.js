@@ -1,25 +1,36 @@
 import React from 'react'
-import AdminStates from './context/admin/AdminStates'
+import {Switch, Route} from 'react-router-dom'
+import AuthStates from './context/auth/AuthStates';
+// import AdminStates from './context/admin/AdminStates'
 import ManagerStates from './context/manager/ManagerStates'
-import Admin from './components/admin/Admin';
-import Header from './components/header/Header'
-import Dashboard from './components/ui/dashboard/Dashboard';
 import Auth from './components/auth/Auth';
+import PrivateRoute from './routes/PrivateRoute';
+import Dashboard from './components/ui/dashboard/Dashboard';
 import './App.css';
+import Manager from './components/manager/Manager';
 
 
 function App() {
   return (
-    <AdminStates>
+    <AuthStates>
       <ManagerStates>
         <div className="App">
-          <Auth />
+        <Switch>
+          <Route path='/' exact component={Auth} />
+          {/* <PrivateRoute path='/dashboard' exact 
+          component={Dashboard}
+          // render={() => <h1>private route</h1>} 
+          /> */}
+
+          <Route path='/dashboard' exact component={Dashboard}/>
+
           {/* <Admin /> */}
-          {/* <Header /> */}
+          {/* <Manager /> */}
           {/* <Dashboard /> */}
+          </Switch>
         </div>
       </ManagerStates>
-    </AdminStates>
+    </AuthStates>
   );
 }
 

@@ -183,7 +183,7 @@ export default function SignUp() {
           >
             Sign Up
             </Button>
-          <Link className='link' to='/sign-in'>
+          <Link className='link' to='/'>
             <Button
               fullWidth
               variant="contained"

@@ -33,12 +33,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn() {
+function SignIn(props) {
 
   const authContext = useContext(AuthContext);
 
   const {
     user,
+    isLoggedIn,
     userLogin,
     getUserData
   }= authContext;
@@ -46,11 +47,15 @@ function SignIn() {
   
   useEffect(() => {
     getUserData();
+    if(isLoggedIn) {
+      props.history.replace('/dashboard');
+    }
     // console.log(user);
     
-  },[])
+  },[isLoggedIn, props.history])
   
-  console.log(user)
+  // console.log(user)
+  // console.log(isLoggedIn)
 
   const classes = useStyles();
 
