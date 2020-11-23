@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   makeStyles,
@@ -38,8 +38,14 @@ function SignIn() {
   const authContext = useContext(AuthContext);
 
   const {
-    userLogin
+    userLogin,
+    getUserData
   }= authContext;
+
+  useEffect(() => {
+    getUserData();
+  },[])
+
 
   const classes = useStyles();
 
@@ -121,7 +127,7 @@ function SignIn() {
             className={classes.submit}
           >
               Sign Up
-            </Button>
+          </Button>
           </Link>
         </form>
       </div>

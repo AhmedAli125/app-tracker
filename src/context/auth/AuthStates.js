@@ -3,7 +3,8 @@ import AuthContext from './AuthContext';
 import AuthReducer from './AuthReducer';
 import Database from '../../config/Database';
 import {
-    LOGIN_SUCCESS
+    LOGIN_SUCCESS,
+    SET_USER_DATA
 } from '../Type';
 
 const AuthStates = props => {
@@ -15,42 +16,48 @@ const AuthStates = props => {
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-    const getUserData = (key) => {
-        Database.database().ref(`/registered-users/${key}`).once('value', (data) => {
-            // data.val();
-            console.log(data.val());
-            // return data.val();
-                // let userData = JSON.stringify(data.val());
-            // console.log('user Data => ' + userData);
-            // return { userData };
+    const getUserData = async () => {
+
+        Database.auth().onAuthStateChanged(await function (user) {
+            if (user) {
+                console.log(`user.uid`);
+                console.log(user.uid);
+
+                Database.database().ref(`/registered-users/${user.uid}`).once('value')
+                    .then(
+                        (data) => {
+                            // data.val();
+                            console.log(data.val());
+                            dispatch({ type: SET_USER_DATA, payload: data.val()});
+                        }
+                    );
+            } else {
+                console.log(user.uid);
+            }
         });
-    }
-
-    const userLogin = async (formData) => {
-        Database.auth().signInWithEmailAndPassword(formData.email, formData.password)
-            .then(res => {
-                console.log(res.user.uid);
-                // let data =
-                getUserData(res.user.uid);
-                // console.log(`data => ${data}`);
-                // dispatch({ type: LOGIN_SUCCESS, payload: res.user.uid });
-                // loadUser(res.user.uid);
-            })  // return firebase user id (res.user.uid)
-            .catch(err => {
-                console.log(err.message);
-                // dispatch({ type: LOGIN_FAIL, payload: err.message });
-            }); // return error message (err.message)
-
-        // let currentUser = Database.auth().currentUser();
-        // console.log(currentUser);
 
     };
+
+    const userLogin = async (formData) => {
+        await Database.auth().signInWithEmailAndPassword(formData.email, formData.password)
+            .then(res => {
+                // console.log(`user id => ${res.user.uid}`);
+                getUserData();
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    };
+
+    console.log('initialState');
+    console.log(initialState);
 
     return (
         <AuthContext.Provider
             value={{
                 user: state.user,
-                userLogin
+                userLogin,
+                getUserData
             }}
         >
             {props.children}
