@@ -16,12 +16,12 @@ function App() {
       <ManagerStates>
         <div className="App">
         <Switch>
-          <Route path='/' exact component={Auth} />
           {/* <PrivateRoute path='/dashboard' 
           component={Dashboard}
           // render={() => <h1>private route</h1>} 
-          /> */}
+        /> */}
           <Route path='/dashboard' component={Dashboard}/>
+          <Route path='/' component={Auth} />
           </Switch>
         </div>
       </ManagerStates>
