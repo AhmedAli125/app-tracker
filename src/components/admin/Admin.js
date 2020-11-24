@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useRouteMatch} from 'react-router-dom';
 import AdminStates from '../../context/admin/AdminStates';
 import AdminDashboard from './adminDashboard/AdminDashboard';
 import AddOrganization from './addOrganization/AddOrganization';
@@ -8,13 +8,25 @@ import OrganizationsDashboard from './organizationsDashboard/OrganizationsDashbo
 
 
 function Admin() {
+
+    const route = useRouteMatch();
+    const path = route.path;
+    console.log(`Admin`);
+    console.log(path);
+
     return (
         <AdminStates>
             <AdminDashboard>
                 <Switch>
-                    <Route path='/register-organazition' exact component={AddOrganization} />
-                    <Route path='/view-organazitions' exact component={OrganizationsDashboard} />
-                    <Route path='/view-members' exact component={MemberDashboard} />
+                    <Route path={`${path}`} exact component={AddOrganization} />
+                    <Route path={`${path}/view-organizations`} exact component={OrganizationsDashboard} />
+                    <Route path={`${path}/view-members`} exact component={MemberDashboard} />
+                    {/* <AddOrganization /> */}
+                    {/* <Route path={`${path}/register-organization`} exact component={AddOrganization} />
+                    <Route path={`${path}/view-organizations`} exact component={OrganizationsDashboard} />
+                    <Route path={`${path}/view-members`} exact component={MemberDashboard} /> */}
+                    {/* <Route path='/register-organization' exact component={AddOrganization} />
+                    <Route path='/view-organizations' exact component={OrganizationsDashboard} /> */}
                 </Switch>
             </AdminDashboard>
         </AdminStates>

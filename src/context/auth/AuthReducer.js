@@ -1,5 +1,6 @@
 import {
-    SET_USER_DATA
+    SET_USER_DATA,
+    USER_LOG_OUT
 } from '../Type';
 
 export default (state, action) => {
@@ -8,10 +9,17 @@ export default (state, action) => {
             // console.log(state);
             // console.log(action.payload);
             return {
-                // ...state,
+                ...state,
                 user: action.payload,
                 isLoggedIn: true
             };
+
+        case USER_LOG_OUT:
+            return{
+                ...state,
+                user: {},
+                isLoggedIn: false
+            }
 
         default:
             return state

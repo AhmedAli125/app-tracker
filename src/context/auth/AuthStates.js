@@ -3,8 +3,8 @@ import AuthContext from './AuthContext';
 import AuthReducer from './AuthReducer';
 import Database from '../../config/Database';
 import {
-    LOGIN_SUCCESS,
-    SET_USER_DATA
+    SET_USER_DATA,
+    USER_LOG_OUT
 } from '../Type';
 
 const AuthStates = props => {
@@ -30,9 +30,10 @@ const AuthStates = props => {
                     }
                 );
                 
-            } else {
-                console.log(user.uid);
-            }
+            } 
+            // else {
+            //     // console.log(user.uid);
+            // }
         });
     };
 
@@ -47,6 +48,15 @@ const AuthStates = props => {
             });
     };
 
+    const userLogOut = async () =>{
+        Database.auth().signOut().then(function() {
+                // alert('logged out');
+                dispatch({type: USER_LOG_OUT})
+          }).catch(function(error) {
+            alert(error);
+          });
+    }
+
     // console.log('initialState');
     // console.log(initialState);
 
@@ -56,7 +66,8 @@ const AuthStates = props => {
                 user: state.user,
                 isLoggedIn: state.isLoggedIn,
                 userLogin,
-                getUserData
+                getUserData,
+                userLogOut
             }}
         >
             {props.children}

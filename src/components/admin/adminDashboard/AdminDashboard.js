@@ -1,23 +1,26 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import AuthContext from '../../../context/auth/AuthContext'
+import { Link, useRouteMatch } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {
+    AppBar,
+    CssBaseline,  
+    Drawer,  
+    Hidden,  
+    IconButton,  
+    List,  
+    ListItem,    
+    ListItemText,
+    Toolbar,
+    Typography
+} from '@material-ui/core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PeopleIcon from '@material-ui/icons/People';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
-import ListItemText from '@material-ui/core/ListItemText';
+import HomeWorkIcon from '@material-ui/icons/HomeWork'; 
 import MenuIcon from '@material-ui/icons/Menu';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import './adminDashboard.css';
 
 const drawerWidth = 240;
@@ -56,20 +59,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ResponsiveDrawer(props) {
+    
     const { window } = props;
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = useState(false);
-
+    
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    
+    const route = useRouteMatch();
+    const path = route.path;
+
+    const authContext =  useContext(AuthContext);
+    const {userLogOut} = authContext;
+    // console.log(`Admin dashboard`);
+    // console.log(history);
 
     const drawer = (
         <div>
             <div className={classes.toolbar} />
             <List>
-                <Link className='link' to='/register-organazition'>
+                {/* <Link className='link' to={`${path}/register-organization`}> */}
+                <Link className='link' to='/dashboard'>
                     <ListItem button >
                         <ListItemIcon>
                             <AssignmentIcon />
@@ -79,7 +92,8 @@ function ResponsiveDrawer(props) {
                 </Link>
             </List>
             <List>
-                <Link className='link' to='/view-organazitions' >
+                <Link className='link' to={`${path}/view-organizations`} >
+                {/* <Link className='link' to={`/dashboard/view-organizations`} > */}
                     <ListItem button >
                         <ListItemIcon>
                             <HomeWorkIcon />
@@ -89,7 +103,8 @@ function ResponsiveDrawer(props) {
                 </Link>
             </List>
             <List>
-                <Link className='link' to='/view-members'>
+                <Link className='link' to={`${path}/view-members`}>
+                {/* <Link className='link' to={`/dashboard/view-members`}> */}
                     <ListItem button >
                         <ListItemIcon>
                             <PeopleIcon />
@@ -99,7 +114,7 @@ function ResponsiveDrawer(props) {
                 </Link>
             </List>
             <List>
-                <ListItem button >
+                <ListItem button onClick={userLogOut}>
                     <ListItemIcon>
                         <ExitToAppIcon />
                     </ListItemIcon>
@@ -110,6 +125,7 @@ function ResponsiveDrawer(props) {
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
+
 
     return (
         <div className={classes.root}>

@@ -17,16 +17,11 @@ function App() {
         <div className="App">
         <Switch>
           <Route path='/' exact component={Auth} />
-          {/* <PrivateRoute path='/dashboard' exact 
+          {/* <PrivateRoute path='/dashboard' 
           component={Dashboard}
           // render={() => <h1>private route</h1>} 
           /> */}
-
-          <Route path='/dashboard' exact component={Dashboard}/>
-
-          {/* <Admin /> */}
-          {/* <Manager /> */}
-          {/* <Dashboard /> */}
+          <Route path='/dashboard' component={Dashboard}/>
           </Switch>
         </div>
       </ManagerStates>
