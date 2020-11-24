@@ -11,8 +11,6 @@ function Admin() {
 
     const route = useRouteMatch();
     const path = route.path;
-    console.log(`Admin`);
-    console.log(path);
 
     return (
         <AdminStates>

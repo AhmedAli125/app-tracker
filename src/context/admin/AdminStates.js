@@ -7,8 +7,10 @@ import {
     OPEN_EDIT_MEMBER_MODAL,
     CLOSE_EDIT_MEMBER_MODAL,
     OPEN_SOFTWARE_HOUSE_MODAL,
-    CLOSE_SOFTWARE_HOUSE_MODAL
+    CLOSE_SOFTWARE_HOUSE_MODAL,
+    ADD_ORGANIZATION
 } from '../Type'
+import Database from '../../config/Database'
 
 const AdminStates = props => {
     const initialState = {
@@ -43,6 +45,16 @@ const AdminStates = props => {
         dispatch({ type: CLOSE_SOFTWARE_HOUSE_MODAL});
     }
 
+    const registerOrganization = (data) => {
+        Database.database().ref(`/organizations/${data.id}`).set(data)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+    }
+
     return (
         <AdminContext.Provider
             value={{
@@ -54,7 +66,8 @@ const AdminStates = props => {
                 openEditMemberModalHandler,
                 closeEditMemberModalHandler,
                 openSoftwareHouseModalHandler,
-                closeSoftwareHouseModalHandler
+                closeSoftwareHouseModalHandler,
+                registerOrganization
             }}
         >
             {props.children}

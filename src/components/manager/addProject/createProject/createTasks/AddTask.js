@@ -14,7 +14,9 @@ function AddTask() {
     const { showTaskModal, closeTaskModalHandler } = managerContext;
 
     let currentDate = () => {
+
         let now = new Date();
+
         let getMonth = () => {
             let month = now.getMonth() + 1;
             if (month < 10) {
@@ -25,18 +27,19 @@ function AddTask() {
         let getDate = () => {
             let current = (now.getDate());
             if (current < 10) {
-                return current.toString();
+                return "0" + current.toString();
                 // return current.toString();
             } else return current.toString();
-
         };
+
         let getYear = () => {
             let year = (now.getFullYear()).toString();
             if (year < 10) {
                 return "0" + year.toString();
             } else return year.toString();
         };
-        return getYear() + "-" + getMonth() + "-" + "0" + getDate();
+
+        return getYear() + "-" + getMonth() + "-" + getDate();
     };
 
     const [title, setTitle] = useState('');
