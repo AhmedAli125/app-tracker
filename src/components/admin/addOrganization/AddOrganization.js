@@ -7,7 +7,7 @@ import {
   ButtonGroup,
   Button
 } from '@material-ui/core';
-import AdminContext from '../../../context/admin/AdminContext'
+import AdminContext from '../../../context/admin/AdminContext';
 import Database from '../../../config/Database';
 
 function AddOrganization() {
@@ -28,7 +28,7 @@ function AddOrganization() {
 
   const [address, setAddress] = useState('');
   const handleAddress = e => setAddress(e.target.value);
-  
+
   const [organizationKey, setOrganizationKey] = useState('');
   const [managerKey, setManagerKey] = useState('');
   const [developerKey, setDeveloperKey] = useState('');
@@ -37,21 +37,20 @@ function AddOrganization() {
   const getKeys = () => {
 
     let organizationKey = Database.database().ref('/organizations/').push().key;
-    setOrganizationKey(organizationKey)
-    
+    setOrganizationKey(organizationKey);
+
     let manager = generateKey(organizationKey);
     let developer = generateKey(organizationKey);
     let tester = generateKey(organizationKey);
-    
+
     if ((manager !== developer) && (developer !== tester) && (manager !== tester)) {
       setManagerKey(manager);
       setDeveloperKey(developer);
       setTesterKey(tester);
-      return 0
+      return 0;
     } else {
       getKeys();
     }
-    
     // return organizationKey;
   };
 
@@ -69,7 +68,7 @@ function AddOrganization() {
   };
 
   let currentDate = () => {
-    
+
     let now = new Date();
 
     let getMonth = () => {
@@ -82,7 +81,7 @@ function AddOrganization() {
     let getDate = () => {
       let current = (now.getDate());
       if (current < 10) {
-        return "0"+current.toString();
+        return "0" + current.toString();
         // return current.toString();
       } else return current.toString();
     };
@@ -93,11 +92,11 @@ function AddOrganization() {
         return "0" + year.toString();
       } else return year.toString();
     };
-    
+
     return getYear() + "-" + getMonth() + "-" + getDate();
   };
 
-  let date = currentDate()
+  let date = currentDate();
 
   const organizationData = {
     id: organizationKey,
@@ -121,6 +120,19 @@ function AddOrganization() {
         key: testerKey
       },
     }
+  };
+
+  const register = () => {
+    registerOrganization(organizationData)
+
+    setOrganization('');
+    setOrganizationKey('')
+    setOrgEmail('')
+    setContact('')
+    setAddress('')
+    setDeveloperKey('')
+    setManagerKey('')
+    setTesterKey('')
   };
 
   return (
@@ -235,7 +247,7 @@ function AddOrganization() {
         >
           <Button
             color='primary'
-            onClick={()=> registerOrganization(organizationData)}
+            onClick={() => register()}
           >
             Register
           </Button>

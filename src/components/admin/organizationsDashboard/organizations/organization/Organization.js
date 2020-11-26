@@ -6,17 +6,18 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AdminContext from '../../../../../context/admin/AdminContext';
 
-function Organization() {
-
+function Organization({data}) {
     const adminContext = useContext(AdminContext);
-    const { openSoftwareHouseModalHandler } = adminContext;
+    const {
+        openSoftwareHouseModalHandler,
+        setCurrentOrganization
+    } = adminContext;
 
     const useStyles = makeStyles({
         root: {
-            // minWidth: 275,
-            // Width: 500,
-            // maxWidth: 275,
-            // height: 150
+            minWidth: 250,
+            maxWidth: 250,
+            height: 150
         },
         bullet: {
             display: 'inline-block',
@@ -38,18 +39,24 @@ function Organization() {
 
     const classes = useStyles();
 
+    const clicked = () => {
+        openSoftwareHouseModalHandler();
+        // console.log(data.name);
+        setCurrentOrganization(data);
+    }
+
     return (
-        <Button className={classes.textJustify} onClick={openSoftwareHouseModalHandler}>
+        <Button className={classes.textJustify} onClick={clicked}>
             <Card className={classes.root}>
                 <CardContent>
                     <Typography variant="h6" component="h2">
-                        Organization Name
+                        {data.name}
                     </Typography>
                     <Typography className={classes.pos} color="textSecondary">
-                        Email
+                        {data.email}
                     </Typography>
                     <Typography variant="body2" component="p">
-                        Address
+                        {data.address}
                     </Typography>
                 </CardContent>
             </Card>

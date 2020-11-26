@@ -8,15 +8,19 @@ import {
     CLOSE_EDIT_MEMBER_MODAL,
     OPEN_SOFTWARE_HOUSE_MODAL,
     CLOSE_SOFTWARE_HOUSE_MODAL,
-    ADD_ORGANIZATION
+    GET_ORGANIZATION_DATA,
+    SET_CURRENT_ORGANIZATION
 } from '../Type'
 import Database from '../../config/Database'
 
 const AdminStates = props => {
+    
     const initialState = {
         showFilterMemberModal: false,
         showEditMemberModal: false,
-        showSoftwareHouseModal: false
+        showSoftwareHouseModal: false,
+        organizations: [],
+        currentOrganization:null
     }
     
     const [state, dispatch] = useReducer(AdminReducer, initialState);
@@ -46,13 +50,40 @@ const AdminStates = props => {
     }
 
     const registerOrganization = (data) => {
+        console.log(data);
         Database.database().ref(`/organizations/${data.id}`).set(data)
             .then((res) => {
-                console.log(res)
+                console.log('org added')
             })
             .catch(err=>{
                 console.log(err)
             })
+    }
+
+    const getOrganizations = () => {
+        let organizationData, organizations = [];
+        Database.database().ref(`/organizations`).once('value')
+            .then(
+                (data) => {
+                    organizationData = { ...data.val() };
+                    Object.keys(organizationData)
+                        .forEach((key) => {
+                            organizations.push(organizationData[key]);
+                        });
+                    
+                    // console.log(organizations);
+                    dispatch({ type: GET_ORGANIZATION_DATA, payload: organizations });
+                }
+            )
+            .catch(
+                (error) => {
+                    console.log(error);
+                }
+            );
+    }
+
+    const setCurrentOrganization = (organization) => {
+        dispatch({type: SET_CURRENT_ORGANIZATION, payload:organization});
     }
 
     return (
@@ -61,13 +92,17 @@ const AdminStates = props => {
                 showFilterMemberModal: state.showFilterMemberModal,
                 showEditMemberModal: state.showEditMemberModal,
                 showSoftwareHouseModal: state.showSoftwareHouseModal,
+                organizations: state.organizations,
+                currentOrganization: state.currentOrganization,
                 openFilterModalHandler,
                 closeFilterModalHandler,
                 openEditMemberModalHandler,
                 closeEditMemberModalHandler,
                 openSoftwareHouseModalHandler,
                 closeSoftwareHouseModalHandler,
-                registerOrganization
+                registerOrganization,
+                getOrganizations,
+                setCurrentOrganization
             }}
         >
             {props.children}

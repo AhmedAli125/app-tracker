@@ -8,7 +8,7 @@ function PrivateRoute({component: Component, ...rest }) {
     const {
         isLoggedIn
     } = authContext;
-    console.log(isLoggedIn)
+    // console.log(isLoggedIn)
     // console.log(rest)
     
     return (
@@ -16,25 +16,12 @@ function PrivateRoute({component: Component, ...rest }) {
             {...rest}
 
             render = {(props)=>{
-                // console.log(isLoggedIn);
-                // isLoggedIn ? 
-                //     <Component {...props} /> : 
-                //     <Redirect to='/' />
-                // }
-                !isLoggedIn ? <Redirect to='/' /> : <Component {...props} />
-            }
-        
-
-            // render = {
-            //     props => (isLoggedIn) ? (
-            //         // <h1>this is dashboard</h1>
-            //         <Component {...props} />
-            //     ) : (
-                        
-            //         <Redirect from='/dashboard' to='/' />
-            //     )
-            }
-            
+                return (
+                    !isLoggedIn ?
+                        <Redirect to='/' /> :
+                        <Component {...props} />
+                )
+            }}
         />
     )
 }

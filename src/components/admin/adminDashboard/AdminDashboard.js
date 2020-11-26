@@ -1,16 +1,17 @@
 import React, { useState, useContext } from 'react';
-import AuthContext from '../../../context/auth/AuthContext'
+import AuthContext from '../../../context/auth/AuthContext';
+import AdminContext from '../../../context/admin/AdminContext';
 import { Link, useRouteMatch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
     AppBar,
-    CssBaseline,  
-    Drawer,  
-    Hidden,  
-    IconButton,  
-    List,  
-    ListItem,    
+    CssBaseline,
+    Drawer,
+    Hidden,
+    IconButton,
+    List,
+    ListItem,
     ListItemText,
     Toolbar,
     Typography
@@ -19,7 +20,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PeopleIcon from '@material-ui/icons/People';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import HomeWorkIcon from '@material-ui/icons/HomeWork'; 
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import MenuIcon from '@material-ui/icons/Menu';
 import './adminDashboard.css';
 
@@ -47,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
             display: 'none',
         },
     },
-    // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
         width: drawerWidth,
@@ -56,32 +56,41 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
+    title: {
+        flexGrow: 1,
+        textAlign: 'left',
+    },
 }));
 
 function ResponsiveDrawer(props) {
-    
+
     const { window } = props;
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = useState(false);
-    
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-    
+
     const route = useRouteMatch();
     const path = route.path;
 
-    const authContext =  useContext(AuthContext);
-    const {userLogOut} = authContext;
-    // console.log(`Admin dashboard`);
-    // console.log(history);
+    const authContext = useContext(AuthContext);
+    const {
+        userLogOut,
+        user
+    } = authContext;
+
+    const adminContext = useContext(AdminContext);
+    const {
+        getOrganizations
+    } = adminContext;
 
     const drawer = (
         <div>
             <div className={classes.toolbar} />
             <List>
-                {/* <Link className='link' to={`${path}/register-organization`}> */}
                 <Link className='link' to='/dashboard'>
                     <ListItem button >
                         <ListItemIcon>
@@ -93,8 +102,10 @@ function ResponsiveDrawer(props) {
             </List>
             <List>
                 <Link className='link' to={`${path}/view-organizations`} >
-                {/* <Link className='link' to={`/dashboard/view-organizations`} > */}
-                    <ListItem button >
+                    <ListItem
+                        button
+                        onClick={getOrganizations}
+                    >
                         <ListItemIcon>
                             <HomeWorkIcon />
                         </ListItemIcon>
@@ -104,7 +115,6 @@ function ResponsiveDrawer(props) {
             </List>
             <List>
                 <Link className='link' to={`${path}/view-members`}>
-                {/* <Link className='link' to={`/dashboard/view-members`}> */}
                     <ListItem button >
                         <ListItemIcon>
                             <PeopleIcon />
@@ -130,8 +140,8 @@ function ResponsiveDrawer(props) {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
+            <AppBar position="fixed" className={classes.appBar} >
+                <Toolbar >
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -141,9 +151,12 @@ function ResponsiveDrawer(props) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h5" align='center' >
-                        App Tracker
+                        <Typography variant="h5" align='center' className={classes.title}>
+                            App Tracker
                     </Typography>
+                    <Typography variant="h6">
+                            {user.name}
+                        </Typography>
                 </Toolbar>
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">

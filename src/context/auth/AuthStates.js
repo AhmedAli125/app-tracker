@@ -22,15 +22,19 @@ const AuthStates = props => {
             if (user) {
                 // key=user.uid
                 Database.database().ref(`/registered-users/${user.uid}`).once('value')
-                .then(
-                    (data) => {
-                        userData = {...data.val()};
-                        // console.log(userData);
-                        dispatch({ type: SET_USER_DATA, payload: userData});     
-                    }
-                );
-                
-            } 
+                    .then(
+                        (data) => {
+                            userData = { ...data.val() };
+                            // console.log(userData);
+                            dispatch({ type: SET_USER_DATA, payload: userData });
+                        }
+                    )
+                    .catch(
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+            }
             // else {
             //     // console.log(user.uid);
             // }
@@ -48,14 +52,14 @@ const AuthStates = props => {
             });
     };
 
-    const userLogOut = async () =>{
-        Database.auth().signOut().then(function() {
-                // alert('logged out');
-                dispatch({type: USER_LOG_OUT})
-          }).catch(function(error) {
+    const userLogOut = async () => {
+        Database.auth().signOut().then(function () {
+            // alert('logged out');
+            dispatch({ type: USER_LOG_OUT });
+        }).catch(function (error) {
             alert(error);
-          });
-    }
+        });
+    };
 
     // console.log('initialState');
     // console.log(initialState);

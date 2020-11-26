@@ -4,7 +4,9 @@ import {
     OPEN_EDIT_MEMBER_MODAL,
     CLOSE_EDIT_MEMBER_MODAL,
     OPEN_SOFTWARE_HOUSE_MODAL,
-    CLOSE_SOFTWARE_HOUSE_MODAL
+    CLOSE_SOFTWARE_HOUSE_MODAL,
+    GET_ORGANIZATION_DATA,
+    SET_CURRENT_ORGANIZATION
 } from '../Type'
 
 export default (state, action)=>{
@@ -38,6 +40,16 @@ export default (state, action)=>{
             return{
                 ...state,
                 showSoftwareHouseModal : false
+            }
+        case GET_ORGANIZATION_DATA:
+            return {
+                ...state,
+                organizations: action.payload
+            }
+        case SET_CURRENT_ORGANIZATION:
+            return{
+                ...state,
+                currentOrganization: action.payload
             }
         default:
             return{
