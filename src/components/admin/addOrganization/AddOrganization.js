@@ -8,6 +8,7 @@ import {
   Button
 } from '@material-ui/core';
 import AdminContext from '../../../context/admin/AdminContext';
+import AuthContext from '../../../context/auth/AuthContext';
 import Database from '../../../config/Database';
 
 function AddOrganization() {
@@ -15,6 +16,11 @@ function AddOrganization() {
   const {
     registerOrganization
   } = adminContext;
+
+  const authContext = useContext(AuthContext);
+  const {
+    currentDate
+  } = authContext;
 
   const [organization, setOrganization] = useState('');
   const handleOrganization = e => setOrganization(e.target.value);
@@ -67,34 +73,8 @@ function AddOrganization() {
     return designationKey;
   };
 
-  let currentDate = () => {
-
-    let now = new Date();
-
-    let getMonth = () => {
-      let month = now.getMonth() + 1;
-      if (month < 10) {
-        return "0" + month.toString();
-      } else return month.toString();
-    };
-
-    let getDate = () => {
-      let current = (now.getDate());
-      if (current < 10) {
-        return "0" + current.toString();
-        // return current.toString();
-      } else return current.toString();
-    };
-
-    let getYear = () => {
-      let year = (now.getFullYear()).toString();
-      if (year < 10) {
-        return "0" + year.toString();
-      } else return year.toString();
-    };
-
-    return getYear() + "-" + getMonth() + "-" + getDate();
-  };
+ 
+  console.log(currentDate());
 
   let date = currentDate();
 

@@ -6,7 +6,8 @@ import {
     OPEN_SOFTWARE_HOUSE_MODAL,
     CLOSE_SOFTWARE_HOUSE_MODAL,
     GET_ORGANIZATION_DATA,
-    SET_CURRENT_ORGANIZATION
+    SET_CURRENT_ORGANIZATION,
+    GET_MEMBERS
 } from '../Type'
 
 export default (state, action)=>{
@@ -50,6 +51,11 @@ export default (state, action)=>{
             return{
                 ...state,
                 currentOrganization: action.payload
+            }
+        case GET_MEMBERS:
+            return{
+                ...state,
+                members: action.payload
             }
         default:
             return{

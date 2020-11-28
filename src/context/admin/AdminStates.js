@@ -9,7 +9,8 @@ import {
     OPEN_SOFTWARE_HOUSE_MODAL,
     CLOSE_SOFTWARE_HOUSE_MODAL,
     GET_ORGANIZATION_DATA,
-    SET_CURRENT_ORGANIZATION
+    SET_CURRENT_ORGANIZATION,
+    GET_MEMBERS
 } from '../Type'
 import Database from '../../config/Database'
 
@@ -20,7 +21,8 @@ const AdminStates = props => {
         showEditMemberModal: false,
         showSoftwareHouseModal: false,
         organizations: [],
-        currentOrganization:null
+        currentOrganization:null,
+        members:[]
     }
     
     const [state, dispatch] = useReducer(AdminReducer, initialState);
@@ -86,6 +88,24 @@ const AdminStates = props => {
         dispatch({type: SET_CURRENT_ORGANIZATION, payload:organization});
     }
 
+    const getMembers = () =>{
+        let registeredUsers, users=[];
+        Database.database().ref('/registered-users').once('value')
+        .then(res=>{
+            registeredUsers={...res.val()}
+            // console.log(registeredUsers)
+            Object.keys(registeredUsers).forEach(key=>{
+                if((registeredUsers[key].designation) !== 'admin'){
+                    users.push(registeredUsers[key])
+                }
+            })
+
+            dispatch({type:GET_MEMBERS, payload:users});
+
+        })
+        .catch(err=>console.log(err))
+    }
+
     return (
         <AdminContext.Provider
             value={{
@@ -94,6 +114,7 @@ const AdminStates = props => {
                 showSoftwareHouseModal: state.showSoftwareHouseModal,
                 organizations: state.organizations,
                 currentOrganization: state.currentOrganization,
+                members: state.members,
                 openFilterModalHandler,
                 closeFilterModalHandler,
                 openEditMemberModalHandler,
@@ -102,7 +123,8 @@ const AdminStates = props => {
                 closeSoftwareHouseModalHandler,
                 registerOrganization,
                 getOrganizations,
-                setCurrentOrganization
+                setCurrentOrganization,
+                getMembers
             }}
         >
             {props.children}

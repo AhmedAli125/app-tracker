@@ -17,6 +17,35 @@ const AuthStates = props => {
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
+    const currentDate = () => {
+
+        let now = new Date();
+    
+        let getMonth = () => {
+          let month = now.getMonth() + 1;
+          if (month < 10) {
+            return "0" + month.toString();
+          } else return month.toString();
+        };
+    
+        let getDate = () => {
+          let current = (now.getDate());
+          if (current < 10) {
+            return "0" + current.toString();
+            // return current.toString();
+          } else return current.toString();
+        };
+    
+        let getYear = () => {
+          let year = (now.getFullYear()).toString();
+          if (year < 10) {
+            return "0" + year.toString();
+          } else return year.toString();
+        };
+    
+        return getYear() + "-" + getMonth() + "-" + getDate();
+      };
+    
     const getUserData = async () => {
         let userData;
         Database.auth().onAuthStateChanged(await function (user) {
@@ -79,7 +108,7 @@ const AuthStates = props => {
 
     const setUserData = (data, id) => {
         // console.log(data, id)
-        let orgData, designation, userData;
+        let orgData, designation, userData, organization;
         const {
             firstName,
             lastName,
@@ -93,6 +122,7 @@ const AuthStates = props => {
         .then(data => {
             orgData = {...data.val()}
             designation = orgData.organizationKeys[designationKey].designation
+            organization = orgData.name
             userData = {
                 key: id,
                 firstName: firstName,
@@ -100,7 +130,9 @@ const AuthStates = props => {
                 email: email,
                 softwareHouseKey:softwareHouseKey,
                 designationKey:designationKey,
-                designation : designation 
+                designation : designation,
+                organization: organization,
+                regDate: currentDate() 
             }
             
             Database.database().ref(`/registered-users/${userData.key}`).set(userData)
@@ -115,6 +147,7 @@ const AuthStates = props => {
             value={{
                 user: state.user,
                 isLoggedIn: state.isLoggedIn,
+                currentDate,
                 userLogin,
                 getUserData,
                 userLogOut,

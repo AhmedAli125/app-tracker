@@ -7,7 +7,7 @@ import UpdateButton from '../../../../ui/button/updateButton/UpdateButton';
 import AdminContext from '../../../../../context/admin/AdminContext'
 import './member.css';
 
-function Member() {
+function Member({data}) {
 
     const adminContext = useContext(AdminContext);
     const { openEditMemberModalHandler } = adminContext;
@@ -37,18 +37,18 @@ function Member() {
         <Card className={classes.root}>
             <CardContent>
                 <Typography variant="h6" component="h2">
-                    Member Name
+                    {data.firstName.charAt(0).toUpperCase() + data.firstName.slice(1)} {data.lastName.charAt(0).toUpperCase() + data.lastName.slice(1)}
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
                     <Typography variant='subtitle2' component='p'>
-                        Organisation Name:
+                        Organization: {data.organization}
                     </Typography>
                     <Typography variant='subtitle2' component='p'>
-                        Member Dasignation :
+                        Designation: {data.designation.charAt(0).toUpperCase() + data.designation.slice(1)}
                     </Typography>
                 </Typography>
                 <Typography variant="subtitle2" component="p">
-                    Register Date:
+                    Register Date: {data.regDate}
                 </Typography>
             </CardContent>
             <div className='icon-button'>

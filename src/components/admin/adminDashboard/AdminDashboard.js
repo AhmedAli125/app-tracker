@@ -84,7 +84,8 @@ function ResponsiveDrawer(props) {
 
     const adminContext = useContext(AdminContext);
     const {
-        getOrganizations
+        getOrganizations,
+        getMembers
     } = adminContext;
 
     const drawer = (
@@ -115,7 +116,10 @@ function ResponsiveDrawer(props) {
             </List>
             <List>
                 <Link className='link' to={`${path}/view-members`}>
-                    <ListItem button >
+                    <ListItem 
+                        button 
+                        onClick={getMembers}
+                    >
                         <ListItemIcon>
                             <PeopleIcon />
                         </ListItemIcon>
@@ -124,7 +128,10 @@ function ResponsiveDrawer(props) {
                 </Link>
             </List>
             <List>
-                <ListItem button onClick={userLogOut}>
+                <ListItem 
+                    button 
+                    onClick={userLogOut}
+                >
                     <ListItemIcon>
                         <ExitToAppIcon />
                     </ListItemIcon>
