@@ -12,6 +12,7 @@ function ModalWindow(props) {
         },
         paper: {
             position: 'absolute',
+            // minWidth: 300,
             width: 400,
             backgroundColor: theme.palette.background.paper,
             border: '2px solid #000',

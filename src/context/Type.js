@@ -21,7 +21,8 @@ export const SET_CURRENT_ORGANIZATION = 'SET_CURRENT_ORGANIZATION'
 
 //USERS
 
-export const SET_USER_DATA = 'SET_USER_DATA'
+export const SET_USER_DATA = 'SET_USER_DATA'  //LogIn
 export const USER_LOG_OUT = 'USER_LOG_OUT'
+export const USER_SIGN_UP = 'USER_SIGN_UP'
 
 

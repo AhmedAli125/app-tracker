@@ -4,7 +4,8 @@ import AuthReducer from './AuthReducer';
 import Database from '../../config/Database';
 import {
     SET_USER_DATA,
-    USER_LOG_OUT
+    USER_LOG_OUT,
+    USER_SIGN_UP
 } from '../Type';
 
 const AuthStates = props => {
@@ -35,9 +36,6 @@ const AuthStates = props => {
                         }
                     );
             }
-            // else {
-            //     // console.log(user.uid);
-            // }
         });
     };
 
@@ -53,7 +51,7 @@ const AuthStates = props => {
     };
 
     const userLogOut = async () => {
-        Database.auth().signOut().then(function () {
+        Database.auth().signOut().then(() => {
             // alert('logged out');
             dispatch({ type: USER_LOG_OUT });
         }).catch(function (error) {
@@ -61,8 +59,56 @@ const AuthStates = props => {
         });
     };
 
-    // console.log('initialState');
-    // console.log(initialState);
+    const registerUser = async (user) => {
+        // console.log(user);
+        const {
+            email,
+            password
+        } = user;
+        Database.auth().createUserWithEmailAndPassword(email, password)
+        .then((res)=>{
+            let userID = res.user.uid
+            setUserData(user, userID);
+            getUserData();
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
+
+
+    const setUserData = (data, id) => {
+        // console.log(data, id)
+        let orgData, designation, userData;
+        const {
+            firstName,
+            lastName,
+            email,
+            softwareHouseKey,
+            designationKey
+        } = data
+
+        //use to get SH data ny SH key
+        Database.database().ref(`/organizations/${softwareHouseKey}`).once('value')
+        .then(data => {
+            orgData = {...data.val()}
+            designation = orgData.organizationKeys[designationKey].designation
+            userData = {
+                key: id,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                softwareHouseKey:softwareHouseKey,
+                designationKey:designationKey,
+                designation : designation 
+            }
+            
+            Database.database().ref(`/registered-users/${userData.key}`).set(userData)
+            .then(res=>console.log(res))
+            .catch(err=>console.log(err))
+
+        })
+    }
 
     return (
         <AuthContext.Provider
@@ -71,7 +117,8 @@ const AuthStates = props => {
                 isLoggedIn: state.isLoggedIn,
                 userLogin,
                 getUserData,
-                userLogOut
+                userLogOut,
+                registerUser
             }}
         >
             {props.children}

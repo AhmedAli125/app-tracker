@@ -1,6 +1,7 @@
 import {
     SET_USER_DATA,
-    USER_LOG_OUT
+    USER_LOG_OUT,
+    USER_SIGN_UP
 } from '../Type';
 
 export default (state, action) => {

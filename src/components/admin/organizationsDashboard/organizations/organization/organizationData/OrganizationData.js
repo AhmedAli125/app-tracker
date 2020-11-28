@@ -1,7 +1,10 @@
 import React, { useState, useContext } from 'react'
 import AdminContext from '../../../../../../context/admin/AdminContext';
-import { Typography, TextField, Grid } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Paper, Container, Grid } from '@material-ui/core'
 import Modal from '../../../../../ui/modal/ModalWindow';
+
+
 
 function OrganizationData() {
     
@@ -10,30 +13,25 @@ function OrganizationData() {
         showSoftwareHouseModal,
         closeSoftwareHouseModalHandler,
         currentOrganization
-        // setCurrentOrganization
     } = adminContext;
 
-    // const [organization, setOrganization] = useState(currentOrganization.name);
-    // // const handleOrganization = (e) => setOrganization(e.target.value);
-
-    // const [email, setEmail] = useState(currentOrganization.email);
-    // // const handleEmail = (e) => setEmail(e.target.value);
-
-    // const [address, setAddress] = useState(currentOrganization.email);
-
-    // const [projectCount, setProjectCount] = useState(0);
-
-    // const [managerKey, setManagerKey] = useState();
-    // const [developerKey, setDeveloperKey] = useState('');
-    // const [testerKey, setTesterKey] = useState('');
     const designation = currentOrganization.organizationKeys;
-    let array = [];
+    let designationArray = [];
     Object.keys(designation)
         .forEach((key) => {
-            array.push(designation[key]);
+            designationArray.push(designation[key]);
         });
-    // console.log(designation);
-    // console.log(array);
+
+        const useStyles = makeStyles({
+            paper:{
+                margin: 10,
+                padding: 10,
+                backgroundColor: '#f5f5f54d',
+                display: 'flex'
+                // width: '400px'
+            }
+        });
+         const classes=  useStyles();
 
     return (
         showSoftwareHouseModal &&
@@ -41,28 +39,96 @@ function OrganizationData() {
             show={true}  // yahan true pass krny ke zarurat he kiya hy jb hard code he dy rhy hyn to?
             clicked={closeSoftwareHouseModalHandler}
         >
+
             <Typography variant='h5'>
                 Organization Data
             </Typography>
-            <Typography variant='h6'>
-                Name: {currentOrganization.name}
-            </Typography>
-            <Typography variant='h6'>
-                Email: {currentOrganization.email}
-            </Typography>
-            <Typography variant='h6'>
-                Address: {currentOrganization.address}
-            </Typography>
+            <Grid spacing={3}>
+                    <Paper elavation={2} className={classes.paper}>
+                        <Grid item xs-3 sm-3 md-3 lg-3 xl-3>
+                            <Typography variant='body1'>
+                                Reg.No: 
+                            </Typography>            
+                        </Grid>
+                        <Grid item xs-9 sm-9 md-9 lg-9 xl-9>
+                            <Typography variant='body1'>
+                                {currentOrganization.id}
+                            </Typography>            
+                        </Grid>
+                    </Paper>
+                    
+                    <Paper elavation={2} className={classes.paper}>
+                        <Grid item xs-3 sm-3 md-3 lg-3 xl-3>
+                            <Typography variant='body1'>
+                                Name: 
+                            </Typography>            
+                        </Grid>
+                        <Grid item xs-9 sm-9 md-9 lg-9 xl-9>
+                            <Typography variant='body1'>
+                                {currentOrganization.name}
+                            </Typography>            
+                        </Grid>
+                    </Paper>
+
+                    <Paper elavation={2} className={classes.paper}>
+                        <Grid item xs-3 sm-3 md-3 lg-3 xl-3>
+                            <Typography variant='body1'>
+                                Email:
+                            </Typography>            
+                        </Grid>
+                        <Grid item xs-9 sm-9 md-9 lg-9 xl-9>
+                            <Typography variant='body1'>
+                                {currentOrganization.email}
+                            </Typography>            
+                        </Grid>
+                    </Paper>
+
+                    <Paper elavation={2} className={classes.paper}>
+                        <Grid item xs-3 sm-3 md-3 lg-3 xl-3>
+                            <Typography variant='body1'>
+                                Address:
+                            </Typography>            
+                        </Grid>
+                        <Grid item xs-9 sm-9 md-9 lg-9 xl-9>
+                            <Typography variant='body1'>
+                                {currentOrganization.address}
+                            </Typography>            
+                        </Grid>
+                    </Paper>
+
+                    <Paper elavation={2} className={classes.paper}>
+                        <Grid item xs-3 sm-3 md-3 lg-3 xl-3>
+                            <Typography variant='body1'>
+                                Contact:
+                            </Typography>            
+                        </Grid>
+                        <Grid item xs-9 sm-9 md-9 lg-9 xl-9>
+                            <Typography variant='body1'>
+                                {currentOrganization.contact}
+                            </Typography>            
+                        </Grid>
+                    </Paper>
+                </Grid>
             <Typography variant='h5'>
                 Keys
             </Typography>
+
                 {
-                    array.map((data) => {
-                        return <div>
-                            <Typography variant='h6'>
-                                {data.designation.charAt(0).toUpperCase() + data.designation.slice(1)}: {data.key}
+                    designationArray.map((data) => {
+                        return (
+                            <Paper elavation={2} className={classes.paper}>
+                            <Grid item xs-3 sm-3 md-3 lg-3 xl-3>
+                                <Typography variant='body1'>
+                                    {data.designation.charAt(0).toUpperCase() + data.designation.slice(1)}:
                                 </Typography>
-                        </div>
+                            </Grid>
+                            <Grid item xs-9 sm-9 md-9 lg-9 xl-9>
+                                <Typography variant='body1'>
+                                    {data.key}
+                                </Typography>
+                            </Grid>
+                            </Paper>
+                        )
                     })
                 }
         </Modal>

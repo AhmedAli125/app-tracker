@@ -38,7 +38,6 @@ function SignIn(props) {
   const authContext = useContext(AuthContext);
 
   const {
-    user,
     isLoggedIn,
     userLogin,
     getUserData

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import AuthContext from '../../../context/auth/AuthContext'
 import { Link } from 'react-router-dom';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {
@@ -36,7 +37,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
+  
+  const authContext = useContext(AuthContext)
+  
+  const {
+    registerUser,
+    isLoggedIn,
+    getUserData
+  } = authContext;
+  
+  useEffect(() => {
+    getUserData();
+    if(isLoggedIn) {
+      props.history.replace('/dashboard');
+    }
+    // console.log(user);
+    
+  },[isLoggedIn, props.history])
 
   const classes = useStyles();
 
@@ -62,6 +80,37 @@ export default function SignUp() {
   const handleDesignationKey = e => setDesignationKey(e.target.value);
 
 
+
+  const checkPassword = (password, confirmPassword) => {
+    return password === confirmPassword ? true : false
+  }
+
+  const signUp = (e) =>{
+    e.preventDefault();
+    let isVerified = checkPassword(password, confirmPassword)
+    if(isVerified){
+        let userData = {
+          firstName,
+          lastName,
+          email,
+          password,
+          softwareHouseKey,
+          designationKey
+        }
+      registerUser(userData)
+
+      setFirstName('')
+      setLastName('')
+      setEmail('')
+      setPassword('')
+      setConfirmPassword('')
+      setSoftwareHouseKey('')
+      setDesignationKey('')
+    } else{
+      alert('incorrect passwords');
+    }
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -75,7 +124,7 @@ export default function SignUp() {
         <Typography component="h2" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate method='post'>
           <Grid className={classes.grid} container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -109,6 +158,7 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
+                type='email'
                 id="email"
                 value={email}
                 onChange={handleEmail}
@@ -180,6 +230,7 @@ export default function SignUp() {
             variant="contained"
             color="secondary"
             className={classes.submit}
+            onClick={e=>signUp(e)}
           >
             Sign Up
             </Button>

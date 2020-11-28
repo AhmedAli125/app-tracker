@@ -23,7 +23,7 @@ function OrganizationList() {
                 organizations.map(data => {
                     return (
                         <Grid item key={data.id} sm-12 md-4 lg-3 xl-2>
-                            <Organization data={ data}/>
+                            <Organization data={ data }/>
                         </Grid>
                     );
                 })
