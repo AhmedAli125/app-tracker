@@ -6,7 +6,10 @@ import Organization from './organization/Organization';
 function OrganizationList() {
 
     const adminContext = useContext(AdminContext);
-    const { organizations } = adminContext;
+    const {
+        organizations,
+        filteredOrganizations,
+    } = adminContext;
 
     // console.log(organizations);
 
@@ -20,13 +23,24 @@ function OrganizationList() {
             spacing='1'
         >
             {
-                organizations.map(data => {
-                    return (
-                        <Grid item key={data.id} sm-12 md-4 lg-3 xl-2>
-                            <Organization data={ data }/>
-                        </Grid>
-                    );
-                })
+                filteredOrganizations !== null ?
+                    (
+                        filteredOrganizations.map(data => {
+                            return (
+                                <Grid item key={data.id} sm-12 md-4 lg-3 xl-2>
+                                    <Organization data={data} />
+                                </Grid>
+                            );
+                        })
+                    ) : (
+                        organizations.map(data => {
+                            return (
+                                <Grid item key={data.id} sm-12 md-4 lg-3 xl-2>
+                                    <Organization data={data} />
+                                </Grid>
+                            );
+                        })
+                    )
             }
         </Grid >
 

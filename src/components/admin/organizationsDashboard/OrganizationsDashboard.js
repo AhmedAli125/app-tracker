@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Container, Typography, TextField } from '@material-ui/core';
 import OrganizationList from './organizations/OrganizationList';
 import AdminContext from '../../../context/admin/AdminContext';
@@ -8,7 +8,22 @@ import OrganizationData from './organizations/organization/organizationData/Orga
 function OrganizationsDashboard() {
 
     const adminContext = useContext(AdminContext);
-    const { showSoftwareHouseModal } = adminContext;
+    const {
+        showSoftwareHouseModal,
+        filterOrganizations,
+        filteredOrganizations,
+        clearFilter
+    } = adminContext;
+
+    const [filterOrganization, setFilterOrganization ] = useState('')
+    const handleFilterOrganization = (e) => {
+        setFilterOrganization(e.target.value);
+        if (!filterOrganization) {
+            clearFilter();
+        } else {
+            filterOrganizations(e.target.value);
+        }
+    }
 
     return (
         <Container
@@ -23,7 +38,7 @@ function OrganizationsDashboard() {
                     // border: '1px solid',
                     display: 'flex',
                     alignItems: 'center',
-                    marginBottom: '40px'
+                    // marginBottom: '40px'
                 }}
             >
                 <Typography variant='h5'
@@ -33,10 +48,20 @@ function OrganizationsDashboard() {
                 >
                     Organizations
                 </Typography>
-                <form noValidate autoComplete="off">
+                {/* <form noValidate autoComplete="off">
                     <TextField id="search" label="Search by Name" variant="outlined" size='small'/>
-                </form>
+                </form> */}
             </div>
+            <TextField
+                id="filter"
+                label="Filter Organization"
+                variant="outlined"
+                fullWidth={true}
+                margin='normal'
+                value={filterOrganization}
+                onChange={handleFilterOrganization}
+                autoComplete='off'
+            />
             <div
                 style={{
                     // border: '1px solid',

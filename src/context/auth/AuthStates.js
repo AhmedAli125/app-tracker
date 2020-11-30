@@ -105,7 +105,6 @@ const AuthStates = props => {
         })
     }
 
-
     const setUserData = (data, id) => {
         // console.log(data, id)
         let orgData, designation, userData, organization;
@@ -114,7 +113,8 @@ const AuthStates = props => {
             lastName,
             email,
             softwareHouseKey,
-            designationKey
+            designationKey,
+            regDate
         } = data
 
         //use to get SH data ny SH key
@@ -132,7 +132,7 @@ const AuthStates = props => {
                 designationKey:designationKey,
                 designation : designation,
                 organization: organization,
-                regDate: currentDate() 
+                regDate: regDate
             }
             
             Database.database().ref(`/registered-users/${userData.key}`).set(userData)
@@ -151,7 +151,8 @@ const AuthStates = props => {
                 userLogin,
                 getUserData,
                 userLogOut,
-                registerUser
+                registerUser,
+                setUserData
             }}
         >
             {props.children}

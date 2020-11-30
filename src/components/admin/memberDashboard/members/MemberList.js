@@ -8,10 +8,9 @@ function MemberList() {
 
     const adminContext = useContext(AdminContext);
     const {
-        members
+        members,
+        filteredMembers
     } = adminContext;
-
-    console.log(members);
 
     return (
         <Grid
@@ -23,53 +22,25 @@ function MemberList() {
             spacing='2'
         >
             {
-                members.map(member =>{
-                    return(
-                    <Grid item sm-12 md-4 lg-3 xl-2 key={member.key}> 
-                        <Member data={member}/>
-                    </Grid>
-                    )
-                })
+                filteredMembers !== null ? (
+                    filteredMembers.map(filteredMember =>{
+                        return(
+                        <Grid item sm-12 md-4 lg-3 xl-2 key={filteredMember.key}> 
+                            <Member data={filteredMember}/>
+                        </Grid>
+                        )
+                    })  
+                ): (
+                    members.map(member =>{
+                        return(
+                        <Grid item sm-12 md-4 lg-3 xl-2 key={member.key}> 
+                            <Member data={member}/>
+                        </Grid>
+                        )
+                    })  
+                )
+
             }
-            {/* <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid>
-            <Grid item sm-12 md-4 lg-3 xl-2>
-                <Member />
-            </Grid> */}
         </Grid>
 
     );

@@ -10,7 +10,10 @@ import './member.css';
 function Member({data}) {
 
     const adminContext = useContext(AdminContext);
-    const { openEditMemberModalHandler } = adminContext;
+    const {
+        openEditMemberModalHandler,
+        setCurrentMember
+    } = adminContext;
 
     const useStyles = makeStyles({
         root: {
@@ -33,6 +36,11 @@ function Member({data}) {
 
     const classes = useStyles();
 
+    const editMember = () => {
+        openEditMemberModalHandler();
+        setCurrentMember(data);
+    }
+
     return (
         <Card className={classes.root}>
             <CardContent>
@@ -52,7 +60,7 @@ function Member({data}) {
                 </Typography>
             </CardContent>
             <div className='icon-button'>
-                <UpdateButton clicked={openEditMemberModalHandler} />
+                <UpdateButton clicked={editMember} />
             </div>
         </Card>
     );

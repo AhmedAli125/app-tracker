@@ -118,7 +118,7 @@ function ResponsiveDrawer(props) {
                 <Link className='link' to={`${path}/view-members`}>
                     <ListItem 
                         button 
-                        onClick={getMembers}
+                        // onClick={getMembers}  //temporary commint
                     >
                         <ListItemIcon>
                             <PeopleIcon />

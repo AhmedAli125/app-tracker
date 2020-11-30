@@ -8,25 +8,47 @@ import AdminContext from '../../../../../../context/admin/AdminContext';
 function EditMember() {
 
     const adminContext = useContext(AdminContext);
-    const { closeEditMemberModalHandler } = adminContext;
+    const {
+        openEditMemberModalHandler,
+        closeEditMemberModalHandler,
+        currentMember,
+        updateMember
+    } = adminContext;
 
-    const [firstName, setFirstName] = useState('');
+    const [firstName, setFirstName] = useState(currentMember.firstName);
     const handleFirstName = (e) => setFirstName(e.target.value);
 
-    const [lastName, setLastName] = useState('');
+    const [lastName, setLastName] = useState(currentMember.lastName);
     const handleLastName = (e) => setLastName(e.target.value);
 
-    const [organization, setOrganization] = useState('from database based on key');
-    // const handleOrganization = (e) => setOrganization(e.target.value);
+    const [softwareHouseKey, setSoftwareHouseKey] = useState(currentMember.softwareHouseKey);
+    const handleOrganization = (e) => setSoftwareHouseKey(e.target.value);
 
-    const [email, setEmail] = useState('from database');
+    const [email, setEmail] = useState(currentMember.email);
     // const handleEmail = (e) => setEmail(e.target.value);
 
-    const [designation, setDesignation] = useState('');
-    const handelDesignation = (e) => setDesignation(e.target.value);
+    const [designationKey, setDesignationKey] = useState(currentMember.designationKey);
+    const handelDesignation = (e) => setDesignationKey(e.target.value);
+
+    const memberData = {
+        key: currentMember.key, 
+        firstName,
+        lastName,
+        email,
+        designationKey,
+        softwareHouseKey,
+        regDate: currentMember.regDate
+    };
+
+    const saveData = () => {
+        updateMember(memberData);
+
+        closeEditMemberModalHandler();
+    }
 
 
     return (
+        openEditMemberModalHandler &&
         <Modal
             clicked={closeEditMemberModalHandler}
             show={true}
@@ -70,7 +92,7 @@ function EditMember() {
                     variant="outlined"
                     fullWidth={true}
                     margin="normal"
-                    value={designation}
+                    value={designationKey}
                     onChange={handelDesignation}
                 />
                 <TextField
@@ -79,26 +101,10 @@ function EditMember() {
                     variant="outlined"
                     fullWidth={true}
                     margin="normal"
-                    value={organization}
-                    disabled
-                    // onChange={handleOrganization}
+                    value={softwareHouseKey}
+                    // disabled
+                    onChange={handleOrganization}
                 />
-                {/* <TextField
-                    id="gender"
-                    label="Gender"
-                    variant="outlined"
-                    fullWidth={true}
-                    margin="normal"
-                    disabled
-                /> */}
-                {/* <TextField
-                    id="noProject"
-                    label="Number of Projects"
-                    variant="outlined"
-                    fullWidth={true}
-                    margin="normal"
-                    disabled
-                /> */}
                 <ButtonGroup
                     // size='large'
                     margin="normal"
@@ -111,6 +117,7 @@ function EditMember() {
                             <SaveIcon />
                         }
                         color="primary"
+                        onClick={saveData}
                     >
                         Save
                     </Button>

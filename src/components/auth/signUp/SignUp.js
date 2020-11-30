@@ -44,7 +44,8 @@ export default function SignUp(props) {
   const {
     registerUser,
     isLoggedIn,
-    getUserData
+    getUserData,
+    currentDate
   } = authContext;
   
   useEffect(() => {
@@ -95,7 +96,9 @@ export default function SignUp(props) {
           email,
           password,
           softwareHouseKey,
-          designationKey
+          designationKey,
+          regDate: currentDate() 
+
         }
       registerUser(userData)
 

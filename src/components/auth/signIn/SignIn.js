@@ -60,7 +60,7 @@ function SignIn(props) {
 
   const [email, setEmail] = useState('');
   const handleEmail = e => setEmail(e.target.value);
-
+  
   const [password, setPassword] = useState('');
   const handlePassword = e => setPassword(e.target.value);
 

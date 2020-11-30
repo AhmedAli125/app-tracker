@@ -1,6 +1,7 @@
-import React, {useReducer} from 'react';
+import React, {useReducer, useContext} from 'react';
 import AdminReducer from './AdminReducer'
 import AdminContext from './AdminContext'
+import AuthContext from '../auth/AuthContext'
 import {
     OPEN_FILTER_MODAL,
     CLOSE_FILTER_MODAL,
@@ -10,30 +11,43 @@ import {
     CLOSE_SOFTWARE_HOUSE_MODAL,
     GET_ORGANIZATION_DATA,
     SET_CURRENT_ORGANIZATION,
-    GET_MEMBERS
+    GET_MEMBERS,
+    SET_CURRENT_MEMBER,
+    FILTER_MEMBER,
+    CLEAR_FILTER,
+    FILTER_ORGANIZATION
 } from '../Type'
 import Database from '../../config/Database'
 
 const AdminStates = props => {
     
     const initialState = {
-        showFilterMemberModal: false,
+        // showFilterMemberModal: false,
         showEditMemberModal: false,
         showSoftwareHouseModal: false,
-        organizations: [],
+        currentMember:null,
         currentOrganization:null,
-        members:[]
+        organizations: [],
+        filteredOrganizations:null,
+        members: [],
+        filteredMembers: null
     }
     
+    const authContext = useContext(AuthContext);
+    const {
+        setUserData
+    } = authContext
+    
+
     const [state, dispatch] = useReducer(AdminReducer, initialState);
     
-    const openFilterModalHandler =  () => {
-        dispatch({type: OPEN_FILTER_MODAL});
-    }
+    // const openFilterModalHandler =  () => {
+    //     dispatch({type: OPEN_FILTER_MODAL});
+    // }
 
-    const closeFilterModalHandler =  () => {
-        dispatch({type: CLOSE_FILTER_MODAL});
-    }
+    // const closeFilterModalHandler =  () => {
+    //     dispatch({type: CLOSE_FILTER_MODAL});
+    // }
 
     const openEditMemberModalHandler = () => {
         dispatch({type: OPEN_EDIT_MEMBER_MODAL});
@@ -87,6 +101,10 @@ const AdminStates = props => {
     const setCurrentOrganization = (organization) => {
         dispatch({type: SET_CURRENT_ORGANIZATION, payload:organization});
     }
+    
+    const setCurrentMember = (member) => {
+        dispatch({type: SET_CURRENT_MEMBER, payload:member});
+    }
 
     const getMembers = () =>{
         let registeredUsers, users=[];
@@ -106,17 +124,38 @@ const AdminStates = props => {
         .catch(err=>console.log(err))
     }
 
+    const updateMember = (data) => {
+        setUserData(data, data.key);
+    }
+
+    const filterMembers = (text) => {
+        dispatch({type:FILTER_MEMBER, payload:text})
+    }
+    
+    const clearFilter = (text) => {
+        console.log(text)
+        dispatch({type:CLEAR_FILTER})
+    }
+
+    const filterOrganizations = (text) => {
+        dispatch({ type: FILTER_ORGANIZATION, payload: text })
+        // console.log(text);
+    }
+
     return (
         <AdminContext.Provider
             value={{
-                showFilterMemberModal: state.showFilterMemberModal,
+                // showFilterMemberModal: state.showFilterMemberModal,
                 showEditMemberModal: state.showEditMemberModal,
                 showSoftwareHouseModal: state.showSoftwareHouseModal,
                 organizations: state.organizations,
                 currentOrganization: state.currentOrganization,
                 members: state.members,
-                openFilterModalHandler,
-                closeFilterModalHandler,
+                filteredMembers: state.filteredMembers,
+                filteredOrganizations: state.filteredOrganizations,
+                currentMember: state.currentMember,
+                // openFilterModalHandler,
+                // closeFilterModalHandler,
                 openEditMemberModalHandler,
                 closeEditMemberModalHandler,
                 openSoftwareHouseModalHandler,
@@ -124,7 +163,12 @@ const AdminStates = props => {
                 registerOrganization,
                 getOrganizations,
                 setCurrentOrganization,
-                getMembers
+                getMembers,
+                updateMember, 
+                setCurrentMember,
+                filterMembers,
+                filterOrganizations,
+                clearFilter
             }}
         >
             {props.children}

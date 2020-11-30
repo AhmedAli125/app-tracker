@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Container, Typography } from '@material-ui/core';
+import React, { useContext, useEffect, useState } from 'react';
+import { Container, Typography, TextField } from '@material-ui/core';
 import MemberList from './members/MemberList';
 import FilterButton from '../../ui/button/filterButton/FilterButton';
 import AdminContext from '../../../context/admin/AdminContext';
@@ -9,7 +9,36 @@ import EditMember from './members/member/editMember/EditMember';
 function ViewMember() {
 
     const adminContext = useContext(AdminContext);
-    const { showFilterMemberModal, showEditMemberModal, openFilterModalHandler } = adminContext;
+    const {
+        // showFilterMemberModal,
+        showEditMemberModal,
+        // openFilterModalHandler,
+        getMembers,
+        filterMembers,
+        clearFilter
+    } = adminContext;
+
+    useEffect(() => {
+        getMembers();
+    }, []);
+
+    const [filterMember, setFilterMember] = useState(null);
+    
+    const handleFilterMember = (e) => {
+        setFilterMember(e.target.value);
+        console.log(e.target.value)
+        if (!filterMember) {
+            clearFilter('filterMember');
+        } else {
+            filterMembers(e.target.value);
+        }
+    }
+
+    // if (filterMember) {
+    //     filterMembers(filterMember);
+    // } else {
+    //     clearFilter();
+    // }
 
     return (
         <Container
@@ -24,7 +53,7 @@ function ViewMember() {
                     // border: '1px solid',
                     display: 'flex',
                     alignItems: 'center',
-                    marginBottom: '40px'
+                    // marginBottom: '40px'
                 }}
             >
                 <Typography variant='h5'
@@ -34,8 +63,18 @@ function ViewMember() {
                 >
                     View Members
                     </Typography>
-                <FilterButton clicked={openFilterModalHandler} />
+                {/* <FilterButton clicked={openFilterModalHandler} /> */}
             </div>
+            <TextField
+                id="filter"
+                label="Filter Member"
+                variant="outlined"
+                fullWidth={true}
+                margin='normal'
+                value={filterMember}
+                onChange={handleFilterMember}
+                autoComplete='off'
+            />
             <div
                 style={{
                     // border: '1px solid',
@@ -46,9 +85,9 @@ function ViewMember() {
             >
                 <MemberList />
             </div>
-            {showFilterMemberModal &&
+            {/* {showFilterMemberModal &&
                 <FilterMember />
-            }
+            } */}
             {showEditMemberModal &&
                 <EditMember />
             }
