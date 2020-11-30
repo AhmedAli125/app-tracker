@@ -1,17 +1,24 @@
 import React from 'react';
-import AddProject from './addProject/AddProject';
-import ProjectList from '../ui/projects/ProjectList';
-import Header from '../header/Header'
+import { Route, Switch, useRouteMatch} from 'react-router-dom';
+import ManagerDashboard from './managerDashboard/ManagerDashboard'
+import Header from '../header/Header';
+import CreateProject from './managerDashboard/createProject/CreateProject';
 import './manager.css';
 
 function Manager() {
+
+    const route = useRouteMatch();
+    const path = route.path;
+
     return (
         <>
-        <Header />
-        <div className='dashboard-container'>
-            <AddProject />
-            <ProjectList />
-        </div>
+            <Header />
+            <div className='dashboard-container'>
+                <Switch>
+                    <Route path={`${path}`} exact component={ManagerDashboard} />
+                    <Route path={`${path}/create-project`} component={CreateProject} />
+                </Switch>
+            </div>
         </>
     );
 }

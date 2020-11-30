@@ -14,14 +14,14 @@ export default (state, action) => {
                 ...state,
                 projects: false,
                 addProjectButton: false,
-                showCreateProject: true               
+                // showCreateProject: true               
             };
         case CANCEL_PROJECT:
             return {
                 ...state,
                 projects: true,
                 addProjectButton: true,
-                showCreateProject: false               
+                // showCreateProject: false               
             };
         case OPEN_MEMBER_MODAL:
             return{

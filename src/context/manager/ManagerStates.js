@@ -17,7 +17,7 @@ const ManagerStates = props => {
     const initialState = {
         projects: true,
         addProjectButton: true,
-        showCreateProject: false,
+        // showCreateProject: false,
         showAddMemberModal : false,
         showTaskModal: false
     }
@@ -54,7 +54,7 @@ const ManagerStates = props => {
             value = {{
                 projects: state.projects,
                 showAddButton: state.addProjectButton,
-                showCreateProject: state.showCreateProject,
+                // showCreateProject: state.showCreateProject,
                 showAddMemberModal: state.showAddMemberModal,
                 showTaskModal: state.showTaskModal,
                 createProjectHandler,

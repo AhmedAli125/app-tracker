@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Container, Typography, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import AddMembers from './addMembers/AddMembers';
@@ -7,14 +7,27 @@ import TaskList from '../../../ui/projectTasks/TaskList';
 import ManagerContext from '../../../../context/manager/ManagerContext';
 import './createProject.css';
 
-function CreateProject() {
+function CreateProject(props) {
 
     const managerContext = useContext(ManagerContext);
     const {
         cancelProjectHandler,
         openMemberModalHandler,
         openTaskModalHandler,
+        showAddButton
+        
     } = managerContext;
+
+    useEffect(() => {
+        if (showAddButton) {
+            props.history.push('/dashboard')
+        }
+    }, [showAddButton, props.history])
+
+    const cancelProject = () => {
+        cancelProjectHandler();
+        // console.log(props.history)
+    }
 
     return (
         <Container>
@@ -80,7 +93,7 @@ function CreateProject() {
                 <Button
                     variant='contained'
                     color='secondary'
-                    onClick={cancelProjectHandler}
+                    onClick={cancelProject}
                 >
                     Cancel
                 </Button>

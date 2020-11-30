@@ -3,11 +3,17 @@ import Grid from '@material-ui/core/Grid';
 import Project from './project/Project';
 import ManagerContext from '../../../context/manager/ManagerContext';
 import './projectList.css';
+import AddButton from '../button/addButton/AddButton';
 
 function ProjectList() {
 
     const managerContext = useContext(ManagerContext)
-    const {projects} = managerContext
+    const {
+        projects,
+        showAddButton,
+        showCreateProject,
+        createProjectHandler
+    } = managerContext
     // console.log('list '+ projects)
 
     return (
