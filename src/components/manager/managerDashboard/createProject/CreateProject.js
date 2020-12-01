@@ -14,14 +14,17 @@ function CreateProject(props) {
         cancelProjectHandler,
         openMemberModalHandler,
         openTaskModalHandler,
-        showAddButton
-        
+        showAddButton,
+        // getOrganizationMembers,
+        // organizationMembers
     } = managerContext;
 
     useEffect(() => {
         if (showAddButton) {
             props.history.push('/dashboard')
         }
+        // getOrganizationMembers();
+        // console.log(organizationMembers)
     }, [showAddButton, props.history])
 
     const cancelProject = () => {

@@ -1,6 +1,8 @@
-import React, { useReducer } from 'react'
+import React, { useContext, useReducer } from 'react'
 import ManagerContext from './ManagerContext'
 import ManagerReducer from './ManagerReducer'
+import AuthContext from '../auth/AuthContext'
+import Database from '../../config/Database'
 // axios
 //firebase
 import {
@@ -9,7 +11,10 @@ import {
     OPEN_MEMBER_MODAL,
     CLOSE_MEMBER_MODAL,
     OPEN_TASK_MODAL,
-    CLOSE_TASK_MODAL
+    CLOSE_TASK_MODAL,
+    GET_ORGANIZATION_MEMBERS,
+    SELECTED_MEMBERS,
+    REMOVE_SELECTED_MEMBERS,
 } from '../Type'
 
 const ManagerStates = props => {
@@ -19,8 +24,13 @@ const ManagerStates = props => {
         addProjectButton: true,
         // showCreateProject: false,
         showAddMemberModal : false,
-        showTaskModal: false
+        showTaskModal: false,
+        organizationMembers: null,
+        selectedMembers: []
     }
+
+    const authContext = useContext(AuthContext)
+    const { user } = authContext;
     
     const [state, dispatch] = useReducer(ManagerReducer, initialState)
 
@@ -49,6 +59,33 @@ const ManagerStates = props => {
         dispatch({type:CLOSE_TASK_MODAL});
     }
 
+    const getOrganizationMembers = () => {  
+        let members = [];
+        let users;
+        Database.database().ref(`/registered-users`).once('value')
+        .then(res=>{
+            users = {...res.val()}
+            for(let uid in users){
+                if(users[uid].softwareHouseKey === user.softwareHouseKey){
+                    if(users[uid].designation!=='admin' && users[uid].designation!=='manager'){
+                        members.push(users[uid])
+                    }
+                }
+            }
+            dispatch({type:GET_ORGANIZATION_MEMBERS, payload:members})
+        })
+        .catch(err=>console.log(err))
+    }
+
+    const getSelectedmembers = (data) => {
+        // console.log(selected)
+        dispatch({type:SELECTED_MEMBERS, payload:data})
+    }
+
+    const removeSelectedMember = (data) => {
+        dispatch({type:REMOVE_SELECTED_MEMBERS, payload:data})
+    }
+
     return (
         <ManagerContext.Provider
             value = {{
@@ -57,12 +94,17 @@ const ManagerStates = props => {
                 // showCreateProject: state.showCreateProject,
                 showAddMemberModal: state.showAddMemberModal,
                 showTaskModal: state.showTaskModal,
+                organizationMembers: state.organizationMembers,
+                selectedMembers: state.selectedMembers,
                 createProjectHandler,
                 cancelProjectHandler,
                 openMemberModalHandler,
                 closeMemberModalHandler,
                 openTaskModalHandler,
-                closeTaskModalHandler
+                closeTaskModalHandler,
+                getOrganizationMembers,
+                getSelectedmembers,
+                removeSelectedMember
             }}
         >
             {props.children}

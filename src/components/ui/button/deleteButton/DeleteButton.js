@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 function DeleteButton({clicked}) {
-    console.log(clicked);
+    // console.log(clicked);
     const useStyles = makeStyles((theme) => ({
         margin: {
           margin: theme.spacing(1),

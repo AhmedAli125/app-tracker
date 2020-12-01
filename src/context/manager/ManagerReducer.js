@@ -4,7 +4,10 @@ import {
     OPEN_MEMBER_MODAL,
     CLOSE_MEMBER_MODAL,
     OPEN_TASK_MODAL,
-    CLOSE_TASK_MODAL
+    CLOSE_TASK_MODAL,
+    GET_ORGANIZATION_MEMBERS,
+    SELECTED_MEMBERS,
+    REMOVE_SELECTED_MEMBERS,
 } from '../Type'
 
 export default (state, action) => {
@@ -30,8 +33,9 @@ export default (state, action) => {
             }
         case CLOSE_MEMBER_MODAL:
             return{
-                    ...state,
-                    showAddMemberModal: false
+                ...state,
+                showAddMemberModal: false,
+                // selectedMembers: []
             }
         case OPEN_TASK_MODAL:
             return{
@@ -43,8 +47,22 @@ export default (state, action) => {
                 ...state,
                 showTaskModal: false
             }
-            
-        default:
+        case GET_ORGANIZATION_MEMBERS:
+            return{
+                ...state,
+                organizationMembers: action.payload
+            }
+        case SELECTED_MEMBERS:
+            return {
+                ...state,
+                selectedMembers: [...state.selectedMembers, action.payload]
+            }
+        case REMOVE_SELECTED_MEMBERS:
+            return {
+                ...state,
+                selectedMembers: state.selectedMembers.filter(member =>  member.key !== action.payload)
+            }
+        default:    
             return state;
     }
 };

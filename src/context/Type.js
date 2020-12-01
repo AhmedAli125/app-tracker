@@ -6,7 +6,9 @@ export const OPEN_MEMBER_MODAL = 'OPEN_MEMBER_MODAL'
 export const CLOSE_MEMBER_MODAL = 'CLOSE_MEMBER_MODAL'
 export const OPEN_TASK_MODAL = 'OPEN_TASK_MODAL'
 export const CLOSE_TASK_MODAL = 'CLOSE_TASK_MODAL' 
-
+export const GET_ORGANIZATION_MEMBERS = 'GET_ORGANIZATION_MEMBERS'  //get software house members
+export const SELECTED_MEMBERS = 'SELECTED_MEMBERS'
+export const REMOVE_SELECTED_MEMBERS = 'REMOVE_SELECTED_MEMBERS'
 
 //ADMIN TYPES
 
@@ -29,5 +31,6 @@ export const CLEAR_FILTER = 'CLERA_FILTER'
 export const SET_USER_DATA = 'SET_USER_DATA'  //LogIn
 export const USER_LOG_OUT = 'USER_LOG_OUT'
 export const USER_SIGN_UP = 'USER_SIGN_UP'  //katana hai
+
 
 

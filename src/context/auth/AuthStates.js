@@ -136,7 +136,9 @@ const AuthStates = props => {
             }
             
             Database.database().ref(`/registered-users/${userData.key}`).set(userData)
-            .then(res=>console.log(res))
+            .then(
+                // res=>console.log(res)
+            )
             .catch(err=>console.log(err))
 
         })

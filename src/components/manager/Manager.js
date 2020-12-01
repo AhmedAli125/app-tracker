@@ -3,6 +3,7 @@ import { Route, Switch, useRouteMatch} from 'react-router-dom';
 import ManagerDashboard from './managerDashboard/ManagerDashboard'
 import Header from '../header/Header';
 import CreateProject from './managerDashboard/createProject/CreateProject';
+import ManagerStates from '../../context/manager/ManagerStates';
 import './manager.css';
 
 function Manager() {
@@ -14,10 +15,12 @@ function Manager() {
         <>
             <Header />
             <div className='dashboard-container'>
-                <Switch>
-                    <Route path={`${path}`} exact component={ManagerDashboard} />
-                    <Route path={`${path}/create-project`} component={CreateProject} />
-                </Switch>
+                <ManagerStates>
+                    <Switch>
+                        <Route path={`${path}`} exact component={ManagerDashboard} />
+                        <Route path={`${path}/create-project`} component={CreateProject} />
+                    </Switch>
+                </ManagerStates>
             </div>
         </>
     );

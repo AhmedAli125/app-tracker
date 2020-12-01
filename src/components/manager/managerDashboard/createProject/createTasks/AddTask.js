@@ -95,7 +95,7 @@ function AddTask() {
         }
     ];
 
-    console.log(currentDate)
+    // console.log(currentDate)
 
     return (
         showTaskModal && 
