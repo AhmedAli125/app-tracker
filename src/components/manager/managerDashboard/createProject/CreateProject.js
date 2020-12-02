@@ -11,25 +11,24 @@ function CreateProject(props) {
 
     const managerContext = useContext(ManagerContext);
     const {
-        cancelProjectHandler,
         openMemberModalHandler,
         openTaskModalHandler,
-        showAddButton,
-        // getOrganizationMembers,
-        // organizationMembers
+        showTaskModal,
+        showAddMemberModal,
+        getOrganizationMembers,
+        organizationMembers
     } = managerContext;
 
     useEffect(() => {
-        if (showAddButton) {
-            props.history.push('/dashboard')
-        }
-        // getOrganizationMembers();
-        // console.log(organizationMembers)
-    }, [showAddButton, props.history])
+        console.log('render -  create project')
+    
+        getOrganizationMembers();
+
+        return () => console.log('unmounting => createProject')
+    }, [])
 
     const cancelProject = () => {
-        cancelProjectHandler();
-        // console.log(props.history)
+        props.history.push('/dashboard');
     }
 
     return (
@@ -74,8 +73,14 @@ function CreateProject(props) {
                     Add Tasks
                 </Button>
             </div>
-            <AddMembers />
-            <AddTask />
+            {
+                showAddMemberModal &&
+                <AddMembers />
+            }
+            {
+                showTaskModal &&
+                <AddTask />
+            }
 
             <div className='task-list'>
                 <TaskList />
@@ -90,8 +95,14 @@ function CreateProject(props) {
                     style={{
                         flexGrow: '1'
                     }}
-                ></p>
-                <Button variant='contained' color='primary'>Create</Button>
+                >
+                </p>
+                <Button
+                    variant='contained'
+                    color='primary'
+                >
+                    Create
+                </Button>
                 <span style={{ width: '10px' }}></span>
                 <Button
                     variant='contained'

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -8,24 +8,18 @@ import './addMember.css'
 function Member({data}) {
     const managerContext = useContext(ManagerContext)
     const {
-        getSelectedmembers,
-        removeSelectedMember,
+        handleAssignedMember,
+        organizationMembers
     } = managerContext;
     
-    // console.log(member, designation)
-    // let selected = [];
+    useEffect(() => {
+        // console.log('render - member comp')
+    }, [organizationMembers.isAssigned])
 
-    const [checked, setChecked] = useState(false);
+    const [checked, setChecked] = useState(data.isAssigned);
     const handleChange = (e) => {
         setChecked(e.target.checked);
-
-        if(!checked){
-            getSelectedmembers(data)
-        } else if(checked){
-            removeSelectedMember(data.key)
-        }
-        
-        return data
+        handleAssignedMember(data)
     }
     
     return (
@@ -42,7 +36,7 @@ function Member({data}) {
                 <Checkbox
                     checked={checked}
                     onChange={(e)=>{handleChange(e)}}
-                    inputProps={{'aria-label' : 'primary-checkbox'}}
+                    inputProps={{ 'aria-label': 'primary-checkbox' }}
                 />
             </div>
         </Paper>

@@ -1,74 +1,53 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import Modal from '../../../../ui/modal/ModalWindow';
 import Typography from '@material-ui/core/Typography';
 import Member from './Member';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
-import ManagerContext from '../../../../../context/manager/ManagerContext'
+import ManagerContext from '../../../../../context/manager/ManagerContext';
 import './addMember.css';
+import MemberList from './MemberList';
 
 function AddMembers() {
     const managerContext = useContext(ManagerContext);
-    const { 
-        showAddMemberModal, 
+    const {
         closeMemberModalHandler,
-        getOrganizationMembers,
         organizationMembers,
-        selectedMembers
+        clearSelectedMember,
+        getSelectedmembers
     } = managerContext;
 
-    useEffect(()=>{
-        getOrganizationMembers();
-    },[])
+    useEffect(() => {
 
-    // let selected, member;
+        console.log('mounting addMember')
 
+        return ()=>console.log('unmounting => addMember')
+    }, [organizationMembers]);
+    
+    // console.log('render - add member')
+    
     return (
-        showAddMemberModal &&
         <Modal show={true} clicked={closeMemberModalHandler}>
             <div>
                 <Typography variant='h5' align='left' display='block' >
                     Add Members
                 </Typography>
-                <div className='member-container'>
-                    {
-                        organizationMembers.map(member=>{
-                            return (
-                                // <>
-                                    // {
-                                        // selectedMembers.length === 0 ?
-                                        // selectedMembers.map(user => {
-                                        //     selected = user.key === member.key;
-                                        //     console.log(selected)
-                                        //     return (
-                                        //         <Member 
-                                        //             key={member.key}
-                                        //             data={member}
-                                        //             preChecked={selected}
-                                        //         />
-                                        //         )
-                                        //     }) : 
-                                            // return 
-                                                <Member 
-                                                    key={member.key}
-                                                    data={member}
-                                                />
-                                            // )
-                                    // }
-                                // </>
-                            )
-                        })
-                    }
-                </div>
+                <MemberList />
                 <ButtonGroup variant='contained' fullWidth={true}>
-                    <Button 
+                    <Button
                         color='primary'
-                        onClick={()=>console.log(selectedMembers)}
+                        onClick={getSelectedmembers}
                     >
                         Add
                     </Button>
-                    <Button 
-                        color='secondary' 
+                    <Button
+                        color='default'
+                        onClick={clearSelectedMember}
+                    >
+                        Clear
+                    </Button>
+                    <Button
+                        color='secondary'
                         onClick={closeMemberModalHandler}
                     >
                         Cancel

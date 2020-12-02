@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -11,7 +11,11 @@ import ManagerContext from '../../../../../context/manager/ManagerContext'
 
 function AddTask() {
     const managerContext = useContext(ManagerContext);
-    const { showTaskModal, closeTaskModalHandler } = managerContext;
+    const {closeTaskModalHandler } = managerContext;
+
+    useEffect(() => {
+        console.log('render - add tasks')
+    },[])
 
     let currentDate = () => {
 
@@ -28,7 +32,6 @@ function AddTask() {
             let current = (now.getDate());
             if (current < 10) {
                 return "0" + current.toString();
-                // return current.toString();
             } else return current.toString();
         };
 
@@ -95,10 +98,7 @@ function AddTask() {
         }
     ];
 
-    // console.log(currentDate)
-
     return (
-        showTaskModal && 
         <Modal show={true} clicked={closeTaskModalHandler}>
             <Typography variant='h5' align='left' display='block' >
                 Add Task

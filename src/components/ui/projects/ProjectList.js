@@ -7,17 +7,8 @@ import AddButton from '../button/addButton/AddButton';
 
 function ProjectList() {
 
-    const managerContext = useContext(ManagerContext)
-    const {
-        projects,
-        showAddButton,
-        showCreateProject,
-        createProjectHandler
-    } = managerContext
-    // console.log('list '+ projects)
-
     return (
-        projects && <div>
+        <div>
             <Grid
                 style={{
                     width: '100%'

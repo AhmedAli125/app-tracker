@@ -14,34 +14,23 @@ import {
     CLOSE_TASK_MODAL,
     GET_ORGANIZATION_MEMBERS,
     SELECTED_MEMBERS,
-    REMOVE_SELECTED_MEMBERS,
+    CLEAR_SELECTED_MEMBERS,
+    SET_ASSIGNED_STATUS
 } from '../Type'
 
 const ManagerStates = props => {
         
     const initialState = {
-        projects: true,
-        addProjectButton: true,
-        // showCreateProject: false,
         showAddMemberModal : false,
         showTaskModal: false,
         organizationMembers: null,
-        selectedMembers: []
+        selectedMembers: null
     }
 
     const authContext = useContext(AuthContext)
     const { user } = authContext;
     
     const [state, dispatch] = useReducer(ManagerReducer, initialState)
-
-    const createProjectHandler = () => {
-        dispatch({ type: CREATE_PROJECT})
-        // console.log('project Cancel')
-    }
-
-    const cancelProjectHandler = () => {
-        dispatch({type: CANCEL_PROJECT});
-    }
 
     const openMemberModalHandler = () => {
         dispatch({type: OPEN_MEMBER_MODAL});
@@ -60,6 +49,7 @@ const ManagerStates = props => {
     }
 
     const getOrganizationMembers = () => {  
+        // console.log('getOrganizationMembers run')
         let members = [];
         let users;
         Database.database().ref(`/registered-users`).once('value')
@@ -68,7 +58,10 @@ const ManagerStates = props => {
             for(let uid in users){
                 if(users[uid].softwareHouseKey === user.softwareHouseKey){
                     if(users[uid].designation!=='admin' && users[uid].designation!=='manager'){
-                        members.push(users[uid])
+                        members.push({
+                            ...users[uid],
+                            isAssigned: false
+                        })
                     }
                 }
             }
@@ -77,34 +70,68 @@ const ManagerStates = props => {
         .catch(err=>console.log(err))
     }
 
-    const getSelectedmembers = (data) => {
-        // console.log(selected)
-        dispatch({type:SELECTED_MEMBERS, payload:data})
+    const handleAssignedMember = (data) => {
+        // console.log(`handleAssignedMember run`)
+        let prevState = [...state.organizationMembers];
+        let member; // index of member
+        prevState.filter((user, index) => {
+            // user.key === data.key  ? index : null
+            return (user.key === data.key ? member = index : null)
+        })
+
+        prevState[member] = {   //index passed to array
+            ...prevState[member],
+            isAssigned: !prevState[member].isAssigned
+        }
+
+        dispatch({ type: SET_ASSIGNED_STATUS, payload: prevState})
     }
 
-    const removeSelectedMember = (data) => {
-        dispatch({type:REMOVE_SELECTED_MEMBERS, payload:data})
+    const getSelectedmembers = () => {
+        // console.log(selected)
+        let selectedMembers = [];
+        state.organizationMembers.map(member => {
+            if (member.isAssigned) {
+                selectedMembers.push(member);
+            }
+        });
+
+        // console.log(selectedMembers)
+        
+        dispatch({type:SELECTED_MEMBERS, payload:selectedMembers})
+    }
+
+    const clearSelectedMember = () => {
+        // console.log(`clearSelectedMember run`)
+        let prevMembers = [...state.organizationMembers]
+        let clearMembers = []
+        prevMembers.forEach(member => {
+            if (member.isAssigned) {
+                return(
+                    clearMembers.push({...member, isAssigned:false})
+                )
+            } else {
+                return clearMembers.push(member)
+            }
+        })
+
+        dispatch({ type: CLEAR_SELECTED_MEMBERS, payload:clearMembers})
     }
 
     return (
         <ManagerContext.Provider
             value = {{
-                projects: state.projects,
-                showAddButton: state.addProjectButton,
-                // showCreateProject: state.showCreateProject,
                 showAddMemberModal: state.showAddMemberModal,
                 showTaskModal: state.showTaskModal,
                 organizationMembers: state.organizationMembers,
-                selectedMembers: state.selectedMembers,
-                createProjectHandler,
-                cancelProjectHandler,
                 openMemberModalHandler,
                 closeMemberModalHandler,
                 openTaskModalHandler,
                 closeTaskModalHandler,
                 getOrganizationMembers,
+                handleAssignedMember,
                 getSelectedmembers,
-                removeSelectedMember
+                clearSelectedMember
             }}
         >
             {props.children}
