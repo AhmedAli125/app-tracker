@@ -8,7 +8,8 @@ import {
     GET_ORGANIZATION_MEMBERS,
     SELECTED_MEMBERS,
     CLEAR_SELECTED_MEMBERS,
-    SET_ASSIGNED_STATUS
+    SET_ASSIGNED_STATUS,
+    CREATE_TASK
 } from '../Type'
 
 export default (state, action) => {
@@ -54,6 +55,11 @@ export default (state, action) => {
             return {
                 ...state,
                 organizationMembers: action.payload
+            }
+        case CREATE_TASK:
+            return {
+                ...state,
+                tasks: [...state.tasks, action.payload]
             }
         default:    
             return state;

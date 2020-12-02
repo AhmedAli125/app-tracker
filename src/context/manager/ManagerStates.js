@@ -15,7 +15,8 @@ import {
     GET_ORGANIZATION_MEMBERS,
     SELECTED_MEMBERS,
     CLEAR_SELECTED_MEMBERS,
-    SET_ASSIGNED_STATUS
+    SET_ASSIGNED_STATUS,
+    CREATE_TASK
 } from '../Type'
 
 const ManagerStates = props => {
@@ -24,7 +25,8 @@ const ManagerStates = props => {
         showAddMemberModal : false,
         showTaskModal: false,
         organizationMembers: null,
-        selectedMembers: null
+        selectedMembers: null,
+        tasks:[]
     }
 
     const authContext = useContext(AuthContext)
@@ -118,12 +120,62 @@ const ManagerStates = props => {
         dispatch({ type: CLEAR_SELECTED_MEMBERS, payload:clearMembers})
     }
 
+    const createTask = (data) => {
+        let taskKey = Database.database().ref(`/organizations/${user.softwareHouseKey}`).push().key;
+        const {
+            title,
+            desc,
+            developer,
+            tester,
+            developerDeadline,
+            testerDeadline
+        } = data
+
+        let task = {
+            title,
+            desc,
+            key: taskKey,
+            members: {
+                developer: {
+                    deadline: developerDeadline,
+                    firstName: developer.firstName,
+                    lastName: developer.lastName,
+                    key: developer.key
+                },
+                tester: {
+                    deadline: testerDeadline,
+                    firstName: tester.firstName,
+                    lastName: tester.lastName,
+                    key: tester.key
+                }
+            },
+            taskStatus: {
+                developerStatus: {
+                    isComplete: false
+                },
+                testerStatus: {
+                    isComplete: false,
+                },
+                issue: {
+                    status: false,
+                    comment: ['no issue']
+                }
+            }
+        };
+
+        // console.log(task);
+
+        dispatch({type: CREATE_TASK, payload: task})
+        
+    }
+
     return (
         <ManagerContext.Provider
             value = {{
                 showAddMemberModal: state.showAddMemberModal,
                 showTaskModal: state.showTaskModal,
                 organizationMembers: state.organizationMembers,
+                selectedMembers: state.selectedMembers,
                 openMemberModalHandler,
                 closeMemberModalHandler,
                 openTaskModalHandler,
@@ -131,7 +183,8 @@ const ManagerStates = props => {
                 getOrganizationMembers,
                 handleAssignedMember,
                 getSelectedmembers,
-                clearSelectedMember
+                clearSelectedMember,
+                createTask
             }}
         >
             {props.children}

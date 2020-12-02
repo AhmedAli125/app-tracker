@@ -7,96 +7,76 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Modal from '../../../../ui/modal/ModalWindow';
-import ManagerContext from '../../../../../context/manager/ManagerContext'
+import ManagerContext from '../../../../../context/manager/ManagerContext';
+import AuthContext from '../../../../../context/auth/AuthContext';
 
 function AddTask() {
     const managerContext = useContext(ManagerContext);
-    const {closeTaskModalHandler } = managerContext;
+    const {
+        closeTaskModalHandler,
+        selectedMembers,
+        createTask
+    } = managerContext;
+
+    const authContext = useContext(AuthContext);
+    const {
+        currentDate
+    } = authContext;
 
     useEffect(() => {
-        console.log('render - add tasks')
-    },[])
-
-    let currentDate = () => {
-
-        let now = new Date();
-
-        let getMonth = () => {
-            let month = now.getMonth() + 1;
-            if (month < 10) {
-                return "0" + month.toString();
-            } else return month.toString();
-        };
-
-        let getDate = () => {
-            let current = (now.getDate());
-            if (current < 10) {
-                return "0" + current.toString();
-            } else return current.toString();
-        };
-
-        let getYear = () => {
-            let year = (now.getFullYear()).toString();
-            if (year < 10) {
-                return "0" + year.toString();
-            } else return year.toString();
-        };
-
-        return getYear() + "-" + getMonth() + "-" + getDate();
-    };
+        console.log(selectedMembers);
+    }, []);
 
     const [title, setTitle] = useState('');
     const changeTitle = e => setTitle(e.target.value);
-    
+
     const [desc, setDesc] = useState('');
     const changeDesc = e => setDesc(e.target.value);
-    
-    const [developer, setDeveloper] = useState('');
+
+    const [developer, setDeveloper] = useState(null);
     const selectDeveloper = (e) => setDeveloper(e.target.value);
-    
-    const [tester, setTester] = useState('');
+
+    const [tester, setTester] = useState(null);
     const selectTester = (e) => setTester(e.target.value);
-    
+
     const [developerDeadline, setDeveloperDeadline] = useState(currentDate);
     const setDeveloperDate = e => setDeveloperDeadline(e.target.value);
-    
-    const [testerDeadline, setTesterDeadline] = useState(currentDate);   
+
+    const [testerDeadline, setTesterDeadline] = useState(currentDate);
     const setTesterDate = e => setTesterDeadline(e.target.value);
 
-    const developersArray = [
-        {
-            id: '1',
-            name: 'mem1',
-            desig: 'desig'
-        },
-        {
-            id: '2',
-            name: 'mem2',
-            desig: 'desig'
-        },
-        {
-            id: '3',
-            name: 'mem3',
-            desig: 'desig'
-        }
-    ];
-    const testersArray = [
-        {
-            id: '1',
-            name: 'tester1',
-            desig: 'desig'
-        },
-        {
-            id: '2',
-            name: 'tester2',
-            desig: 'desig'
-        },
-        {
-            id: '3',
-            name: 'tester3',
-            desig: 'desig'
-        }
-    ];
+    // let task = {
+    //     title,
+    //     desc,
+    //     members: {
+    //         developer: {
+    //             deadline: developerDeadline,
+    //             firstName: developer.firstName,
+    //             lastName: developer.lastName,
+    //             key: developer.key
+    //         },
+    //         tester: {
+    //             deadline: testerDeadline,
+    //             firstName: tester.firstName,
+    //             lastName: tester.lastName,
+    //             key: tester.key
+    //         }
+    //     },
+    //     taskStatus: {
+    //         developerStatus: {
+    //             isComplete: false
+    //         },
+    //         testerStatus: {
+    //             isComplete: false,
+    //         },
+    //         issue: {
+    //             status: false,
+    //             comment: ['no issue']
+    //         }
+    //     }
+    // };
+
+
 
     return (
         <Modal show={true} clicked={closeTaskModalHandler}>
@@ -138,13 +118,17 @@ function AddTask() {
                             <MenuItem value="" disabled>
                                 Select Developer
                             </MenuItem>
-                            {developersArray.map((value) => {
-                                return <MenuItem
-                                    value={value.id}
-                                    key={value.id}
-                                    >{value.name}
-                                </MenuItem>;
-                            })}
+                            {selectedMembers ? selectedMembers.map((member) => {
+                                return (
+                                    member.designation === 'developer' ?
+                                        <MenuItem
+                                            value={member}
+                                            key={member.key}
+                                        >
+                                            {`${member.firstName} ${member.lastName} `}
+                                        </MenuItem> : null
+                                );
+                            }) : null}
                         </Select>
                     </FormControl>
 
@@ -175,13 +159,17 @@ function AddTask() {
                             <MenuItem value="" disabled>
                                 Select Tester
                             </MenuItem>
-                            {testersArray.map((value) => {
-                                return <MenuItem
-                                value={value.id}
-                                key={value.id}
-                                >{value.name}
-                                </MenuItem>;
-                            })}
+                            {selectedMembers ? selectedMembers.map((member) => {
+                                return (
+                                    member.designation === 'tester' ?
+                                        <MenuItem
+                                            value={member}
+                                            key={member.key}
+                                        >
+                                            {`${member.firstName} ${member.lastName} `}
+                                        </MenuItem> : null
+                                );
+                            }) : null}
                         </Select>
                     </FormControl>
 
@@ -192,7 +180,7 @@ function AddTask() {
                         type="date"
                         fullWidth={true}
                         variant='outlined'
-                        defaultValue={currentDate}
+                        defaultValue={testerDeadline}
                         onChange={setTesterDate}
                         InputLabelProps={{
                             shrink: true,
@@ -203,7 +191,20 @@ function AddTask() {
                         style={{ marginTop: '10px' }}
                         variant='contained'
                         fullWidth={true}>
-                        <Button color='primary'>Add</Button>
+                        <Button
+                            color='primary'
+                            onClick={() => {
+                                createTask({
+                                    title,
+                                    desc,
+                                    developer,
+                                    tester,
+                                    developerDeadline,
+                                    testerDeadline
+                                })
+                            }}
+                        >
+                            Add</Button>
                         <Button color='secondary' onClick={closeTaskModalHandler}>Cancel</Button>
                     </ButtonGroup>
                 </form>

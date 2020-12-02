@@ -20,7 +20,6 @@ function CreateProject(props) {
     } = managerContext;
 
     useEffect(() => {
-        console.log('render -  create project')
     
         getOrganizationMembers();
 

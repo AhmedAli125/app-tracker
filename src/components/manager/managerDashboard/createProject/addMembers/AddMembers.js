@@ -19,9 +19,6 @@ function AddMembers() {
 
     useEffect(() => {
 
-        console.log('mounting addMember')
-
-        return ()=>console.log('unmounting => addMember')
     }, [organizationMembers]);
     
     // console.log('render - add member')
