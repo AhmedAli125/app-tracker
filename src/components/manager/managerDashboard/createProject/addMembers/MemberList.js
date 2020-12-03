@@ -5,12 +5,13 @@ import Member from './Member';
 function MemberList() {
     const managerContext = useContext(ManagerContext);
     const {
+        
         organizationMembers
     } = managerContext;
 
     useEffect(() => {
-        
-    },[organizationMembers.isAssigned])
+        console.log('member list')
+    },[organizationMembers])
 
     return (
         <div className='member-container'>

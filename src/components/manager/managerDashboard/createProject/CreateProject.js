@@ -1,14 +1,14 @@
-import React, { useContext, useEffect } from 'react';
-import { Container, Typography, Button } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
+import React, { useState, useContext, useEffect } from 'react';
+import { Container, Typography, Button, TextField } from '@material-ui/core';
 import AddMembers from './addMembers/AddMembers';
 import AddTask from './createTasks/AddTask';
 import TaskList from '../../../ui/projectTasks/TaskList';
 import ManagerContext from '../../../../context/manager/ManagerContext';
+import AuthContext from '../../../../context/auth/AuthContext'
 import './createProject.css';
 
 function CreateProject(props) {
-
+    
     const managerContext = useContext(ManagerContext);
     const {
         openMemberModalHandler,
@@ -16,18 +16,41 @@ function CreateProject(props) {
         showTaskModal,
         showAddMemberModal,
         getOrganizationMembers,
-        organizationMembers
+        selectedMembers,
+        tasks,
+        setProjectDeadline,
+        createProject,
+        projectDeadline,
+        resetCreateProjectFlag
     } = managerContext;
-
-    useEffect(() => {
     
-        getOrganizationMembers();
+    const authContext = useContext(AuthContext)
+    const {currentDate} = authContext
+    
+    const [title,setTitle] = useState('')
+    const changeTitle = e => setTitle(e.target.value)
 
-        return () => console.log('unmounting => createProject')
+    const [deadline, setDeadline] = useState(currentDate())
+    const changeDate = (e) => {
+        setDeadline(e.target.value)
+        setProjectDeadline(e.target.value)
+        // console.log(deadline)
+    }
+
+
+    useEffect(() => {    
+        getOrganizationMembers();
+        console.log('create project')
     }, [])
 
     const cancelProject = () => {
+        resetCreateProjectFlag()
         props.history.push('/dashboard');
+    }
+
+    const projectCreate = () => {
+        createProject(title)
+        setTitle('')
     }
 
     return (
@@ -40,16 +63,35 @@ function CreateProject(props) {
                 autoComplete="off">
                 <TextField
                     fullWidth={true}
-                    id="project-title"
+                    // id="project-title"
                     label="Project Title"
-                    variant="outlined" />
+                    value={title}
+                    onChange={changeTitle}
+                    variant="outlined" 
+                />
             </form>
             <div
                 style={{
-                    marginTop: '10px',
-                    display: 'flex'
+                    marginTop: '20px',
+                    display: 'flex',
+                    // border: '2px black'
+                    // backgroundColor: 'red'
                 }}
             >
+                <TextField
+                        id="date"
+                        margin='none'
+                        size='small'
+                        label="Project Deadline"
+                        type="date"
+                        variant='outlined'
+                        onChange={changeDate}
+                        defaultValue={deadline}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        InputProps={{inputProps: { min: currentDate() } }}
+                />
                 <p
                     style={{
                         flexGrow: '1'
@@ -67,6 +109,7 @@ function CreateProject(props) {
                 <Button
                     variant='contained'
                     color='primary'
+                    disabled={!(selectedMembers && projectDeadline)}
                     onClick={openTaskModalHandler}
                 >
                     Add Tasks
@@ -82,7 +125,13 @@ function CreateProject(props) {
             }
 
             <div className='task-list'>
-                <TaskList />
+                <Typography variant='h6'>
+                    Task List
+                </Typography>
+                {
+                    tasks && 
+                    <TaskList />
+                }
             </div>
             <div
                 style={{
@@ -90,6 +139,7 @@ function CreateProject(props) {
                     display: 'flex'
                 }}
             >
+
                 <p
                     style={{
                         flexGrow: '1'
@@ -99,6 +149,8 @@ function CreateProject(props) {
                 <Button
                     variant='contained'
                     color='primary'
+                    disabled={!(selectedMembers && tasks && projectDeadline)}
+                    onClick = {projectCreate}
                 >
                     Create
                 </Button>

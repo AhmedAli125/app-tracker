@@ -9,7 +9,11 @@ import {
     SELECTED_MEMBERS,
     CLEAR_SELECTED_MEMBERS,
     SET_ASSIGNED_STATUS,
-    CREATE_TASK
+    CREATE_TASK,
+    GENERATE_PROJECT_KEY,
+    SET_PROJECT_DEADLINE,
+    RESET_PROJECT_FLAG,
+    DELETE_TASK
 } from '../Type'
 
 export default (state, action) => {
@@ -56,10 +60,31 @@ export default (state, action) => {
                 ...state,
                 organizationMembers: action.payload
             }
+        case GENERATE_PROJECT_KEY:
+            return{
+                ...state,
+                projectKey: action.payload,
+                createProjectFlag: true
+            }
+        case RESET_PROJECT_FLAG:
+            return {
+                ...state,
+                createProjectFlag: false
+            }
         case CREATE_TASK:
             return {
                 ...state,
-                tasks: [...state.tasks, action.payload]
+                tasks: action.payload
+            }
+        case DELETE_TASK:
+            return {
+                ...state,
+                tasks:action.payload
+            }
+        case SET_PROJECT_DEADLINE:
+            return{
+                ...state,
+                projectDeadline: action.payload
             }
         default:    
             return state;

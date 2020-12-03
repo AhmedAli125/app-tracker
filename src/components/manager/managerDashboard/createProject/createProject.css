@@ -1,8 +1,8 @@
 .task-list {
-  margin: 5px 0;
-  height: 60vh;
+  margin: 5px auto;
+  height: 58vh;
   overflow: auto;
-  width: 100%;
+  width: 95%;
   padding: 0;
   margin-top: 10px;
   /* border: 1px solid; */

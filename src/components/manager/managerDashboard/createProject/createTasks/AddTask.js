@@ -24,7 +24,7 @@ function AddTask() {
     } = authContext;
 
     useEffect(() => {
-        console.log(selectedMembers);
+        console.log('add tasks')
     }, []);
 
     const [title, setTitle] = useState('');
@@ -45,38 +45,25 @@ function AddTask() {
     const [testerDeadline, setTesterDeadline] = useState(currentDate);
     const setTesterDate = e => setTesterDeadline(e.target.value);
 
-    // let task = {
-    //     title,
-    //     desc,
-    //     members: {
-    //         developer: {
-    //             deadline: developerDeadline,
-    //             firstName: developer.firstName,
-    //             lastName: developer.lastName,
-    //             key: developer.key
-    //         },
-    //         tester: {
-    //             deadline: testerDeadline,
-    //             firstName: tester.firstName,
-    //             lastName: tester.lastName,
-    //             key: tester.key
-    //         }
-    //     },
-    //     taskStatus: {
-    //         developerStatus: {
-    //             isComplete: false
-    //         },
-    //         testerStatus: {
-    //             isComplete: false,
-    //         },
-    //         issue: {
-    //             status: false,
-    //             comment: ['no issue']
-    //         }
-    //     }
-    // };
+    let taskData = {
+        title,
+        desc,
+        developer,
+        tester,
+        developerDeadline,
+        testerDeadline
+    }
 
-
+    const addTask = () => {
+        createTask(taskData)
+        setTitle('')
+        setDesc('')
+        setDeveloper(null)
+        setTester(null)
+        setDeveloperDeadline(currentDate)
+        setTesterDeadline(currentDate)
+        closeTaskModalHandler()
+    }
 
     return (
         <Modal show={true} clicked={closeTaskModalHandler}>
@@ -92,7 +79,8 @@ function AddTask() {
                         placeholder="Enter Task Title"
                         onChange={changeTitle}
                         id="outlined-basic" label="Task Title" variant="outlined"
-                    />
+                        autoComplete='off'
+                        />
 
                     <TextField
                         margin='normal'
@@ -103,7 +91,8 @@ function AddTask() {
                         placeholder="Enter Task Description"
                         onChange={changeDesc}
                         id="outlined-basic" label="Task Description" variant="outlined"
-                    />
+                        autoComplete='off'
+                        />
 
                     <FormControl
                         margin='normal'
@@ -112,19 +101,19 @@ function AddTask() {
                         <Select
                             value={developer}
                             onChange={selectDeveloper}
-                            displayEmpty
+                            // displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}
-                        >
-                            <MenuItem value="" disabled>
+                            >
+                            <MenuItem value="">
                                 Select Developer
                             </MenuItem>
                             {selectedMembers ? selectedMembers.map((member) => {
                                 return (
                                     member.designation === 'developer' ?
-                                        <MenuItem
-                                            value={member}
-                                            key={member.key}
-                                        >
+                                    <MenuItem
+                                    value={member}
+                                    key={member.key}
+                                    >
                                             {`${member.firstName} ${member.lastName} `}
                                         </MenuItem> : null
                                 );
@@ -144,7 +133,7 @@ function AddTask() {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                    />
+                        />
 
                     <FormControl
                         margin='normal'
@@ -193,19 +182,16 @@ function AddTask() {
                         fullWidth={true}>
                         <Button
                             color='primary'
-                            onClick={() => {
-                                createTask({
-                                    title,
-                                    desc,
-                                    developer,
-                                    tester,
-                                    developerDeadline,
-                                    testerDeadline
-                                })
-                            }}
+                            onClick={addTask}
                         >
-                            Add</Button>
-                        <Button color='secondary' onClick={closeTaskModalHandler}>Cancel</Button>
+                            Add
+                        </Button>
+                        <Button 
+                            color='secondary' 
+                            onClick={closeTaskModalHandler}
+                        >
+                            Cancel
+                        </Button>
                     </ButtonGroup>
                 </form>
             </div>

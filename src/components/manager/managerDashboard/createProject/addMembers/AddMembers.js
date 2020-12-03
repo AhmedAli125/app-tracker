@@ -18,11 +18,14 @@ function AddMembers() {
     } = managerContext;
 
     useEffect(() => {
-
+        console.log('add members')
     }, [organizationMembers]);
-    
-    // console.log('render - add member')
-    
+
+    const addMembers = () => {
+        getSelectedmembers();
+        closeMemberModalHandler();
+    }
+
     return (
         <Modal show={true} clicked={closeMemberModalHandler}>
             <div>
@@ -33,7 +36,7 @@ function AddMembers() {
                 <ButtonGroup variant='contained' fullWidth={true}>
                     <Button
                         color='primary'
-                        onClick={getSelectedmembers}
+                        onClick={addMembers}
                     >
                         Add
                     </Button>

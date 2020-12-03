@@ -14,6 +14,7 @@ function Member({data}) {
     
     useEffect(() => {
         // console.log('render - member comp')
+        console.log('member')
     }, [organizationMembers.isAssigned])
 
     const [checked, setChecked] = useState(data.isAssigned);

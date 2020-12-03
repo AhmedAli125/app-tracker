@@ -73,9 +73,6 @@ function AddOrganization() {
     return designationKey;
   };
 
- 
-  console.log(currentDate());
-
   let date = currentDate();
 
   const organizationData = {
@@ -85,7 +82,9 @@ function AddOrganization() {
     contact: contact,
     email: orgEmail,
     regDate: date,
-    projects: [],
+    projects: {
+      0:0
+    },
     organizationKeys: {
       [managerKey]: {
         designation: 'manager',

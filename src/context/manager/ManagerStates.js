@@ -16,7 +16,11 @@ import {
     SELECTED_MEMBERS,
     CLEAR_SELECTED_MEMBERS,
     SET_ASSIGNED_STATUS,
-    CREATE_TASK
+    SET_PROJECT_DEADLINE,
+    CREATE_TASK,
+    GENERATE_PROJECT_KEY,
+    RESET_PROJECT_FLAG,
+    DELETE_TASK
 } from '../Type'
 
 const ManagerStates = props => {
@@ -26,7 +30,10 @@ const ManagerStates = props => {
         showTaskModal: false,
         organizationMembers: null,
         selectedMembers: null,
-        tasks:[]
+        projectDeadline: null,
+        tasks: null,
+        projectKey: null,
+        createProjectFlag: false
     }
 
     const authContext = useContext(AuthContext)
@@ -120,8 +127,13 @@ const ManagerStates = props => {
         dispatch({ type: CLEAR_SELECTED_MEMBERS, payload:clearMembers})
     }
 
+    const generateProjectKey = () =>{
+        let projectKey = Database.database().ref(`/organizations/${user.softwareHouseKey}/projects`).push().key;
+        dispatch({type:GENERATE_PROJECT_KEY, payload:projectKey})
+    }
+
     const createTask = (data) => {
-        let taskKey = Database.database().ref(`/organizations/${user.softwareHouseKey}`).push().key;
+        let taskKey = Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${state.projectKey}`).push().key;
         const {
             title,
             desc,
@@ -163,10 +175,29 @@ const ManagerStates = props => {
             }
         };
 
-        // console.log(task);
+        let updatedState = {...state.tasks, [taskKey]: task}
 
-        dispatch({type: CREATE_TASK, payload: task})
-        
+        dispatch({type: CREATE_TASK, payload: updatedState})
+    }
+
+    const deleteTask = (key) =>{
+        let newTasks = { ...state.tasks };
+        // console.log(newTasks)
+        delete newTasks[key]
+        // console.log(newTasks)
+        dispatch({type:DELETE_TASK, payload:newTasks})
+    }
+
+    const resetCreateProjectFlag = () => {
+        dispatch({type:RESET_PROJECT_FLAG})        
+    }
+
+    const setProjectDeadline = (deadline) => {
+        dispatch({type:SET_PROJECT_DEADLINE, payload:deadline})
+    }
+
+    const createProject = (title) => {
+        console.log(title)
     }
 
     return (
@@ -176,6 +207,9 @@ const ManagerStates = props => {
                 showTaskModal: state.showTaskModal,
                 organizationMembers: state.organizationMembers,
                 selectedMembers: state.selectedMembers,
+                tasks: state.tasks,
+                createProjectFlag: state.createProjectFlag,
+                projectDeadline: state.projectDeadline,
                 openMemberModalHandler,
                 closeMemberModalHandler,
                 openTaskModalHandler,
@@ -184,7 +218,12 @@ const ManagerStates = props => {
                 handleAssignedMember,
                 getSelectedmembers,
                 clearSelectedMember,
-                createTask
+                createTask,
+                generateProjectKey,
+                setProjectDeadline,
+                createProject,
+                resetCreateProjectFlag,
+                deleteTask
             }}
         >
             {props.children}
