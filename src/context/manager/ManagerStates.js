@@ -37,7 +37,10 @@ const ManagerStates = props => {
     }
 
     const authContext = useContext(AuthContext)
-    const { user } = authContext;
+    const {
+        user,
+        currentDate
+    } = authContext;
     
     const [state, dispatch] = useReducer(ManagerReducer, initialState)
 
@@ -197,7 +200,27 @@ const ManagerStates = props => {
     }
 
     const createProject = (title) => {
-        console.log(title)
+
+        let selectedMembers = state.selectedMembers;
+        let members = {}
+        selectedMembers.forEach(member => members = {...members, [member.key]: member})
+
+        let project = {
+            key: state.projectKey,
+            title,
+            createdOn: currentDate(),
+            deadline: state.projectDeadline,
+            members,
+            tasks: state.tasks
+        }
+
+        Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set(project)
+            .then(res => {
+                Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/0`).remove()
+                    .then(res => console.log('data deleted', res)) //need to clear the states for project
+                    .catch(err=>console.log(err))
+            })
+            .catch(err=>console.log(err))
     }
 
     return (

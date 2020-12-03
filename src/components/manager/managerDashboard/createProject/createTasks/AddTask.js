@@ -132,7 +132,14 @@ function AddTask() {
                         onChange={setDeveloperDate}
                         InputLabelProps={{
                             shrink: true,
-                        }}
+                        } }
+                        InputProps = {
+                            {
+                                inputProps: {
+                                    min: currentDate()
+                                }
+                            }
+                        }
                         />
 
                     <FormControl
@@ -173,7 +180,14 @@ function AddTask() {
                         onChange={setTesterDate}
                         InputLabelProps={{
                             shrink: true,
-                        }}
+                        } }
+                        InputProps = {
+                            {
+                                inputProps: {
+                                    min: currentDate()
+                                }
+                            }
+                        }
                     />
 
                     <ButtonGroup
