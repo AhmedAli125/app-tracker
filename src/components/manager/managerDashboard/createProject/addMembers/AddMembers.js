@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import Modal from '../../../../ui/modal/ModalWindow';
 import Typography from '@material-ui/core/Typography';
-import Member from './Member';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import ManagerContext from '../../../../../context/manager/ManagerContext';
@@ -12,14 +11,9 @@ function AddMembers() {
     const managerContext = useContext(ManagerContext);
     const {
         closeMemberModalHandler,
-        organizationMembers,
         clearSelectedMember,
         getSelectedmembers
     } = managerContext;
-
-    useEffect(() => {
-        console.log('add members')
-    }, [organizationMembers]);
 
     const addMembers = () => {
         getSelectedmembers();

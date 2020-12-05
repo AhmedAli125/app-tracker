@@ -19,8 +19,8 @@ import {
     SET_PROJECT_DEADLINE,
     CREATE_TASK,
     GENERATE_PROJECT_KEY,
-    RESET_PROJECT_FLAG,
-    DELETE_TASK
+    DELETE_TASK,
+    EDIT_TASK
 } from '../Type'
 
 const ManagerStates = props => {
@@ -33,7 +33,9 @@ const ManagerStates = props => {
         projectDeadline: null,
         tasks: null,
         projectKey: null,
-        createProjectFlag: false
+        createProjectFlag: false,
+        editTaskFlag: false,
+        editTask: null
     }
 
     const authContext = useContext(AuthContext)
@@ -136,7 +138,9 @@ const ManagerStates = props => {
     }
 
     const createTask = (data) => {
-        let taskKey = Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${state.projectKey}`).push().key;
+
+        let taskKey = state.editTask ? state.editTask.key :
+            Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${state.projectKey}`).push().key;
         const {
             title,
             desc,
@@ -183,6 +187,15 @@ const ManagerStates = props => {
         dispatch({type: CREATE_TASK, payload: updatedState})
     }
 
+    const editTaskHandler = (key) => {
+        // console.log(key)
+        let prevTasks = { ...state.tasks };
+        // console.log(prevTasks[key])
+        let editTask = prevTasks[key]
+        // console.log(editTask)
+        dispatch({type: EDIT_TASK, payload: editTask })
+    }
+
     const deleteTask = (key) =>{
         let newTasks = { ...state.tasks };
         // console.log(newTasks)
@@ -191,8 +204,8 @@ const ManagerStates = props => {
         dispatch({type:DELETE_TASK, payload:newTasks})
     }
 
-    const resetCreateProjectFlag = () => {
-        dispatch({type:RESET_PROJECT_FLAG})        
+    const cancelProject = () => {
+        dispatch({type:CANCEL_PROJECT})        
     }
 
     const setProjectDeadline = (deadline) => {
@@ -209,6 +222,7 @@ const ManagerStates = props => {
             key: state.projectKey,
             title,
             createdOn: currentDate(),
+            createdBy: user,
             deadline: state.projectDeadline,
             members,
             tasks: state.tasks
@@ -217,7 +231,9 @@ const ManagerStates = props => {
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set(project)
             .then(res => {
                 Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/0`).remove()
-                    .then(res => console.log('data deleted', res)) //need to clear the states for project
+                    .then(() => {
+                        dispatch({type:CREATE_PROJECT})
+                    })
                     .catch(err=>console.log(err))
             })
             .catch(err=>console.log(err))
@@ -233,6 +249,8 @@ const ManagerStates = props => {
                 tasks: state.tasks,
                 createProjectFlag: state.createProjectFlag,
                 projectDeadline: state.projectDeadline,
+                editTaskFlag: state.editTaskFlag,
+                editTask: state.editTask,
                 openMemberModalHandler,
                 closeMemberModalHandler,
                 openTaskModalHandler,
@@ -245,8 +263,9 @@ const ManagerStates = props => {
                 generateProjectKey,
                 setProjectDeadline,
                 createProject,
-                resetCreateProjectFlag,
-                deleteTask
+                cancelProject,
+                deleteTask,
+                editTaskHandler
             }}
         >
             {props.children}

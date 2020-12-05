@@ -1,10 +1,12 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ManagerContext from '../../../../context/manager/ManagerContext';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import {
+  Card,
+  CardContent,
+  Button,
+  Typography
+} from '@material-ui/core';
 import UpdateButton from '../../button/updateButton/UpdateButton';
 import DeleteButton from '../../button/deleteButton/DeleteButton';
 import './task.css'
@@ -14,12 +16,9 @@ function Task({buttonClicked, task}) {
   const managerContext = useContext(ManagerContext)
   const {
     createProjectFlag,
-    deleteTask
+    deleteTask,
+    editTaskHandler
   } = managerContext
-
-  useEffect(() => {
-    console.log('task')
-  },[])
 
   const useStyles = makeStyles({
     root: {
@@ -51,7 +50,12 @@ function Task({buttonClicked, task}) {
 
   return (
     <div className='task-container'>
-      {/* <Button className={classes.textJustify} onClick={buttonClicked}> */}
+      <Button Button
+        className={
+          classes.textJustify
+        }
+        onClick={createProjectFlag ? null : buttonClicked}
+       >
         <Card className={classes.root}>
           <CardContent>
             <Typography variant="h6" component="h2">
@@ -94,16 +98,16 @@ function Task({buttonClicked, task}) {
             
           </CardContent>
         </Card>
-       {/* </Button>  */}
+       </Button> 
       {
         createProjectFlag &&
         <div className='icon-buttons'>
           <UpdateButton clicked={ () => {
-            console.log('click edit')
+            editTaskHandler(task.key)
           } } />
           <DeleteButton clicked={ () => {
             deleteTask(task.key)
-            console.log('click delete')
+            // console.log('click delete')
           } } />
         </div>
         }

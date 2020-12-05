@@ -13,8 +13,8 @@ export const SET_ASSIGNED_STATUS = 'SET_ASSIGNED_STATUS'
 export const SET_PROJECT_DEADLINE = 'SET_PROJECT_DEADLINE'
 export const CREATE_TASK='CREATE_TASK'
 export const GENERATE_PROJECT_KEY = 'GENERATE_PROJECT_KEY'
-export const RESET_PROJECT_FLAG = 'RESET_PROJECT_FLAG'
 export const DELETE_TASK = 'DELETE_TASK'
+export const EDIT_TASK = 'EDIT_TASK'
 
 //ADMIN TYPES
 
@@ -37,6 +37,7 @@ export const CLEAR_FILTER = 'CLERA_FILTER'
 export const SET_USER_DATA = 'SET_USER_DATA'  //LogIn
 export const USER_LOG_OUT = 'USER_LOG_OUT'
 export const USER_SIGN_UP = 'USER_SIGN_UP'  //katana hai
+export const GET_PROJECTS = 'GET_PROJECTS'
 
 
 

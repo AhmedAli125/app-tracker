@@ -12,17 +12,35 @@ import {
     CREATE_TASK,
     GENERATE_PROJECT_KEY,
     SET_PROJECT_DEADLINE,
-    RESET_PROJECT_FLAG,
-    DELETE_TASK
+    DELETE_TASK,
+    EDIT_TASK,
+    GET_PROJECTS
 } from '../Type'
 
 export default (state, action) => {
-    switch(action.type) {
+    switch (action.type) {
+        case CREATE_PROJECT:
+            return {
+                ...state,
+                selectedMembers: null,
+                projectDeadline: null,
+                tasks: null,
+                projectKey: null,
+                createProjectFlag: false
+            }
+        case CANCEL_PROJECT:
+            return {
+                ...state,
+                selectedMembers: null,
+                projectDeadline: null,
+                tasks: null,
+                projectKey: null,
+                createProjectFlag: false
+            }
         case OPEN_MEMBER_MODAL:
             return{
                 ...state,
-                showAddMemberModal: true
-                
+                showAddMemberModal: true            
             }
         case CLOSE_MEMBER_MODAL:
             return{
@@ -37,7 +55,8 @@ export default (state, action) => {
         case CLOSE_TASK_MODAL:
             return{
                 ...state,
-                showTaskModal: false
+                showTaskModal: false,
+                editTaskFlag: false
             }
         case GET_ORGANIZATION_MEMBERS:
             return{
@@ -66,11 +85,7 @@ export default (state, action) => {
                 projectKey: action.payload,
                 createProjectFlag: true
             }
-        case RESET_PROJECT_FLAG:
-            return {
-                ...state,
-                createProjectFlag: false
-            }
+        
         case CREATE_TASK:
             return {
                 ...state,
@@ -80,6 +95,13 @@ export default (state, action) => {
             return {
                 ...state,
                 tasks:action.payload
+            }
+        case EDIT_TASK:
+            return {
+                ...state,
+                editTaskFlag: true,
+                showTaskModal: true,
+                editTask: action.payload
             }
         case SET_PROJECT_DEADLINE:
             return{

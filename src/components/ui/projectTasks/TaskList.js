@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Task from './task/Task.js';
 import ManagerContext from '../../../context/manager/ManagerContext'
@@ -7,10 +7,6 @@ import ManagerContext from '../../../context/manager/ManagerContext'
 function TaskList() {
     const managerContext = useContext(ManagerContext);
     const {tasks} = managerContext;
-
-    useEffect(() => {
-       console.log('task list')
-    },[])
 
     let taskKeys
     let tasksArray = []

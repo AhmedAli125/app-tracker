@@ -1,11 +1,21 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
+import UserContext from '../../../context/user/UserContext'
 import Grid from '@material-ui/core/Grid';
 import Project from './project/Project';
-import ManagerContext from '../../../context/manager/ManagerContext';
 import './projectList.css';
-import AddButton from '../button/addButton/AddButton';
 
 function ProjectList() {
+
+    const userContext = useContext(UserContext);
+    const {
+        projects,
+        getProjects
+    } = userContext;
+
+    useEffect(() => {
+        getProjects()
+    }, []);
+
 
     return (
         <div>
@@ -17,24 +27,15 @@ function ProjectList() {
                 justify='center'
                 spacing='2'
             >
-                <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
-                </Grid>
-                <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
-                </Grid>
-                <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
-                </Grid>
-                <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
-                </Grid>
-                <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
-                </Grid>
-                <Grid item sm-12 md-4 lg-3 xl-2>
-                    <Project />
-                </Grid>
+                {
+                    projects ? projects.map(project => {
+                        return (
+                            <Grid key={ project.key } item sm-12 md-4 lg-3 xl-2>
+                                <Project project={ project }/>
+                            </Grid>
+                        )
+                    }) : null
+                }
             </Grid>
         </div>
     );

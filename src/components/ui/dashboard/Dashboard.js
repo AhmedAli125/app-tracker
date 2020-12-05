@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import Admin from '../../admin/Admin'
-
+import UserState from '../../../context/user/UserState'
 import Manager from '../../manager/Manager'
 import AuthContext from '../../../context/auth/AuthContext'
 import Developer from '../../developer/Developer';
@@ -16,7 +16,7 @@ function Dashboard(props) {
     } =  authContext;
 
     return (
-        <>
+        <UserState>
             {
                 isLoggedIn ? (
                     user.designation === 'admin' ? 
@@ -31,7 +31,7 @@ function Dashboard(props) {
             }
             {/* <h1>test</h1> */}
             
-        </>
+        </UserState>
     )
 }
 

@@ -9,18 +9,20 @@ function Member({data}) {
     const managerContext = useContext(ManagerContext)
     const {
         handleAssignedMember,
-        organizationMembers
     } = managerContext;
     
     useEffect(() => {
-        // console.log('render - member comp')
-        console.log('member')
-    }, [organizationMembers.isAssigned])
+   
+    }, [data.isAssigned])
 
     const [checked, setChecked] = useState(data.isAssigned);
     const handleChange = (e) => {
         setChecked(e.target.checked);
         handleAssignedMember(data)
+    }
+
+    if (checked !== data.isAssigned) {
+        setChecked(data.isAssigned);
     }
     
     return (

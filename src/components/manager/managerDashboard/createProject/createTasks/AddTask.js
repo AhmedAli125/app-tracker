@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -15,7 +15,10 @@ function AddTask() {
     const {
         closeTaskModalHandler,
         selectedMembers,
-        createTask
+        createTask,
+        projectDeadline,
+        editTaskFlag,
+        editTask
     } = managerContext;
 
     const authContext = useContext(AuthContext);
@@ -23,27 +26,44 @@ function AddTask() {
         currentDate
     } = authContext;
 
-    useEffect(() => {
-        console.log('add tasks')
-    }, []);
+    let customState = {
+        title: '',
+        desc: '',
+        developer: null,
+        tester: null,
+        developerDeadline: currentDate(),
+        testerDeadline: currentDate()
+    }
 
-    const [title, setTitle] = useState('');
+    if (editTaskFlag) {
+        customState.title = editTask.title;
+        customState.desc = editTask.desc;
+        customState.developer = editTask.developer;
+        customState.tester = editTask.tester;
+        customState.developerDeadline = editTask.members.developer.deadline;
+        customState.testerDeadline = editTask.members.tester.deadline;
+    }
+
+    const [title, setTitle] = useState(customState.title);
     const changeTitle = e => setTitle(e.target.value);
 
-    const [desc, setDesc] = useState('');
+    const [desc, setDesc] = useState(customState.desc);
     const changeDesc = e => setDesc(e.target.value);
 
-    const [developer, setDeveloper] = useState(null);
+    const [developer, setDeveloper] = useState(customState.developer);
     const selectDeveloper = (e) => setDeveloper(e.target.value);
 
-    const [tester, setTester] = useState(null);
+    const [tester, setTester] = useState(customState.tester);
     const selectTester = (e) => setTester(e.target.value);
 
-    const [developerDeadline, setDeveloperDeadline] = useState(currentDate);
-    const setDeveloperDate = e => setDeveloperDeadline(e.target.value);
-
-    const [testerDeadline, setTesterDeadline] = useState(currentDate);
+    const [testerDeadline, setTesterDeadline] = useState(customState.testerDeadline);
     const setTesterDate = e => setTesterDeadline(e.target.value);
+    
+    const [developerDeadline, setDeveloperDeadline] = useState(customState.developerDeadline);
+    const setDeveloperDate = e => {
+        setDeveloperDeadline(e.target.value);
+        setTesterDeadline(e.target.value);
+    }
 
     let taskData = {
         title,
@@ -128,7 +148,7 @@ function AddTask() {
                         type="date"
                         fullWidth={true}
                         variant='outlined'
-                        defaultValue={developerDeadline}
+                        value={developerDeadline}
                         onChange={setDeveloperDate}
                         InputLabelProps={{
                             shrink: true,
@@ -136,7 +156,8 @@ function AddTask() {
                         InputProps = {
                             {
                                 inputProps: {
-                                    min: currentDate()
+                                    min: currentDate(),
+                                    max: projectDeadline
                                 }
                             }
                         }
@@ -176,7 +197,7 @@ function AddTask() {
                         type="date"
                         fullWidth={true}
                         variant='outlined'
-                        defaultValue={testerDeadline}
+                        value={testerDeadline}
                         onChange={setTesterDate}
                         InputLabelProps={{
                             shrink: true,
@@ -184,7 +205,8 @@ function AddTask() {
                         InputProps = {
                             {
                                 inputProps: {
-                                    min: currentDate()
+                                    min: developerDeadline,
+                                    max: projectDeadline
                                 }
                             }
                         }

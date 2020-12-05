@@ -21,7 +21,8 @@ function CreateProject(props) {
         setProjectDeadline,
         createProject,
         projectDeadline,
-        resetCreateProjectFlag
+        cancelProject,
+        
     } = managerContext;
     
     const authContext = useContext(AuthContext)
@@ -40,17 +41,19 @@ function CreateProject(props) {
 
     useEffect(() => {    
         getOrganizationMembers();
-        console.log('create project')
     }, [])
 
-    const cancelProject = () => {
-        resetCreateProjectFlag()
+    const cancelProjectButton = () => {
+        setTitle('')
+        cancelProject()
         props.history.push('/dashboard');
     }
 
-    const projectCreate = () => {
+    const createProjectButton = () => {
         createProject(title)
         setTitle('')
+        cancelProject()
+        props.history.push('/dashboard');
     }
 
     return (
@@ -74,8 +77,6 @@ function CreateProject(props) {
                 style={{
                     marginTop: '20px',
                     display: 'flex',
-                    // border: '2px black'
-                    // backgroundColor: 'red'
                 }}
             >
                 <TextField
@@ -150,7 +151,7 @@ function CreateProject(props) {
                     variant='contained'
                     color='primary'
                     disabled={!(selectedMembers && tasks && projectDeadline)}
-                    onClick = {projectCreate}
+                    onClick = {createProjectButton}
                 >
                     Create
                 </Button>
@@ -158,7 +159,7 @@ function CreateProject(props) {
                 <Button
                     variant='contained'
                     color='secondary'
-                    onClick={cancelProject}
+                    onClick={cancelProjectButton}
                 >
                     Cancel
                 </Button>

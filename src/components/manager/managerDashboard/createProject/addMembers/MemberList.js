@@ -1,17 +1,12 @@
-import React, {useContext,useEffect} from 'react'
+import React, {useContext} from 'react'
 import ManagerContext from '../../../../../context/manager/ManagerContext'
 import Member from './Member';
 
 function MemberList() {
     const managerContext = useContext(ManagerContext);
     const {
-        
         organizationMembers
     } = managerContext;
-
-    useEffect(() => {
-        console.log('member list')
-    },[organizationMembers])
 
     return (
         <div className='member-container'>
