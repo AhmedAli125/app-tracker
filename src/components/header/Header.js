@@ -33,7 +33,7 @@ function Header() {
         <AppBar position="fixed">
         <Toolbar>
             <Typography variant="h5" className={classes.title}>
-            App Tracker
+                        {user.designation !== 'admin' ? user.organization : 'App Tracker' }
             </Typography>
             <Typography variant="subtitle2" className={classes.userProfile}>
             {`

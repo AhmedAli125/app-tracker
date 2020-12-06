@@ -17,7 +17,7 @@ function AddTask() {
         selectedMembers,
         createTask,
         projectDeadline,
-        editTaskFlag,
+        // editTaskFlag,
         editTask
     } = managerContext;
 
@@ -26,44 +26,26 @@ function AddTask() {
         currentDate
     } = authContext;
 
-    let customState = {
-        title: '',
-        desc: '',
-        developer: null,
-        tester: null,
-        developerDeadline: currentDate(),
-        testerDeadline: currentDate()
-    }
-
-    if (editTaskFlag) {
-        customState.title = editTask.title;
-        customState.desc = editTask.desc;
-        customState.developer = editTask.developer;
-        customState.tester = editTask.tester;
-        customState.developerDeadline = editTask.members.developer.deadline;
-        customState.testerDeadline = editTask.members.tester.deadline;
-    }
-
-    const [title, setTitle] = useState(customState.title);
+    const [title, setTitle] = useState(editTask ? editTask.title : null);
     const changeTitle = e => setTitle(e.target.value);
 
-    const [desc, setDesc] = useState(customState.desc);
+    const [desc, setDesc] = useState(editTask ? editTask.desc : null);
     const changeDesc = e => setDesc(e.target.value);
 
-    const [developer, setDeveloper] = useState(customState.developer);
+    const [developer, setDeveloper] = useState(editTask ? editTask.developer : null);
     const selectDeveloper = (e) => setDeveloper(e.target.value);
 
-    const [tester, setTester] = useState(customState.tester);
+    const [tester, setTester] = useState(editTask ? editTask.tester : null);
     const selectTester = (e) => setTester(e.target.value);
 
-    const [testerDeadline, setTesterDeadline] = useState(customState.testerDeadline);
-    const setTesterDate = e => setTesterDeadline(e.target.value);
     
-    const [developerDeadline, setDeveloperDeadline] = useState(customState.developerDeadline);
+    const [developerDeadline, setDeveloperDeadline] = useState(editTask ? editTask.members.developer.deadline : currentDate());
     const setDeveloperDate = e => {
         setDeveloperDeadline(e.target.value);
         setTesterDeadline(e.target.value);
-    }
+    };
+    const [testerDeadline, setTesterDeadline] = useState(editTask ? editTask.members.tester.deadline : currentDate());
+    const setTesterDate = e => setTesterDeadline(e.target.value);
 
     let taskData = {
         title,
@@ -72,18 +54,28 @@ function AddTask() {
         tester,
         developerDeadline,
         testerDeadline
-    }
+    };
 
     const addTask = () => {
-        createTask(taskData)
-        setTitle('')
-        setDesc('')
-        setDeveloper(null)
-        setTester(null)
-        setDeveloperDeadline(currentDate)
-        setTesterDeadline(currentDate)
-        closeTaskModalHandler()
-    }
+        createTask(taskData);
+        setTitle('');
+        setDesc('');
+        setDeveloper(null);
+        setTester(null);
+        setDeveloperDeadline(currentDate);
+        setTesterDeadline(currentDate);
+        closeTaskModalHandler();
+    };
+    
+    const cancleTask = () => {
+        setTitle('');
+        setDesc('');
+        setDeveloper(null);
+        setTester(null);
+        setDeveloperDeadline(currentDate);
+        setTesterDeadline(currentDate);
+        closeTaskModalHandler();
+    };
 
     return (
         <Modal show={true} clicked={closeTaskModalHandler}>
@@ -100,7 +92,7 @@ function AddTask() {
                         onChange={changeTitle}
                         id="outlined-basic" label="Task Title" variant="outlined"
                         autoComplete='off'
-                        />
+                    />
 
                     <TextField
                         margin='normal'
@@ -112,7 +104,7 @@ function AddTask() {
                         onChange={changeDesc}
                         id="outlined-basic" label="Task Description" variant="outlined"
                         autoComplete='off'
-                        />
+                    />
 
                     <FormControl
                         margin='normal'
@@ -123,17 +115,17 @@ function AddTask() {
                             onChange={selectDeveloper}
                             // displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}
-                            >
+                        >
                             <MenuItem value="">
                                 Select Developer
                             </MenuItem>
                             {selectedMembers ? selectedMembers.map((member) => {
                                 return (
                                     member.designation === 'developer' ?
-                                    <MenuItem
-                                    value={member}
-                                    key={member.key}
-                                    >
+                                        <MenuItem
+                                            value={member}
+                                            key={member.key}
+                                        >
                                             {`${member.firstName} ${member.lastName} `}
                                         </MenuItem> : null
                                 );
@@ -152,8 +144,8 @@ function AddTask() {
                         onChange={setDeveloperDate}
                         InputLabelProps={{
                             shrink: true,
-                        } }
-                        InputProps = {
+                        }}
+                        InputProps={
                             {
                                 inputProps: {
                                     min: currentDate(),
@@ -161,7 +153,7 @@ function AddTask() {
                                 }
                             }
                         }
-                        />
+                    />
 
                     <FormControl
                         margin='normal'
@@ -201,8 +193,8 @@ function AddTask() {
                         onChange={setTesterDate}
                         InputLabelProps={{
                             shrink: true,
-                        } }
-                        InputProps = {
+                        }}
+                        InputProps={
                             {
                                 inputProps: {
                                     min: developerDeadline,
@@ -222,9 +214,9 @@ function AddTask() {
                         >
                             Add
                         </Button>
-                        <Button 
-                            color='secondary' 
-                            onClick={closeTaskModalHandler}
+                        <Button
+                            color='secondary'
+                            onClick={cancleTask}
                         >
                             Cancel
                         </Button>

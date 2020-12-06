@@ -1,20 +1,37 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Task from './task/Task.js';
 import ManagerContext from '../../../context/manager/ManagerContext'
+import UserContext from '../../../context/user/UserContext'
 // import './projectList.css';
 
 function TaskList() {
+    let projectTasks = {};
+    
     const managerContext = useContext(ManagerContext);
-    const {tasks} = managerContext;
+    const {
+        tasks,
+        createProjectFlag
+    } = managerContext;
+
+    const userContext = useContext(UserContext);
+    const {
+        project,
+        openViewTaskModalHandler
+    } = userContext;
+
+        if (createProjectFlag) {
+            projectTasks = {...tasks};
+        } else {
+            projectTasks = {...project.tasks};
+        }
 
     let taskKeys
     let tasksArray = []
     
-    taskKeys = Object.keys(tasks);
-
+    taskKeys = Object.keys(projectTasks);
     taskKeys.forEach(task=>{
-        tasksArray.push(tasks[task])
+        tasksArray.push(projectTasks[task])
     })
 
     return (
@@ -30,7 +47,7 @@ function TaskList() {
                 tasksArray.map(task => {
                     return (
                         <Grid item sm-12 md-4 lg-3 xl-2 key={task.key}>
-                            <Task buttonClicked={()=>{console.log('task clicked')}} task={task} />
+                            <Task buttonClicked={openViewTaskModalHandler} task={task} />
                         </Grid>
                     )
                 })

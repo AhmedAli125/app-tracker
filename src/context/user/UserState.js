@@ -4,7 +4,10 @@ import UserContext from './UserContext'
 import AuthContext from '../auth/AuthContext'
 import Database from '../../config/Database'
 import {
-    GET_PROJECTS
+    GET_PROJECTS,
+    GET_CLICKED_PROJECT,
+    OPEN_EDIT_MEMBER_MODAL,
+    CLOSE_EDIT_MEMBER_MODAL
 } from '../Type'
 
 const UserState = props =>{
@@ -15,11 +18,12 @@ const UserState = props =>{
     } = authContext;
 
     const initialState = {
-        projects: null
+        projects: null,
+        project: null,
+        showViewTaskModal: false
     }
 
-
-    const [state, disptach] = useReducer(UserReducer, initialState);
+    const [state, dispatch] = useReducer(UserReducer, initialState);
 
     const getProjects = () => {
         let projectsArray = []
@@ -31,20 +35,40 @@ const UserState = props =>{
                     .forEach(key => {
                         projectsArray.push(projectsObj[key])
                     })        
-                disptach({type: GET_PROJECTS, payload: projectsArray})
+                dispatch({type: GET_PROJECTS, payload: projectsArray})
 
             })
             .catch(err => console.log(err))
         // console.log(projectsObj);
     }
 
+    const viewProject = (key) => {
+        let project = {}
+        state.projects.filter(value => {
+            return value.key === key ?  project = {...value} : null
+        })
+        // console.log(project);
+        dispatch({type: GET_CLICKED_PROJECT, payload: project})
+    }
 
+    const openViewTaskModalHandler = () => {
+        dispatch({type: OPEN_EDIT_MEMBER_MODAL})
+    }
+    
+    const closeViewTaskModalHandler = () => {
+        dispatch({type: CLOSE_EDIT_MEMBER_MODAL})
+    }
 
     return (
         <UserContext.Provider
             value={ {
                 projects: state.projects,
-                getProjects
+                project: state.project,
+                showViewTaskModal: state.showViewTaskModal,
+                getProjects,
+                viewProject,
+                openViewTaskModalHandler,
+                closeViewTaskModalHandler
             }}
         >
             {props.children}

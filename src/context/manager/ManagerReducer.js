@@ -14,7 +14,6 @@ import {
     SET_PROJECT_DEADLINE,
     DELETE_TASK,
     EDIT_TASK,
-    GET_PROJECTS
 } from '../Type'
 
 export default (state, action) => {
@@ -56,7 +55,8 @@ export default (state, action) => {
             return{
                 ...state,
                 showTaskModal: false,
-                editTaskFlag: false
+                editTask: null
+                // editTaskFlag: false
             }
         case GET_ORGANIZATION_MEMBERS:
             return{
@@ -89,7 +89,8 @@ export default (state, action) => {
         case CREATE_TASK:
             return {
                 ...state,
-                tasks: action.payload
+                tasks: action.payload,
+                editTask: null
             }
         case DELETE_TASK:
             return {
@@ -99,7 +100,7 @@ export default (state, action) => {
         case EDIT_TASK:
             return {
                 ...state,
-                editTaskFlag: true,
+                // editTaskFlag: true,
                 showTaskModal: true,
                 editTask: action.payload
             }

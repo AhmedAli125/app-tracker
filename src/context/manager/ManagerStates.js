@@ -34,7 +34,7 @@ const ManagerStates = props => {
         tasks: null,
         projectKey: null,
         createProjectFlag: false,
-        editTaskFlag: false,
+        // editTaskFlag: false,
         editTask: null
     }
 
@@ -221,6 +221,7 @@ const ManagerStates = props => {
         let project = {
             key: state.projectKey,
             title,
+            isComplete: false,
             createdOn: currentDate(),
             createdBy: user,
             deadline: state.projectDeadline,
@@ -249,7 +250,7 @@ const ManagerStates = props => {
                 tasks: state.tasks,
                 createProjectFlag: state.createProjectFlag,
                 projectDeadline: state.projectDeadline,
-                editTaskFlag: state.editTaskFlag,
+                // editTaskFlag: state.editTaskFlag,
                 editTask: state.editTask,
                 openMemberModalHandler,
                 closeMemberModalHandler,

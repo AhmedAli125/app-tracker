@@ -28,7 +28,8 @@ function ProjectList() {
                 spacing='2'
             >
                 {
-                    projects ? projects.map(project => {
+                    projects ?
+                        projects[0] !== 0 && projects.map(project => {
                         return (
                             <Grid key={ project.key } item sm-12 md-4 lg-3 xl-2>
                                 <Project project={ project }/>

@@ -8,6 +8,7 @@ import ManagerDashboard from './managerDashboard/ManagerDashboard'
 import Header from '../header/Header';
 import CreateProject from './managerDashboard/createProject/CreateProject';
 import ManagerStates from '../../context/manager/ManagerStates';
+import TaskDashboard from '../ui/projects/project/TaskDashboard';
 import './manager.css';
 
 function Manager() {
@@ -23,6 +24,7 @@ function Manager() {
                     <Switch>
                         <Route path={`${path}`} exact component={ManagerDashboard} />
                         <Route path={`${path}/create-project`} component={CreateProject} />
+                        <Route path={`${path}/:id`} component={TaskDashboard} />
                     </Switch>
                 </ManagerStates>
             </div>
