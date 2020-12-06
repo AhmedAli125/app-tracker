@@ -20,12 +20,14 @@ export default (state, action) => {
         case OPEN_EDIT_MEMBER_MODAL:
             return {
                 ...state,
-                showViewTaskModal: true
+                showViewTaskModal: true,
+                selectedTask: action.payload
             }
-        case CLOSE_EDIT_MEMBER_MODAL:
+            case CLOSE_EDIT_MEMBER_MODAL:
             return {
                 ...state,
-                showViewTaskModal: false
+                showViewTaskModal: false,
+                selectedTask: null
             }
         default:
             return state;

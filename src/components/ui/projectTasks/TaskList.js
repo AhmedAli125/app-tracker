@@ -34,6 +34,10 @@ function TaskList() {
         tasksArray.push(projectTasks[task])
     })
 
+    const viewTask = (data) => {
+        openViewTaskModalHandler(data)
+    }
+
     return (
         <Grid
             style={{
@@ -47,7 +51,7 @@ function TaskList() {
                 tasksArray.map(task => {
                     return (
                         <Grid item sm-12 md-4 lg-3 xl-2 key={task.key}>
-                            <Task buttonClicked={openViewTaskModalHandler} task={task} />
+                            <Task buttonClicked={()=>viewTask(task)} task={task} />
                         </Grid>
                     )
                 })

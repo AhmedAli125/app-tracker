@@ -107,7 +107,6 @@ function Task({buttonClicked, task}) {
           } } />
           <DeleteButton clicked={ () => {
             deleteTask(task.key)
-            // console.log('click delete')
           } } />
         </div>
         }

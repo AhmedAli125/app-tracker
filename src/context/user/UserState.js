@@ -20,7 +20,8 @@ const UserState = props =>{
     const initialState = {
         projects: null,
         project: null,
-        showViewTaskModal: false
+        showViewTaskModal: false,
+        selectedTask: null
     }
 
     const [state, dispatch] = useReducer(UserReducer, initialState);
@@ -51,8 +52,8 @@ const UserState = props =>{
         dispatch({type: GET_CLICKED_PROJECT, payload: project})
     }
 
-    const openViewTaskModalHandler = () => {
-        dispatch({type: OPEN_EDIT_MEMBER_MODAL})
+    const openViewTaskModalHandler = (data) => {
+        dispatch({type: OPEN_EDIT_MEMBER_MODAL, payload: data})
     }
     
     const closeViewTaskModalHandler = () => {
@@ -65,6 +66,7 @@ const UserState = props =>{
                 projects: state.projects,
                 project: state.project,
                 showViewTaskModal: state.showViewTaskModal,
+                selectedTask: state.selectedTask,
                 getProjects,
                 viewProject,
                 openViewTaskModalHandler,

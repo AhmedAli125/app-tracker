@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Modal from '../../../modal/ModalWindow';
+import AuthContext from '../../../../../context/auth/AuthContext';
 import UserContext from '../../../../../context/user/UserContext';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -24,103 +25,138 @@ function ViewTask() {
 
     const classes = useStyles();
 
+    const authContext = useContext(AuthContext)
+    const {
+        user
+    } = authContext
+
     const userContext = useContext(UserContext)
     const {
-        showViewTaskModal,
-        closeViewTaskModalHandler
+        closeViewTaskModalHandler,
+        selectedTask
     } = userContext
 
     return (
         <Modal show={true} clicked={closeViewTaskModalHandler}>
             <div className={classes.root}>
                 <Typography variant='h6' component='h2'>
-                    Title
+                    {selectedTask.title}
                 </Typography>
-                <Typography variant='p' component='p' align='justify'>
-                    loremsjdbsdjkbvsdjkbvsdjkbvsdjkvb sdjbvjksd jhsd vjhs vjhsd vsjhd vjhvsjhdbvsdjhbv
+                <Typography variant='body1' component='p' align='justify'>
+                    {selectedTask.desc}
                 </Typography>
-                <Typography variant='subtitle2'>
-                    Developer Deadline: 10-03-2020
-                </Typography>
-                <Typography variant='subtitle2'>
-                    Tester Deadline: 10-03-2020
-                </Typography>
-                <div style={{
-                    maxHeight: '31vh',
-                    overflow: 'auto'
-                }}>
-                    <Paper
-                        variant='outlined'
-                        style={{
-                            width: '90%',
-                            margin: '5px auto',
-                            backgroundColor: '#F5F5F5'
-                        }}>
-                        <p
-                            style={{
-                                width: '90%',
-                                margin: '0 auto',
-                                padding: '10px'
-                            }}
-                        >
-                            some text here
-                        </p>
-                    </Paper>
-                </div>
-                <div className='developerClass'>
-                    <div style={{ display: 'flex' }}>
-                        <span style={{ flexGrow: 1 }}></span>
-                        <div>
+                {
+                    // 'developer' !== 'tester' &&
+                    user.designation !== 'tester' &&
+                    <Typography variant='subtitle2'>
+                        {
+                            `${user.designation === 'manager' ?
+                                'Developer' : 'Task'} Deadline: ${selectedTask.members.developer.deadline}`
+                        }
+                    </Typography>
+                }
+                {
+                    // 'tester' !== 'developer' &&
+                    user.designation !== 'developer' &&
+                    <Typography variant='subtitle2'>
+                        {
+                            `${user.designation === 'manager' ?
+                                'Tester' : 'Task'} Deadline: ${selectedTask.members.tester.deadline}`
+                        }
+                    </Typography>
+                }
+                <div
+                    style={{
+                        maxHeight: '31vh',
+                        overflow: 'auto'
+                    }}
+                >
+                    {
+                        selectedTask.taskStatus.issue.comment.map(msg => {
+                            return (
+                                <Paper
+                                    variant='outlined'
+                                    style={{
+                                        width: '90%',
+                                        margin: '5px auto',
+                                        backgroundColor: '#F5F5F5'
+                                    }}>
+                                    <p
+                                        style={{
+                                            width: '90%',
+                                            margin: '0 auto',
+                                            padding: '10px'
+                                        }}
+                                    >
+                                        {msg}
+                                    </p>
+                                </Paper>        
+                            )
+                        })
+                    }
 
-                            <Button
-                                variant='contained'
-                                color='primary'
-                                size='small'
-                                startIcon={<CheckCircleIcon />}
-                                style={{ marginLeft: '10px' }}
-                            >
-                                Coded
-                            </Button>
+                </div>
+                {
+                    user.designation === 'developer' &&
+                    // 'developer' === 'developer' &&
+                    <div className='developerClass'>
+                        <div style={{ display: 'flex' }}>
+                            <span style={{ flexGrow: 1 }}></span>
+                            <div>
+                                <Button
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
+                                    startIcon={<CheckCircleIcon />}
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    Coded
+                                </Button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className='testerClass'>
-                    <TextField
-                        margin='normal'
-                        multiline={true}
-                        rows='3'
-                        fullWidth={true}
-                        // value={desc}
-                        placeholder="Enter Bug Details"
-                        // onChange={changeDesc}
-                        id="outlined-basic"
-                        label="Report Bug"
-                        variant="outlined"
-                        autoComplete='off'
-                    />
-                    <div style={{ display: 'flex' }}>
-                        <span style={{ flexGrow: 1 }}></span>
-                        <div>
-                            <Button
-                                variant='contained'
-                                color='secondary'
-                                size='small'
-                                startIcon={<ReportProblemIcon />}
-                            >
-                                Report
+                }
+                {
+                    user.designation === 'tester' &&
+                    // 'tester === 'tester' &&
+                    <div className='testerClass'>
+                        <TextField
+                            margin='normal'
+                            multiline={true}
+                            rows='3'
+                            fullWidth={true}
+                            // value={desc}
+                            placeholder="Enter Bug Details"
+                            // onChange={changeDesc}
+                            id="outlined-basic"
+                            label="Report Bug"
+                            variant="outlined"
+                            autoComplete='off'
+                        />
+                        <div style={{ display: 'flex' }}>
+                            <span style={{ flexGrow: 1 }}></span>
+                            <div>
+                                <Button
+                                    variant='contained'
+                                    color='secondary'
+                                    size='small'
+                                    startIcon={<ReportProblemIcon />}
+                                >
+                                    Report
+                                </Button>
+                                <Button
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
+                                    startIcon={<CheckCircleIcon />}
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    Tested
                             </Button>
-                            <Button
-                                variant='contained'
-                                color='primary'
-                                size='small'
-                                startIcon={<CheckCircleIcon />}
-                                style={{ marginLeft: '10px' }}
-                            >
-                                Tested
-                          </Button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
                 <div
                     style={{
                         width: '98%',
