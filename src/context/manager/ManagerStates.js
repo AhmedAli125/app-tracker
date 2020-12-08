@@ -1,8 +1,8 @@
-import React, { useContext, useReducer } from 'react'
-import ManagerContext from './ManagerContext'
-import ManagerReducer from './ManagerReducer'
-import AuthContext from '../auth/AuthContext'
-import Database from '../../config/Database'
+import React, { useContext, useReducer } from 'react';
+import ManagerContext from './ManagerContext';
+import ManagerReducer from './ManagerReducer';
+import AuthContext from '../auth/AuthContext';
+import Database from '../../config/Database';
 // axios
 //firebase
 import {
@@ -21,12 +21,12 @@ import {
     GENERATE_PROJECT_KEY,
     DELETE_TASK,
     EDIT_TASK,
-} from '../Type'
+} from '../Type';
 
 const ManagerStates = props => {
-        
+
     const initialState = {
-        showAddMemberModal : false,
+        showAddMemberModal: false,
         showTaskModal: false,
         organizationMembers: null,
         selectedMembers: null,
@@ -36,53 +36,54 @@ const ManagerStates = props => {
         createProjectFlag: false,
         // editTaskFlag: false,
         editTask: null
-    }
+    };
 
-    const authContext = useContext(AuthContext)
+    const authContext = useContext(AuthContext);
     const {
         user,
         currentDate
     } = authContext;
-    
-    const [state, dispatch] = useReducer(ManagerReducer, initialState)
+
+    const [state, dispatch] = useReducer(ManagerReducer, initialState);
 
     const openMemberModalHandler = () => {
-        dispatch({type: OPEN_MEMBER_MODAL});
-    }
+        dispatch({ type: OPEN_MEMBER_MODAL });
+    };
 
-    const closeMemberModalHandler =  () => {
-        dispatch({type:CLOSE_MEMBER_MODAL});
-    }
+    const closeMemberModalHandler = () => {
+        dispatch({ type: CLOSE_MEMBER_MODAL });
+    };
 
-    const openTaskModalHandler = () =>{
-        dispatch({type:OPEN_TASK_MODAL});
-    }
+    const openTaskModalHandler = () => {
+        dispatch({ type: OPEN_TASK_MODAL });
+    };
 
-    const closeTaskModalHandler = () =>{
-        dispatch({type:CLOSE_TASK_MODAL});
-    }
+    const closeTaskModalHandler = () => {
+        dispatch({ type: CLOSE_TASK_MODAL });
+    };
 
-    const getOrganizationMembers = () => {  
+    const getOrganizationMembers = () => {
         // console.log('getOrganizationMembers run')
         let members = [];
         let users;
         Database.database().ref(`/registered-users`).once('value')
-        .then(res=>{
-            users = {...res.val()}
-            for(let uid in users){
-                if(users[uid].softwareHouseKey === user.softwareHouseKey){
-                    if(users[uid].designation!=='admin' && users[uid].designation!=='manager'){
-                        members.push({
-                            ...users[uid],
-                            isAssigned: false
-                        })
+            .then(res => {
+                users = { ...res.val() };
+                for (let uid in users) {
+                    if (users[uid].softwareHouseKey === user.softwareHouseKey) {
+                        if (users[uid].designation !== 'admin' && users[uid].designation !== 'manager') {
+                            members.push({
+                                ...users[uid],
+                                isAssigned: false,
+                                error: false
+                            });
+                        }
                     }
                 }
-            }
-            dispatch({type:GET_ORGANIZATION_MEMBERS, payload:members})
-        })
-        .catch(err=>console.log(err))
-    }
+                dispatch({ type: GET_ORGANIZATION_MEMBERS, payload: members });
+            })
+            .catch(err => console.log(err));
+    };
 
     const handleAssignedMember = (data) => {
         // console.log(`handleAssignedMember run`)
@@ -90,16 +91,16 @@ const ManagerStates = props => {
         let member; // index of member
         prevState.filter((user, index) => {
             // user.key === data.key  ? index : null
-            return (user.key === data.key ? member = index : null)
-        })
+            return (user.key === data.key ? member = index : null);
+        });
 
         prevState[member] = {   //index passed to array
             ...prevState[member],
             isAssigned: !prevState[member].isAssigned
-        }
+        };
 
-        dispatch({ type: SET_ASSIGNED_STATUS, payload: prevState })
-    }
+        dispatch({ type: SET_ASSIGNED_STATUS, payload: prevState });
+    };
 
     const getSelectedmembers = () => {
         // console.log(selected)
@@ -111,31 +112,31 @@ const ManagerStates = props => {
         });
 
         // console.log(selectedMembers)
-        
-        dispatch({type:SELECTED_MEMBERS, payload:selectedMembers})
-    }
+
+        dispatch({ type: SELECTED_MEMBERS, payload: selectedMembers });
+    };
 
     const clearSelectedMember = () => {
         // console.log(`clearSelectedMember run`)
-        let prevMembers = [...state.organizationMembers]
-        let clearMembers = []
+        let prevMembers = [...state.organizationMembers];
+        let clearMembers = [];
         prevMembers.forEach(member => {
             if (member.isAssigned) {
-                return(
-                    clearMembers.push({...member, isAssigned:false})
-                )
+                return (
+                    clearMembers.push({ ...member, isAssigned: false })
+                );
             } else {
-                return clearMembers.push(member)
+                return clearMembers.push(member);
             }
-        })
+        });
 
-        dispatch({ type: CLEAR_SELECTED_MEMBERS, payload:clearMembers})
-    }
+        dispatch({ type: CLEAR_SELECTED_MEMBERS, payload: clearMembers });
+    };
 
-    const generateProjectKey = () =>{
+    const generateProjectKey = () => {
         let projectKey = Database.database().ref(`/organizations/${user.softwareHouseKey}/projects`).push().key;
-        dispatch({type:GENERATE_PROJECT_KEY, payload:projectKey})
-    }
+        dispatch({ type: GENERATE_PROJECT_KEY, payload: projectKey });
+    };
 
     const createTask = (data) => {
 
@@ -148,7 +149,7 @@ const ManagerStates = props => {
             tester,
             developerDeadline,
             testerDeadline
-        } = data
+        } = data;
 
         let task = {
             title,
@@ -182,41 +183,41 @@ const ManagerStates = props => {
             }
         };
 
-        let updatedState = {...state.tasks, [taskKey]: task}
+        let updatedState = { ...state.tasks, [taskKey]: task };
 
-        dispatch({type: CREATE_TASK, payload: updatedState})
-    }
+        dispatch({ type: CREATE_TASK, payload: updatedState });
+    };
 
     const editTaskHandler = (key) => {
         // console.log(key)
         let prevTasks = { ...state.tasks };
         // console.log(prevTasks[key])
-        let editTask = prevTasks[key]
+        let editTask = prevTasks[key];
         // console.log(editTask)
-        dispatch({type: EDIT_TASK, payload: editTask })
-    }
+        dispatch({ type: EDIT_TASK, payload: editTask });
+    };
 
-    const deleteTask = (key) =>{
+    const deleteTask = (key) => {
         let newTasks = { ...state.tasks };
         // console.log(newTasks)
-        delete newTasks[key]
+        delete newTasks[key];
         // console.log(newTasks)
-        dispatch({type:DELETE_TASK, payload:newTasks})
-    }
+        dispatch({ type: DELETE_TASK, payload: newTasks });
+    };
 
     const cancelProject = () => {
-        dispatch({type:CANCEL_PROJECT})        
-    }
+        dispatch({ type: CANCEL_PROJECT });
+    };
 
     const setProjectDeadline = (deadline) => {
-        dispatch({type:SET_PROJECT_DEADLINE, payload:deadline})
-    }
+        dispatch({ type: SET_PROJECT_DEADLINE, payload: deadline });
+    };
 
     const createProject = (title) => {
 
         let selectedMembers = state.selectedMembers;
-        let members = {}
-        selectedMembers.forEach(member => members = {...members, [member.key]: member})
+        let members = {};
+        selectedMembers.forEach(member => members = { ...members, [member.key]: member });
 
         let project = {
             key: state.projectKey,
@@ -227,32 +228,32 @@ const ManagerStates = props => {
             deadline: state.projectDeadline,
             members,
             tasks: state.tasks
-        }
+        };
 
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set(project)
             .then(res => {
                 Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/0`).remove()
                     .then(() => {
-                        dispatch({type:CREATE_PROJECT})
+                        dispatch({ type: CREATE_PROJECT });
                     })
-                    .catch(err=>console.log(err))
+                    .catch(err => console.log(err));
             })
-            .catch(err=>console.log(err))
-    }
+            .catch(err => console.log(err));
+    };
 
     const objectToArray = (obj) => {
         let convertedArray = [];
-        if (obj !== null) {            
+        if (obj !== null) {
             Object.keys(obj).forEach(item => {
-                convertedArray.push(obj[item])
-            })
+                convertedArray.push(obj[item]);
+            });
         }
-        return convertedArray
-    }
+        return convertedArray;
+    };
 
     return (
         <ManagerContext.Provider
-            value = {{
+            value={{
                 showAddMemberModal: state.showAddMemberModal,
                 showTaskModal: state.showTaskModal,
                 organizationMembers: state.organizationMembers,
@@ -282,7 +283,7 @@ const ManagerStates = props => {
         >
             {props.children}
         </ManagerContext.Provider>
-    )
-}
+    );
+};
 
-export default ManagerStates
+export default ManagerStates;
