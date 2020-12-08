@@ -46,7 +46,8 @@ function ViewTask() {
                     {selectedTask.desc}
                 </Typography>
                 {
-                    // 'developer' !== 'tester' &&
+                    // 'developer' === 'developer' &&
+                    // 'tester' !== 'tester' &&
                     user.designation !== 'tester' &&
                     <Typography variant='subtitle2'>
                         {
@@ -56,7 +57,8 @@ function ViewTask() {
                     </Typography>
                 }
                 {
-                    // 'tester' !== 'developer' &&
+                    // 'tester' === 'tester' &&
+                    // 'developer' !== 'developer' &&
                     user.designation !== 'developer' &&
                     <Typography variant='subtitle2'>
                         {
@@ -118,7 +120,7 @@ function ViewTask() {
                 }
                 {
                     user.designation === 'tester' &&
-                    // 'tester === 'tester' &&
+                    // 'tester' === 'tester' &&
                     <div className='testerClass'>
                         <TextField
                             margin='normal'

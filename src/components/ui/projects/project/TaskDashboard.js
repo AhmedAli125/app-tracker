@@ -8,6 +8,7 @@ import {
     Button
 } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Progress from '../../progressBar/Progress';
 
 function TaskDashboard(props) {
     const userContext = useContext(UserContext);
@@ -25,10 +26,8 @@ function TaskDashboard(props) {
                         {project.title}
                     </Typography>
                 </div>
-                <div>
-                    <Typography variant='h6' component='h2' color='secondary'>
-                        25% Remaining
-                    </Typography>
+                <div style={ { width: '20%' } }>
+                    <Progress />
                 </div>
             </div>
             <div style={{ height: '75vh' }}>

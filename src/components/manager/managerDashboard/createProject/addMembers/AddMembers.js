@@ -12,7 +12,7 @@ function AddMembers() {
     const {
         closeMemberModalHandler,
         clearSelectedMember,
-        getSelectedmembers
+        getSelectedmembers,
     } = managerContext;
 
     const addMembers = () => {

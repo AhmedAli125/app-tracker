@@ -14,6 +14,7 @@ import {
     SET_PROJECT_DEADLINE,
     DELETE_TASK,
     EDIT_TASK,
+    REMOVE_MEMBER_ERROR
 } from '../Type'
 
 export default (state, action) => {
@@ -108,6 +109,11 @@ export default (state, action) => {
             return{
                 ...state,
                 projectDeadline: action.payload
+            }
+        case REMOVE_MEMBER_ERROR:
+            return {
+                ...state,
+                organizationMembers: action.payload
             }
         default:    
             return state;

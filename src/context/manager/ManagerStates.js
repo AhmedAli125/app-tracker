@@ -20,7 +20,8 @@ import {
     CREATE_TASK,
     GENERATE_PROJECT_KEY,
     DELETE_TASK,
-    EDIT_TASK
+    EDIT_TASK,
+    REMOVE_MEMBER_ERROR
 } from '../Type'
 
 const ManagerStates = props => {
@@ -74,7 +75,8 @@ const ManagerStates = props => {
                     if(users[uid].designation!=='admin' && users[uid].designation!=='manager'){
                         members.push({
                             ...users[uid],
-                            isAssigned: false
+                            isAssigned: false,
+                            error: false
                         })
                     }
                 }
@@ -98,7 +100,7 @@ const ManagerStates = props => {
             isAssigned: !prevState[member].isAssigned
         }
 
-        dispatch({ type: SET_ASSIGNED_STATUS, payload: prevState})
+        dispatch({ type: SET_ASSIGNED_STATUS, payload: prevState })
     }
 
     const getSelectedmembers = () => {
@@ -240,6 +242,49 @@ const ManagerStates = props => {
             .catch(err=>console.log(err))
     }
 
+    const objectToArray = (obj) => {
+        let convertedArray = [];
+        if (obj !== null) {            
+            Object.keys(obj).forEach(item => {
+                convertedArray.push(obj[item])
+            })
+        }
+        return convertedArray
+    }
+
+    const checkTaskAssigned = (data) => {
+        let taskArray = objectToArray(state.tasks)
+        let designation = data.designation;
+        let key = data.key;
+        let newState;
+        let flag = false;
+
+        for (let task = 0; task < taskArray.length; task++) {
+            if (taskArray[task].members[designation].key === key) {
+                // console.log(key)
+                newState = state.organizationMembers.map(member => {
+                    if (member.key === key) {
+                        // console.log('error true')
+                        flag = true;
+                        return {...member, error:true}
+                    } else return member
+                })
+                break;
+            } else {
+                newState = state.organizationMembers.map(member => {
+                    return {...member, error: false}
+                })
+            } 
+        }
+
+        dispatch({ type: REMOVE_MEMBER_ERROR, payload: newState })
+        return flag;
+
+        // console.log(state.organizationMembers)
+
+        // dispatch({ type: REMOVE_MEMBER_ERROR, payload: newState })
+    }
+
     return (
         <ManagerContext.Provider
             value = {{
@@ -266,7 +311,9 @@ const ManagerStates = props => {
                 createProject,
                 cancelProject,
                 deleteTask,
-                editTaskHandler
+                editTaskHandler,
+                objectToArray,
+                checkTaskAssigned
             }}
         >
             {props.children}

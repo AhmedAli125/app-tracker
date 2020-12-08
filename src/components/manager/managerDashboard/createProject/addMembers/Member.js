@@ -9,16 +9,39 @@ function Member({data}) {
     const managerContext = useContext(ManagerContext)
     const {
         handleAssignedMember,
+        checkTaskAssigned,
     } = managerContext;
     
     useEffect(() => {
    
-    }, [data.isAssigned])
+    }, [data.isAssigned, data.error])
 
+    // console.log(data)
     const [checked, setChecked] = useState(data.isAssigned);
     const handleChange = (e) => {
-        setChecked(e.target.checked);
-        handleAssignedMember(data)
+
+        // console.log(checkTaskAssigned(data))
+        
+        // if (e.target.checked === false) {
+        if (checkTaskAssigned(data)) {
+            // checkTaskAssigned(data)
+            // console.log(organizationMembers)
+            // console.log(data.error)
+            if (data.error) {
+                // console.log(data.error)
+
+                // setChecked(e.target.checked);
+                // handleAssignedMember(data)
+            } else {
+                setChecked(e.target.checked);
+                // handleAssignedMember(data)
+            }
+        } else {
+            setChecked(e.target.checked);
+            handleAssignedMember(data)
+        }
+        // console.log(organizationMembers)
+
     }
 
     if (checked !== data.isAssigned) {
@@ -32,9 +55,21 @@ function Member({data}) {
                     <Typography variant='body1'>
                         {`${data.firstName} ${data.lastName}`}
                     </Typography>
-                    <Typography variant='body2'>
-                        {data.designation}
-                    </Typography>
+                    <div
+                        style={{display: 'flex', flexDirection:'row'}}
+                    >
+                        <div style={{width:'120px'}}>
+                            <Typography variant='body2' >
+                                { data.designation }
+                            </Typography>
+                        </div>
+                        {
+                          (data.error) &&           
+                            <span style={{ color: '#fa0057' }}>
+                                Already assigned
+                            </span>
+                        }
+                    </div>
                 </div>
                 <Checkbox
                     checked={checked}
