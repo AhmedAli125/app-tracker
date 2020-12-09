@@ -241,15 +241,7 @@ const ManagerStates = props => {
             .catch(err => console.log(err));
     };
 
-    const objectToArray = (obj) => {
-        let convertedArray = [];
-        if (obj !== null) {
-            Object.keys(obj).forEach(item => {
-                convertedArray.push(obj[item]);
-            });
-        }
-        return convertedArray;
-    };
+   
 
     return (
         <ManagerContext.Provider
@@ -277,8 +269,7 @@ const ManagerStates = props => {
                 createProject,
                 cancelProject,
                 deleteTask,
-                editTaskHandler,
-                objectToArray,
+                editTaskHandler
             }}
         >
             {props.children}

@@ -1,18 +1,35 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import UserContext from '../../../context/user/UserContext'
 
 function Progress() {
-  let progress = 10;
+
+  const userContext = useContext(UserContext)
+  const {
+    calculatePercentage,
+    projectPercentage
+  } = userContext;
+
+  useEffect(() => {
+    calculatePercentage()
+  }, [])
   return (
     <div>
       <Box display="flex" alignItems="center">
       <Box width="100%" mr={1}>
-        <LinearProgress variant="determinate" value={progress} />
+        < LinearProgress variant = "determinate" value = {projectPercentage}
+        />
       </Box>
       <Box minWidth={35}>
-        <Typography variant="body2" color="textSecondary">{`${progress}%`}</Typography>
+          {/* selectedTask */}
+        <Typography variant="subtitle2" color={
+            projectPercentage < 25 ?
+              'secondary' :
+              'primary'
+          }
+        >{ `${projectPercentage}%` }</Typography>
       </Box>
     </Box>
     </div>

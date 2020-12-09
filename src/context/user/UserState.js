@@ -7,21 +7,24 @@ import {
     GET_PROJECTS,
     GET_CLICKED_PROJECT,
     OPEN_EDIT_MEMBER_MODAL,
-    CLOSE_EDIT_MEMBER_MODAL
+    CLOSE_EDIT_MEMBER_MODAL,
+    SET_PROJECT_PERCENTAGE
 } from '../Type'
 
 const UserState = props =>{
     const authContext = useContext(AuthContext)
 
     const {
-        user
+        user,
+        objectToArray
     } = authContext;
 
     const initialState = {
         projects: null,
         project: null,
         showViewTaskModal: false,
-        selectedTask: null
+        selectedTask: null,
+        projectPercentage: null
     }
 
     const [state, dispatch] = useReducer(UserReducer, initialState);
@@ -60,6 +63,35 @@ const UserState = props =>{
         dispatch({type: CLOSE_EDIT_MEMBER_MODAL})
     }
 
+    const countTaskStatus = (arr) =>{
+        let count = 0;
+        arr.forEach(task => {
+            if (task.taskStatus.developerStatus.isComplete) {
+                count = count + 0.5
+            }
+            if (task.taskStatus.testerStatus.isComplete) {
+                count = count + 0.5;
+            }
+        })
+
+        return count
+    }
+
+    const calculatePercentage = () => {
+        let tasksArray = objectToArray(state.project.tasks)
+        let taskCompletedCount = countTaskStatus(tasksArray)
+        let totalTasks = tasksArray.length;
+        // console.log(taskCompletedCount, totalTasks)
+        let percentage = (taskCompletedCount / totalTasks) * 100;
+        console.log(percentage)
+        dispatch({
+            type: SET_PROJECT_PERCENTAGE,
+            payload: percentage
+        })
+    }
+
+    
+
     return (
         <UserContext.Provider
             value={ {
@@ -67,10 +99,12 @@ const UserState = props =>{
                 project: state.project,
                 showViewTaskModal: state.showViewTaskModal,
                 selectedTask: state.selectedTask,
+                projectPercentage: state.projectPercentage,
                 getProjects,
                 viewProject,
                 openViewTaskModalHandler,
-                closeViewTaskModalHandler
+                closeViewTaskModalHandler,
+                calculatePercentage
             }}
         >
             {props.children}

@@ -15,7 +15,6 @@ function TaskDashboard(props) {
     const {
         project,
         showViewTaskModal,
-        selectedTask
     } = userContext;
 
     return (

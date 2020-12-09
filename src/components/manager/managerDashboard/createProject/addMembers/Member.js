@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import ManagerContext from '../../../../../context/manager/ManagerContext';
+import AuthContext from '../../../../../context/auth/AuthContext'
 import './addMember.css';
 
 function Member({ data }) {
@@ -10,9 +11,14 @@ function Member({ data }) {
     const {
         handleAssignedMember,
         tasks,
-        selectedMembers,
-        objectToArray
+        selectedMembers
     } = managerContext;
+
+    const authContext = useContext(AuthContext)
+
+    const {
+        objectToArray
+    } = authContext
 
     // let selected = false;
 

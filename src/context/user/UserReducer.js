@@ -2,7 +2,8 @@ import {
     GET_PROJECTS,
     GET_CLICKED_PROJECT,
     OPEN_EDIT_MEMBER_MODAL,
-    CLOSE_EDIT_MEMBER_MODAL
+    CLOSE_EDIT_MEMBER_MODAL,
+    SET_PROJECT_PERCENTAGE
 } from '../Type'
 
 export default (state, action) => {
@@ -28,6 +29,11 @@ export default (state, action) => {
                 ...state,
                 showViewTaskModal: false,
                 selectedTask: null
+            }
+        case SET_PROJECT_PERCENTAGE:
+            return {
+                ...state,
+                projectPercentage: action.payload
             }
         default:
             return state;

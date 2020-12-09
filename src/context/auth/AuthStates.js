@@ -143,6 +143,15 @@ const AuthStates = props => {
 
         })
     }
+     const objectToArray = (obj) => {
+         let convertedArray = [];
+         if (obj !== null) {
+             Object.keys(obj).forEach(item => {
+                 convertedArray.push(obj[item]);
+             });
+         }
+         return convertedArray;
+     };
 
     return (
         <AuthContext.Provider
@@ -154,7 +163,8 @@ const AuthStates = props => {
                 getUserData,
                 userLogOut,
                 registerUser,
-                setUserData
+                setUserData,
+                objectToArray
             }}
         >
             {props.children}
