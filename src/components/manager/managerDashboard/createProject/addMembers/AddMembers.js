@@ -13,6 +13,7 @@ function AddMembers() {
         closeMemberModalHandler,
         clearSelectedMember,
         getSelectedmembers,
+        tasks
     } = managerContext;
 
     const addMembers = () => {
@@ -36,7 +37,12 @@ function AddMembers() {
                     </Button>
                     <Button
                         color='default'
-                        onClick={clearSelectedMember}
+                        onClick={ clearSelectedMember }
+                        disabled={
+                            tasks !== null ?
+                                (Object.keys(tasks).length == 0 ? false : true) :
+                                false
+                        }
                     >
                         Clear
                     </Button>

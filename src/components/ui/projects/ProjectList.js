@@ -2,6 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import UserContext from '../../../context/user/UserContext'
 import Grid from '@material-ui/core/Grid';
 import Project from './project/Project';
+import CircularProgress from '../../ui/circularPrgress/CircularProgress'
 import './projectList.css';
 
 function ProjectList() {
@@ -35,7 +36,7 @@ function ProjectList() {
                                 <Project project={ project }/>
                             </Grid>
                         )
-                    }) : null
+                    }) : <CircularProgress />
                 }
             </Grid>
         </div>

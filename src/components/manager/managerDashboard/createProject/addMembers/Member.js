@@ -21,6 +21,7 @@ function Member({ data }) {
     } = authContext
 
     // let selected = false;
+    const [selected, setSelected] = useState(false)
 
     // useEffect(() => {
     //     console.log('useEffect run')
@@ -33,9 +34,22 @@ function Member({ data }) {
     //     }
 
     // })
+    useEffect(() => {
+        // console.log('effect run')
+        setSelected(false)
+        if (selectedMembers) {            
+            selectedMembers.forEach(member => {
+                if (member.key === data.key) {
+                    // selected = true
+                    setSelected(true)
+                    // console.log('found')
+                }
+        })
+        }
+        console.log(selected)
+    })
 
     // console.log('condition')
-    // console.log(test)
 
     // const [checked, setChecked] = useState(selectedMembers ? false : selected);
 
@@ -46,7 +60,7 @@ function Member({ data }) {
         if (checkTaskAssigned(data)) {
             setError(true)
         } else {
-        setChecked(e.target.checked);
+            setChecked(e.target.checked);
             handleAssignedMember(data);
             setError(false)
         }
@@ -56,7 +70,24 @@ function Member({ data }) {
 
     if (checked !== data.isAssigned) {
         setChecked(data.isAssigned);
+                
+                // if (selectedMembers) {
+                //     selectedMembers.forEach(member => {
+                //         if (member.key === data.key) {
+                //             // selected = true
+                //             setSelected(true)
+                //             // console.log('found')
+                //         } else {
+                //             setSelected(false)
+
+                //         }
+                //     })
+                // }
     }
+
+    // if (checked !== data.isAssigned) {
+    //     setChecked(selected);
+    // }
 
     const checkTaskAssigned = (data) => {
         let taskArray = objectToArray(tasks);

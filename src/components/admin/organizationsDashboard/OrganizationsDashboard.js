@@ -11,7 +11,6 @@ function OrganizationsDashboard() {
     const {
         showSoftwareHouseModal,
         filterOrganizations,
-        filteredOrganizations,
         clearFilter
     } = adminContext;
 
