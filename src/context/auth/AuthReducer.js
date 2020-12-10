@@ -1,7 +1,8 @@
 import {
     SET_USER_DATA,
     USER_LOG_OUT,
-    USER_SIGN_UP
+    SHOW_PROFILE_FLAG,
+    CLOSE_PROFILE_FLAG
 } from '../Type';
 
 export default (state, action) => {
@@ -19,7 +20,17 @@ export default (state, action) => {
                 user: {},
                 isLoggedIn: false
             }
-
+        
+        case SHOW_PROFILE_FLAG:
+            return {
+                ...state,
+                profileFlag: true
+            }
+        case CLOSE_PROFILE_FLAG:
+            return {
+                ...state,
+                profileFlag: false
+            }
         default:
             return state
     }

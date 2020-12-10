@@ -3,7 +3,6 @@ import ManagerContext from '../../../context/manager/ManagerContext'
 import { Link, useRouteMatch } from 'react-router-dom';
 import AddButton from '../../ui/button/addButton/AddButton';
 import ProjectList from '../../ui/projects/ProjectList';
-import ViewTask from '../../ui/projectTasks/task/viewTask/ViewTask';
 
 function ManagerDashboard() {
 

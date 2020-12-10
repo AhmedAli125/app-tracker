@@ -20,13 +20,11 @@ function Manager() {
         <>
             <Header />
             <div className='dashboard-container'>
-                <ManagerStates>
-                    <Switch>
-                        <Route path={`${path}`} exact component={ManagerDashboard} />
-                        <Route path={`${path}/create-project`} component={CreateProject} />
-                        <Route path={`${path}/:id`} component={TaskDashboard} />
-                    </Switch>
-                </ManagerStates>
+                <Switch>
+                    <Route path={`${path}`} exact component={ManagerDashboard} />
+                    <Route path={`${path}/create-project`} component={CreateProject} />
+                    <Route path={`${path}/:id`} component={TaskDashboard} />
+                </Switch>
             </div>
         </>
     );

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Modal from '../../../modal/ModalWindow';
 import AuthContext from '../../../../../context/auth/AuthContext';
 import UserContext from '../../../../../context/user/UserContext';
@@ -7,12 +7,13 @@ import {
     Typography,
     Button,
     TextField,
-    Paper
+    Paper,
+    Checkbox
 } from '@material-ui/core';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
-
+import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 
 function ViewTask() {
     const useStyles = makeStyles((theme) => ({
@@ -25,6 +26,23 @@ function ViewTask() {
 
     const classes = useStyles();
 
+    const [developerFlag, setDeveloperFlag] = useState(false)
+    const developerFlagHandler = () => {
+        setDeveloperFlag(!developerFlag)
+        
+    }
+
+    const [testerFlag, setTesterFlag] = useState(false)
+    const testerFlagHandler = () => {
+        setTesterFlag(!testerFlag)
+        // setTesterStatus();
+    }
+
+    const [report, setReport] = useState(null)
+    const changeReportHandler = (e) => {
+        setReport(e.target.value)
+    }
+    
     const authContext = useContext(AuthContext)
     const {
         user
@@ -33,7 +51,9 @@ function ViewTask() {
     const userContext = useContext(UserContext)
     const {
         closeViewTaskModalHandler,
-        selectedTask
+        selectedTask,
+        setDeveloperStatus,
+        setTesterStatus
     } = userContext
 
     return (
@@ -46,8 +66,6 @@ function ViewTask() {
                     {selectedTask.desc}
                 </Typography>
                 {
-                    // 'developer' === 'developer' &&
-                    // 'tester' !== 'tester' &&
                     user.designation !== 'tester' &&
                     <Typography variant='subtitle2'>
                         {
@@ -57,8 +75,6 @@ function ViewTask() {
                     </Typography>
                 }
                 {
-                    // 'tester' === 'tester' &&
-                    // 'developer' !== 'developer' &&
                     user.designation !== 'developer' &&
                     <Typography variant='subtitle2'>
                         {
@@ -103,14 +119,34 @@ function ViewTask() {
                     // 'developer' === 'developer' &&
                     <div className='developerClass'>
                         <div style={{ display: 'flex' }}>
-                            <span style={{ flexGrow: 1 }}></span>
+                            <div style={ { flexGrow: 1 } }>
+                                <Checkbox
+                                    value={ developerFlag }
+                                    onChange={developerFlagHandler}
+                                    color="primary"
+                                    // inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                    icon={
+                                        <DeveloperModeIcon
+                                            fontSize='small'
+                                        />
+                                    }
+                                    checkedIcon={
+                                        <DeveloperModeIcon
+                                            color='primary'
+                                            fontSize='small'
+                                        />
+                                    }
+                                />
+                            </div>
                             <div>
                                 <Button
+                                    disabled={!developerFlag}
                                     variant='contained'
                                     color='primary'
                                     size='small'
                                     startIcon={<CheckCircleIcon />}
-                                    style={{ marginLeft: '10px' }}
+                                    style={ { marginLeft: '10px', marginTop: '5px' } }
+                                    onClick={setDeveloperStatus}
                                 >
                                     Coded
                                 </Button>
@@ -124,6 +160,8 @@ function ViewTask() {
                     <div className='testerClass'>
                         <TextField
                             margin='normal'
+                            value={ report }
+                            onChange={changeReportHandler}
                             multiline={true}
                             rows='3'
                             fullWidth={true}
@@ -136,9 +174,28 @@ function ViewTask() {
                             autoComplete='off'
                         />
                         <div style={{ display: 'flex' }}>
-                            <span style={{ flexGrow: 1 }}></span>
+                            <div style={ { flexGrow: 1 } }>
+                                <Checkbox
+                                    value={ testerFlag }
+                                    onChange={testerFlagHandler}
+                                    color="primary"
+                                    // inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                    icon={
+                                        <PlaylistAddCheckIcon
+                                            fontSize='small'
+                                        />
+                                    }
+                                    checkedIcon={
+                                        <PlaylistAddCheckIcon
+                                            color='primary'
+                                            fontSize='small'
+                                        />
+                                    }
+                                />
+                            </div>
                             <div>
                                 <Button
+                                    disabled={!(report && testerFlag)}
                                     variant='contained'
                                     color='secondary'
                                     size='small'
@@ -147,14 +204,16 @@ function ViewTask() {
                                     Report
                                 </Button>
                                 <Button
+                                    disabled={ !testerFlag }
                                     variant='contained'
                                     color='primary'
                                     size='small'
-                                    startIcon={<CheckCircleIcon />}
-                                    style={{ marginLeft: '10px' }}
+                                    startIcon={ <CheckCircleIcon /> }
+                                    style={ { marginLeft: '10px' } }
+                                    onClick={ () => setTesterStatus()}
                                 >
                                     Tested
-                            </Button>
+                                </Button>
                             </div>
                         </div>
                     </div>

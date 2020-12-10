@@ -8,7 +8,9 @@ import {
     GET_CLICKED_PROJECT,
     OPEN_EDIT_MEMBER_MODAL,
     CLOSE_EDIT_MEMBER_MODAL,
-    SET_PROJECT_PERCENTAGE
+    SET_PROJECT_PERCENTAGE,
+    SET_DEVELOPER_STATUS,
+    SET_TESTER_STATUS
 } from '../Type'
 
 const UserState = props =>{
@@ -37,7 +39,14 @@ const UserState = props =>{
                 projectsObj = { ...res.val() }
                 Object.keys(projectsObj)
                     .forEach(key => {
-                        projectsArray.push(projectsObj[key])
+                        if (user.designation !== 'manager') {
+                            if (projectsObj[key].members[user.key]) {
+                                // console.log(projectsObj[key].members[user.key])
+                                projectsArray.push(projectsObj[key])
+                            }
+                        } else {
+                            projectsArray.push(projectsObj[key])
+                        }
                     })        
                 dispatch({type: GET_PROJECTS, payload: projectsArray})
 
@@ -81,16 +90,33 @@ const UserState = props =>{
         let tasksArray = objectToArray(state.project.tasks)
         let taskCompletedCount = countTaskStatus(tasksArray)
         let totalTasks = tasksArray.length;
-        // console.log(taskCompletedCount, totalTasks)
         let percentage = (taskCompletedCount / totalTasks) * 100;
-        console.log(percentage)
         dispatch({
             type: SET_PROJECT_PERCENTAGE,
             payload: percentage
         })
     }
 
+    const setDeveloperStatus = () => {
+        let newState = { ...state.selectedTask }
+        let taskStatus = { ...newState.taskStatus }
+        let developerStatus = { ...taskStatus.developerStatus }
+        let isComplete = {...developerStatus.isComplete}
+        isComplete = true;
+        developerStatus = {...developerStatus, isComplete}
+        taskStatus = { ...taskStatus, developerStatus}
+        newState = {...newState, taskStatus}
+        
+        let project = { ...state.project }
+        let tasks = {...project.tasks}
+        tasks = { ...tasks, [newState.key]: newState }
+        project = {...project, tasks}
+        console.log(project)
+    }
     
+    const setTesterStatus = () => {
+        
+    }
 
     return (
         <UserContext.Provider
@@ -104,7 +130,9 @@ const UserState = props =>{
                 viewProject,
                 openViewTaskModalHandler,
                 closeViewTaskModalHandler,
-                calculatePercentage
+                calculatePercentage,
+                setDeveloperStatus,
+                setTesterStatus
             }}
         >
             {props.children}

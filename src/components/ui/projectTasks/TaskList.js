@@ -3,11 +3,18 @@ import Grid from '@material-ui/core/Grid';
 import Task from './task/Task.js';
 import ManagerContext from '../../../context/manager/ManagerContext'
 import UserContext from '../../../context/user/UserContext'
+import AuthContext from '../../../context/auth/AuthContext.js';
+
 // import './projectList.css';
 
 function TaskList() {
     let projectTasks = {};
     
+    const authContext = useContext(AuthContext)
+    const {
+        user
+    } = authContext;
+
     const managerContext = useContext(ManagerContext);
     const {
         tasks,
@@ -28,10 +35,15 @@ function TaskList() {
 
     let taskKeys
     let tasksArray = []
-    
     taskKeys = Object.keys(projectTasks);
     taskKeys.forEach(task=>{
-        tasksArray.push(projectTasks[task])
+        if (user.designation === 'manager') {
+            tasksArray.push(projectTasks[task])
+        } else {
+            if (projectTasks[task].members[user.designation].key === user.key) {
+                tasksArray.push(projectTasks[task])
+            }
+        }
     })
 
     const viewTask = (data) => {

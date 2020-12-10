@@ -5,14 +5,16 @@ import Database from '../../config/Database';
 import {
     SET_USER_DATA,
     USER_LOG_OUT,
-    USER_SIGN_UP
+    SHOW_PROFILE_FLAG,
+    CLOSE_PROFILE_FLAG
 } from '../Type';
 
 const AuthStates = props => {
 
     const initialState = {
         user: {},
-        isLoggedIn: false
+        isLoggedIn: false,
+        profileFlag: false
     };
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
@@ -151,20 +153,36 @@ const AuthStates = props => {
              });
          }
          return convertedArray;
-     };
+    };
+    
+    const showProfile = () => {
+        dispatch({
+            type: SHOW_PROFILE_FLAG
+        })
+    }
+
+    const closeProfile = () => {
+        dispatch({
+            type: CLOSE_PROFILE_FLAG
+        })
+    }
+
 
     return (
         <AuthContext.Provider
             value={{
                 user: state.user,
                 isLoggedIn: state.isLoggedIn,
+                profileFlag: state.profileFlag,
                 currentDate,
                 userLogin,
                 getUserData,
                 userLogOut,
                 registerUser,
                 setUserData,
-                objectToArray
+                objectToArray,
+                showProfile,
+                closeProfile
             }}
         >
             {props.children}

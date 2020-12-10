@@ -46,7 +46,6 @@ function Member({ data }) {
                 }
         })
         }
-        console.log(selected)
     })
 
     // console.log('condition')

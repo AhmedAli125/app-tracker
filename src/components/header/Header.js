@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Profile from '../ui/profile/Profile'
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -25,7 +26,9 @@ function Header() {
     const authContext = useContext(AuthContext);
     const {
         user,
-        userLogOut
+        userLogOut,
+        profileFlag,
+        showProfile
     } = authContext;
 
     return (
@@ -43,6 +46,9 @@ function Header() {
                     </Typography> */}
                     <Button
                         color="inherit"
+                        onClick = {
+                            showProfile
+                        }
                     >
                         {`
                             ${user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1)} 
@@ -54,9 +60,10 @@ function Header() {
                         onClick={userLogOut}
                     >
                         Log Out
-            </Button>
+                    </Button>
                 </Toolbar>
             </AppBar>
+            {profileFlag && <Profile />}
         </div>
     );
 }
