@@ -53,8 +53,24 @@ function ViewTask() {
         closeViewTaskModalHandler,
         selectedTask,
         setDeveloperStatus,
-        setTesterStatus
+        setTesterStatus,
+        reportBug
     } = userContext
+
+    const coded = () => {
+        setDeveloperStatus()
+        closeViewTaskModalHandler()
+    }
+
+    const tested = () => {
+        setTesterStatus()
+        closeViewTaskModalHandler()
+    }
+
+    const reportIssue = () => {
+        reportBug(report)
+        closeViewTaskModalHandler()
+    }
 
     return (
         <Modal show={true} clicked={closeViewTaskModalHandler}>
@@ -146,7 +162,7 @@ function ViewTask() {
                                     size='small'
                                     startIcon={<CheckCircleIcon />}
                                     style={ { marginLeft: '10px', marginTop: '5px' } }
-                                    onClick={setDeveloperStatus}
+                                    onClick={coded}
                                 >
                                     Coded
                                 </Button>
@@ -165,9 +181,7 @@ function ViewTask() {
                             multiline={true}
                             rows='3'
                             fullWidth={true}
-                            // value={desc}
                             placeholder="Enter Bug Details"
-                            // onChange={changeDesc}
                             id="outlined-basic"
                             label="Report Bug"
                             variant="outlined"
@@ -195,11 +209,12 @@ function ViewTask() {
                             </div>
                             <div>
                                 <Button
-                                    disabled={!(report && testerFlag)}
+                                    disabled={!report}
                                     variant='contained'
                                     color='secondary'
                                     size='small'
-                                    startIcon={<ReportProblemIcon />}
+                                    startIcon={ <ReportProblemIcon /> }
+                                    onClick={reportIssue}
                                 >
                                     Report
                                 </Button>
@@ -210,7 +225,7 @@ function ViewTask() {
                                     size='small'
                                     startIcon={ <CheckCircleIcon /> }
                                     style={ { marginLeft: '10px' } }
-                                    onClick={ () => setTesterStatus()}
+                                    onClick={tested}
                                 >
                                     Tested
                                 </Button>

@@ -15,7 +15,7 @@ function ProjectList() {
 
     useEffect(() => {
         getProjects()
-    }, []);
+    },[]);
 
 
     return (

@@ -9,8 +9,8 @@ import {
     OPEN_EDIT_MEMBER_MODAL,
     CLOSE_EDIT_MEMBER_MODAL,
     SET_PROJECT_PERCENTAGE,
-    SET_DEVELOPER_STATUS,
-    SET_TESTER_STATUS
+    SET_TASK_STATUS,
+    SET_TASK_REPORT
 } from '../Type'
 
 const UserState = props =>{
@@ -52,7 +52,7 @@ const UserState = props =>{
 
             })
             .catch(err => console.log(err))
-        // console.log(projectsObj);
+        
     }
 
     const viewProject = (key) => {
@@ -97,25 +97,80 @@ const UserState = props =>{
         })
     }
 
-    const setDeveloperStatus = () => {
-        let newState = { ...state.selectedTask }
+    const changeTaskStatus = (devStatus='developerStatus', devBoolean=false, testStatus='testerStatus', testBoolean=false) => {
+        // let userStatus = status;
+        let newState = {...state.selectedTask}
         let taskStatus = { ...newState.taskStatus }
-        let developerStatus = { ...taskStatus.developerStatus }
-        let isComplete = {...developerStatus.isComplete}
-        isComplete = true;
-        developerStatus = {...developerStatus, isComplete}
-        taskStatus = { ...taskStatus, developerStatus}
-        newState = {...newState, taskStatus}
         
+        let devUserStatus = { ...taskStatus[devStatus] }
+        let devIsComplete = {...devUserStatus.isComplete}
+        devIsComplete = devBoolean;
+        devUserStatus = {...devUserStatus, isComplete:devIsComplete}
+        
+        let testUserStatus = { ...taskStatus[testStatus] }
+        let testIsComplete = {...testUserStatus.isComplete}
+        testIsComplete = testBoolean;
+        testUserStatus = {...testUserStatus, isComplete:testIsComplete}
+        
+        let issueStatus = {...taskStatus.issue, status: false}
+
+        taskStatus = {
+            ...taskStatus,
+            [devStatus]: devUserStatus,
+            [testStatus]: testUserStatus,
+            issue: issueStatus
+        }
+        newState = {...newState, taskStatus}
+
         let project = { ...state.project }
         let tasks = {...project.tasks}
         tasks = { ...tasks, [newState.key]: newState }
-        project = {...project, tasks}
-        console.log(project)
+        project = { ...project, tasks }
+
+        dispatch({ type: SET_TASK_STATUS, payload: project })
+        
+
+        return (
+            project
+        )
+    }
+
+    const setDeveloperStatus = () => {
+        let project = changeTaskStatus('developerStatus', true, 'testerStatus', false)
+        Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set(project)
+            .then(res=>res)
+            .catch(err=>console.log(err))
     }
     
     const setTesterStatus = () => {
+        let project = changeTaskStatus('developerStatus',true, 'testerStatus', true)
+        Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set(project)
+             .then(res => res)
+             .catch(err => console.log(err))
+    }
+
+    const reportBug = (bug) => {
+        let project = changeTaskStatus('developerStatus', false, 'testerStatus', false)
+
+        let newProject = {...project}
+        let projectTasks = { ...newProject.tasks }
+        let selectedTask = { ...projectTasks[state.selectedTask.key] }
+        let taskStatus = { ...selectedTask.taskStatus }
+        let issue = { ...taskStatus.issue }
+        let comment = [...issue.comment]
+        comment.push(bug)
+        issue = {
+            ...issue,
+            comment,
+            status: true
+        }
+        taskStatus = { ...taskStatus, issue }
+        selectedTask = { ...selectedTask, taskStatus }
         
+        Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}/tasks/${selectedTask.key}`).set(selectedTask)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+        // console.log(selectedTask)
     }
 
     return (
@@ -132,7 +187,8 @@ const UserState = props =>{
                 closeViewTaskModalHandler,
                 calculatePercentage,
                 setDeveloperStatus,
-                setTesterStatus
+                setTesterStatus,
+                reportBug
             }}
         >
             {props.children}

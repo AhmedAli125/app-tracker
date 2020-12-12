@@ -9,12 +9,13 @@ function Progress() {
   const userContext = useContext(UserContext)
   const {
     calculatePercentage,
-    projectPercentage
+    projectPercentage,
+    project
   } = userContext;
 
   useEffect(() => {
     calculatePercentage()
-  }, [])
+  }, [project])
   return (
     <div>
       <Box display="flex" alignItems="center">

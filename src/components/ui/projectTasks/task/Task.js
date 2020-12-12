@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import TaskStatus from './taskStatus/TaskStatus'
 import { makeStyles } from '@material-ui/core/styles';
 import ManagerContext from '../../../../context/manager/ManagerContext';
 import {
@@ -96,6 +97,9 @@ function Task({buttonClicked, task}) {
               Deadline :{` ${task.members.tester.deadline}`}
             </Typography>
             
+            { !createProjectFlag &&
+              <TaskStatus status={ task.taskStatus }/>
+            }
           </CardContent>
         </Card>
        </Button> 
@@ -109,7 +113,7 @@ function Task({buttonClicked, task}) {
             deleteTask(task.key)
           } } />
         </div>
-        }
+      }
       </div>
   );
 }

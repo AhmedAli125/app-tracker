@@ -4,8 +4,8 @@ import {
     OPEN_EDIT_MEMBER_MODAL,
     CLOSE_EDIT_MEMBER_MODAL,
     SET_PROJECT_PERCENTAGE,
-    SET_DEVELOPER_STATUS,
-    SET_TESTER_STATUS
+    SET_TASK_STATUS,
+    SET_TASK_REPORT
 } from '../Type'
 
 export default (state, action) => {
@@ -37,6 +37,12 @@ export default (state, action) => {
                 ...state,
                 projectPercentage: action.payload
             }
+        case SET_TASK_STATUS:
+            return {
+                ...state,
+                project: action.payload
+            }
+
         default:
             return state;   
     }
