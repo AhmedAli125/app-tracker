@@ -1,8 +1,9 @@
-import React, {useContext, useEffect} from 'react';
-import UserContext from '../../../context/user/UserContext'
+import React, { useContext, useEffect } from 'react';
+import AuthContext from '../../../context/auth/AuthContext';
+import UserContext from '../../../context/user/UserContext';
 import Grid from '@material-ui/core/Grid';
 import Project from './project/Project';
-import CircularProgress from '../../ui/circularPrgress/CircularProgress'
+import CircularProgress from '../../ui/circularPrgress/CircularProgress';
 import './projectList.css';
 
 function ProjectList() {
@@ -10,12 +11,32 @@ function ProjectList() {
     const userContext = useContext(UserContext);
     const {
         projects,
-        getProjects
+        getProjects,
+        getUpdatedData,
     } = userContext;
 
+    const authContext = useContext(AuthContext);
+    const {
+        user
+    } = authContext;
+
     useEffect(() => {
-        getProjects()
-    },[]);
+        getProjects();
+        getUpdatedData();
+    }, []);
+
+    let projectsArray=[]
+    Object.keys(projects)
+        .forEach(key => {
+            if (user.designation !== 'manager') {
+                if (projects[key].members[user.key]) {
+                    // console.log(projectsObj[key].members[user.key])
+                    projectsArray.push(projects[key])
+                }
+            } else {
+                projectsArray.push(projects[key])
+            }
+        })        
 
 
     return (
@@ -29,14 +50,14 @@ function ProjectList() {
                 spacing='2'
             >
                 {
-                    projects ?
-                        projects[0] !== 0 && projects.map(project => {
-                        return (
-                            <Grid key={ project.key } item sm-12 md-4 lg-3 xl-2>
-                                <Project project={ project }/>
-                            </Grid>
-                        )
-                    }) : <CircularProgress />
+                    projectsArray ?
+                        projectsArray[0] !== 0 && projectsArray.map(project => {
+                            return (
+                                <Grid key={project.key} item sm-12 md-4 lg-3 xl-2>
+                                    <Project project={project} />
+                                </Grid>
+                            );
+                        }) : <CircularProgress />
                 }
             </Grid>
         </div>
