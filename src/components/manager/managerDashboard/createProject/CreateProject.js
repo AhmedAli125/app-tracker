@@ -58,7 +58,7 @@ function CreateProject(props) {
 
     return (
         <Container>
-            <Typography variant='h5' gutterBottom='true'>
+            <Typography variant='h5' gutterBottom={true} >
                 Create Project
             </Typography>
             <form

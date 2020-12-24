@@ -84,12 +84,14 @@ const UserState = props => {
         let tasksArray = objectToArray(state.project.tasks);
         let taskCompletedCount = countTaskStatus(tasksArray);
         let totalTasks = tasksArray.length;
-        let percentage = (taskCompletedCount / totalTasks) * 100;
+        let percentage = Math.round((taskCompletedCount / totalTasks) * 100);
         if (percentage === 100) {
             let prevState = { ...state.project };
             prevState = { ...prevState, isComplete: true };
-            Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/`).set({ [prevState.key]: prevState })
-                .then((res) => console.log(res))
+            Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${prevState.key}`).set({ ...prevState })
+                .then((res) => {
+                    // console.log(res)
+                })
                 .catch(err => console.log(err));
         }
         dispatch({

@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
+import {
+    Typography
+} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
@@ -32,10 +34,10 @@ function AddTask() {
     const [desc, setDesc] = useState(editTask ? editTask.desc : null);
     const changeDesc = e => setDesc(e.target.value);
 
-    const [developer, setDeveloper] = useState(editTask ? editTask.developer : null);
+    const [developer, setDeveloper] = useState(editTask ? editTask.members.developer : null);
     const selectDeveloper = (e) => setDeveloper(e.target.value);
 
-    const [tester, setTester] = useState(editTask ? editTask.tester : null);
+    const [tester, setTester] = useState(editTask ? editTask.members.tester : null);
     const selectTester = (e) => setTester(e.target.value);
 
     
@@ -80,7 +82,7 @@ function AddTask() {
     return (
         <Modal show={true} clicked={closeTaskModalHandler}>
             <Typography variant='h5' align='left' display='block' >
-                Add Task
+                {editTask? 'Update Task' : 'Add Task'}
             </Typography>
             <div>
                 <form noValidate>
@@ -109,15 +111,25 @@ function AddTask() {
                     <FormControl
                         margin='normal'
                         fullWidth={true}
-                        variant='outlined'>
+                        variant='outlined'
+                    >
                         <Select
                             value={developer}
                             onChange={selectDeveloper}
-                            // displayEmpty
+                            displayEmpty
+                            renderValue={
+                                (developer) => {
+                                if (developer === null) {
+                                  return <em>Select Developer</em>;
+                                } else {
+                                    return (`${developer.firstName} ${developer.lastName}`)
+                                }
+                                }
+                            }
                             inputProps={{ 'aria-label': 'Without label' }}
                         >
-                            <MenuItem value="">
-                                Select Developer
+                            <MenuItem value = "" disabled >
+                                <em> Select Developer </em>
                             </MenuItem>
                             {selectedMembers ? selectedMembers.map((member) => {
                                 return (
@@ -163,6 +175,15 @@ function AddTask() {
                             value={tester}
                             onChange={selectTester}
                             displayEmpty
+                            renderValue={
+                                (tester) => {
+                                if (tester === null) {
+                                  return <em>Select Tester</em>;
+                                } else {
+                                    return (`${tester.firstName} ${tester.lastName}`)
+                                }
+                                }
+                            }
                             inputProps={{ 'aria-label': 'Without label' }}
                         >
                             <MenuItem value="" disabled>
@@ -212,7 +233,7 @@ function AddTask() {
                             color='primary'
                             onClick={addTask}
                         >
-                            Add
+                            {editTask? 'Update' : 'Add'}
                         </Button>
                         <Button
                             color='secondary'

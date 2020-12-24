@@ -11,6 +11,8 @@ import {
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import AuthContext from '../../../context/auth/AuthContext'
+import AlertContext from '../../../context/alerts/AlertContext'
+import Alert from '../../ui/alert/AlertComponent'
 import '../auth.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,12 +38,16 @@ const useStyles = makeStyles((theme) => ({
 function SignIn(props) {
 
   const authContext = useContext(AuthContext);
-
   const {
     isLoggedIn,
     userLogin,
     getUserData
-  }= authContext;
+  } = authContext;
+
+  const alertContext = useContext(AlertContext)
+  const {
+    getMessage
+  } = alertContext;
   
   
   useEffect(() => {
@@ -49,12 +55,8 @@ function SignIn(props) {
     if(isLoggedIn) {
       props.history.replace('/dashboard');
     }
-    // console.log(user);
     
   },[isLoggedIn, props.history])
-  
-  // console.log(user)
-  // console.log(isLoggedIn)
 
   const classes = useStyles();
 
@@ -64,6 +66,23 @@ function SignIn(props) {
   const [password, setPassword] = useState('');
   const handlePassword = e => setPassword(e.target.value);
 
+  const checkEmail = email => {
+    if (email === '') {
+
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  const checkPassword = password => {
+    if (password === '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   const login = (e) => {
     e.preventDefault();
 
@@ -72,14 +91,22 @@ function SignIn(props) {
       password: password
     }
 
-    userLogin(data);
+    if (!checkEmail(data.email) && !checkPassword(data.password)) {
+      getMessage('Please enter all fields', 'error')
+    } else if (!checkEmail(data.email)) {
+      getMessage("Email can't be empty", 'error')
+    } else if (!checkPassword(data.password)) {
+      getMessage('Password cant be empty', 'error')
+    } else {
+      userLogin(data);
+    }
+
     setEmail('');
     setPassword('');
-    // console.log(`${email} => ${password}`)
   } 
 
   return (
-    <Container Container component = "main" maxWidth = "xs" >
+    <Container container component = "main" maxWidth = "xs" >
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component='h1' variant='h4'>
@@ -144,4 +171,4 @@ function SignIn(props) {
   );
 }
 
-export default SignIn; 
+export default SignIn;

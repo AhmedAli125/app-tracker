@@ -65,6 +65,8 @@ function Project({ project }) {
     viewProject
   } = userContext;
 
+  // console.log(project)
+
   return (
     // <div className='projects'>
     <Link className={classes.link} to={`${path}/${project.key}`}>

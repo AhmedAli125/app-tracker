@@ -46,5 +46,6 @@ export const SHOW_PROFILE_FLAG = 'SHOW_PROFILE_FLAG'
 export const CLOSE_PROFILE_FLAG = 'CLOSE_PROFILE_FLAG'
 export const SET_TASK_STATUS = 'SET_TASK_STATUS'
 export const SET_TASK_REPORT = 'SET_TASK_REPORT'
+export const ALERT = 'ALERT'
 
 

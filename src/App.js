@@ -8,15 +8,19 @@ import './App.css';
 import AdminStates from './context/admin/AdminStates';
 import ManagerStates from './context/manager/ManagerStates';
 import UserState from './context/user/UserState';
+import AlertState from './context/alerts/AlertState'
+import AlertComponent from './components/ui/alert/AlertComponent';
 
 
 function App() {
   return (
+    <AlertState>
     <AuthStates>
       <AdminStates>
         <ManagerStates>
           <UserState>
-            <div className="App">
+              <div className="App">
+                <AlertComponent />
               <Switch>
                 <PrivateRoute path='/dashboard' component={Dashboard} />
                 {/* <Route path='/dashboard' component={Dashboard}/> */}
@@ -26,7 +30,8 @@ function App() {
           </UserState>
         </ManagerStates>
       </AdminStates>
-    </AuthStates>
+      </AuthStates>
+    </AlertState>
   );
 }
 

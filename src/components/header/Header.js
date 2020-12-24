@@ -38,12 +38,6 @@ function Header() {
                     <Typography variant="h5" className={classes.title}>
                         {user.designation !== 'admin' ? user.organization : 'App Tracker'}
                     </Typography>
-                    {/* <Typography variant="subtitle2" className={classes.userProfile}>
-                        {`
-                ${user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1)} 
-                ${user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1)}
-            ` }
-                    </Typography> */}
                     <Button
                         color="inherit"
                         onClick = {
