@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
 var firebaseConfig = {
-    apiKey: "AIzaSyCYTRmkGGhBXTwO6VCLJezSevC9lTqQps8",
+    apiKey: `${process.env.REACT_APP_API_KEY}`,
     authDomain: "project-tracker-f4033.firebaseapp.com",
     databaseURL: "https://project-tracker-f4033.firebaseio.com",
     projectId: "project-tracker-f4033",
