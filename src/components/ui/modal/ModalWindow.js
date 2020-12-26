@@ -9,15 +9,16 @@ function ModalWindow(props) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            // border: 'none',
         },
         paper: {
             position: 'absolute',
             // minWidth: 300,
             width: 400,
             backgroundColor: theme.palette.background.paper,
-            border: '2px solid #000',
+            // border: '10px solid red',
             boxShadow: theme.shadows[5],
-            padding: theme.spacing(2, 4, 3),
+            padding: theme.spacing(3, 5, 4),
         },
     }));
 
@@ -27,6 +28,7 @@ function ModalWindow(props) {
     const handleClose = () => {
         setOpen(false);
         clicked();
+        console.log('closed')
     };
 
     return (

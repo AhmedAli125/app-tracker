@@ -9,8 +9,7 @@ import {
     OPEN_EDIT_MEMBER_MODAL,
     CLOSE_EDIT_MEMBER_MODAL,
     SET_PROJECT_PERCENTAGE,
-    SET_TASK_STATUS,
-    SET_TASK_REPORT
+    SET_TASK_STATUS
 } from '../Type';
 
 const UserState = props => {

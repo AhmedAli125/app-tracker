@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from '../../../context/auth/AuthContext'
 import { Link } from 'react-router-dom';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import AlertContext from '../../../context/alerts/AlertContext'
 import {
   makeStyles,
   Avatar,
@@ -40,13 +41,17 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp(props) {
   
   const authContext = useContext(AuthContext)
-  
   const {
     registerUser,
     isLoggedIn,
     getUserData,
     currentDate
   } = authContext;
+
+const alertContext  = useContext(AlertContext)
+  const {
+    setMessage
+  } = alertContext;
   
   useEffect(() => {
     getUserData();
@@ -86,10 +91,16 @@ export default function SignUp(props) {
     return password === confirmPassword ? true : false
   }
 
+  // const checkField = field => field === '' ? false : true
+
   const signUp = (e) =>{
     e.preventDefault();
-    let isVerified = checkPassword(password, confirmPassword)
-    if(isVerified){
+
+    // let isFirstNameValid = checkField
+    let isPasswordValid = checkPassword(password, confirmPassword)
+
+
+    if(isPasswordValid){
         let userData = {
           firstName,
           lastName,
@@ -98,8 +109,8 @@ export default function SignUp(props) {
           softwareHouseKey,
           designationKey,
           regDate: currentDate() 
-
-        }
+        } 
+      
       registerUser(userData)
 
       setFirstName('')
@@ -110,7 +121,7 @@ export default function SignUp(props) {
       setSoftwareHouseKey('')
       setDesignationKey('')
     } else{
-      alert('incorrect passwords');
+      setMessage('Passwords entered are not same', 'error')
     }
   }
 
@@ -138,7 +149,6 @@ export default function SignUp(props) {
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
                 label="First Name"
                 autoFocus
               />

@@ -1,29 +1,32 @@
 import React from 'react';
 import {
-    makeStyles
+  makeStyles
 } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Modal from '../modal/ModalWindow';
 
 const ProgressCircular = () => {
-    const useStyles = makeStyles(() => ({
-        container: {
-            width: '160px',
-            margin: 'auto',
-            marginTop: '10%'
-        }
-    }));
+  const useStyles = makeStyles(() => ({
+    container: {
+      width: '160px',
+      margin: 'auto',
+      marginTop: '10%'
+    }
+  }));
 
-     const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-    <div className={classes.container}>
-      <CircularProgress 
-        thickness='1.5'
-        size='10rem' 
+  return (
+    <Modal show={true} clicked={() => { alert('progress'); }} >
+      <div className={classes.container}>
+        <CircularProgress
+          thickness='1.5'
+          size='10rem'
         />
-    </div>
+      </div>
+    </Modal>
   );
 
-}
+};
 
 export default ProgressCircular;

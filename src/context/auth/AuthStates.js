@@ -1,7 +1,8 @@
-import React, { useReducer } from 'react';
+import React, { useContext, useReducer } from 'react';
 import AuthContext from './AuthContext';
 import AuthReducer from './AuthReducer';
 import Database from '../../config/Database';
+import AlertContext from '../alerts/AlertContext';
 import {
     SET_USER_DATA,
     USER_LOG_OUT,
@@ -16,6 +17,12 @@ const AuthStates = props => {
         isLoggedIn: false,
         profileFlag: false
     };
+
+    const alertContext = useContext(AlertContext)
+    const {
+        setMessage,
+        toggleLoading
+    } = alertContext;
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
@@ -59,11 +66,14 @@ const AuthStates = props => {
                             userData = { ...data.val() };
                             // console.log(userData);
                             dispatch({ type: SET_USER_DATA, payload: userData });
+                            toggleLoading(false)
                         }
                     )
                     .catch(
                         (error) => {
-                            console.log(error);
+                            // console.log(error);
+                            toggleLoading(false)
+
                         }
                     );
             }
@@ -71,13 +81,15 @@ const AuthStates = props => {
     };
 
     const userLogin = async (formData) => {
+        toggleLoading(true)
         await Database.auth().signInWithEmailAndPassword(formData.email, formData.password)
             .then(res => {
                 // console.log(`user id => ${res.user.uid}`);
                 getUserData();
             })
             .catch(err => {
-                console.log(err.message);
+                setMessage(err.code, 'error')
+                toggleLoading(false)
             });
     };
 
@@ -103,7 +115,7 @@ const AuthStates = props => {
             getUserData();
         })
         .catch((err)=>{
-            console.log(err)
+            console.log(err.message)
         })
     }
 

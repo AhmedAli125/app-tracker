@@ -5,7 +5,6 @@ import {
     CLOSE_EDIT_MEMBER_MODAL,
     SET_PROJECT_PERCENTAGE,
     SET_TASK_STATUS,
-    SET_TASK_REPORT
 } from '../Type'
 
 export default (state, action) => {

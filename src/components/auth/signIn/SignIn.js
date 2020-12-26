@@ -46,7 +46,7 @@ function SignIn(props) {
 
   const alertContext = useContext(AlertContext)
   const {
-    getMessage
+    setMessage
   } = alertContext;
   
   
@@ -92,11 +92,11 @@ function SignIn(props) {
     }
 
     if (!checkEmail(data.email) && !checkPassword(data.password)) {
-      getMessage('Please enter all fields', 'error')
+      setMessage('Please enter all fields', 'error')
     } else if (!checkEmail(data.email)) {
-      getMessage("Email can't be empty", 'error')
+      setMessage("Email can't be empty", 'error')
     } else if (!checkPassword(data.password)) {
-      getMessage('Password cant be empty', 'error')
+      setMessage('Password cant be empty', 'error')
     } else {
       userLogin(data);
     }
