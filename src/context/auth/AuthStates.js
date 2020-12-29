@@ -88,7 +88,7 @@ const AuthStates = props => {
                 getUserData();
             })
             .catch(err => {
-                setMessage(err.code, 'error')
+                // setMessage(err.code, 'error')
                 toggleLoading(false)
             });
     };

@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import AuthContext from '../../../context/auth/AuthContext';
 import { Link } from 'react-router-dom';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import AuthContext from '../../../context/auth/AuthContext';
 import AlertContext from '../../../context/alerts/AlertContext';
+import AdminContext from '../../../context/admin/AdminContext';
 import {
   makeStyles,
   Avatar,
@@ -53,12 +54,22 @@ export default function SignUp(props) {
     setMessage
   } = alertContext;
 
+  const adminContext = useContext(AdminContext);
+  const {
+    organizations,
+    getOrganizations
+  } = adminContext;
+
   useEffect(() => {
     getUserData();
     if (isLoggedIn) {
       props.history.replace('/dashboard');
     }
   }, [isLoggedIn, props.history]);
+
+  useEffect(() => {
+    getOrganizations();
+  }, []);
 
   const classes = useStyles();
 
@@ -70,15 +81,15 @@ export default function SignUp(props) {
     setFirstNameValid(validate(/[a-zA-Z]{2}/g, firstName));
   };
 
-  const [lastName, setLastName] = useState('');
   const [lastNameValid, setLastNameValid] = useState(false);
+  const [lastName, setLastName] = useState('');
   const handleLastName = e => {
     setLastName(e.target.value);
     setLastNameValid(validate(/[a-zA-Z]{2}/g, lastName));
   };
 
-  const [email, setEmail] = useState('');
   const [emailValid, setEmailValid] = useState(false);
+  const [email, setEmail] = useState('');
   const handleEmail = e => {
     setEmail(e.target.value);
     setEmailValid(validate(/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/g, email));
@@ -91,21 +102,44 @@ export default function SignUp(props) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const handleConfirmPassword = e => {
     setConfirmPassword(e.target.value);
-    setPasswordValidate(confirmPassword.length < 5 && !checkPassword(password, confirmPassword));
+    setPasswordValidate(!(e.target.value.length == password.length && checkPassword(password, e.target.value)));
   };
 
-  const [softwareHouseKeyValidate, setSoftwareHouseKeyValidate] = useState(false);
+  const [softwareHouseKeyValid, setSoftwareHouseKeyValid] = useState(false);
   const [softwareHouseKey, setSoftwareHouseKey] = useState('');
   const handleSoftwareHouseKey = e => {
     setSoftwareHouseKey(e.target.value);
-    setSoftwareHouseKeyValidate(validate(/[a-z0-9\-\_]{19}/gi, softwareHouseKey))
+    if (validate(/[a-z0-9\-\_]{20}/gi, e.target.value)) {
+      for (let i = 0; i < organizations.length; i++) {
+        if (organizations[i].id === e.target.value) {
+          setSoftwareHouseKeyValid(false);
+          break;
+        } else {
+          setSoftwareHouseKeyValid(true);
+        }
+      }
+    }
   };
 
-  const [designationKeyValidate, setDesignationKeyValidate] = useState(false);
+  const [designationKeyValid, setDesignationKeyValid] = useState(false);
   const [designationKey, setDesignationKey] = useState('');
   const handleDesignationKey = e => {
     setDesignationKey(e.target.value);
-    setDesignationKeyValidate(validate(/[a-z0-9]{4}/gi, designationKey));
+    if (validate(/[a-z0-9]{4}/gi, e.target.value)) {
+      for (let i = 0; i < organizations.length; i++) {
+        if (organizations[i].id === softwareHouseKey) {
+          const keyArr = Object.keys(organizations[i].organizationKeys);
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === e.target.value) {
+              setDesignationKeyValid(false);
+              break;
+            } else {
+              setDesignationKeyValid(true);
+            }
+          }
+        }
+      }
+    }
   };
 
   const checkPassword = (password, confirmPassword) => {
@@ -114,7 +148,6 @@ export default function SignUp(props) {
 
   const validate = (pattern, field) => {
     let regex = new RegExp(pattern);
-
     if (regex.test(field)) {
       return true;
     } else {
@@ -124,28 +157,32 @@ export default function SignUp(props) {
 
   const signUp = (e) => {
     e.preventDefault();
-    let isPasswordValid = checkPassword(password, confirmPassword);
 
-    if (firstNameValid && lastNameValid && emailValid && isPasswordValid && designationKeyValidate && softwareHouseKeyValidate) {
-      let userData = {
-        firstName,
-        lastName,
-        email,
-        password,
-        softwareHouseKey,
-        designationKey,
-        regDate: currentDate()
-      };
+    if (firstName && lastName && email && password && designationKey && softwareHouseKey) {
+      console.log('all filled')
+      if (firstNameValid && lastNameValid && emailValid && !passwordValidate && !designationKeyValid && !softwareHouseKeyValid) {
+        console.log('all valid')
+        let userData = {
+          firstName,
+          lastName,
+          email,
+          password,
+          softwareHouseKey,
+          designationKey,
+          regDate: currentDate()
+        };
 
-      registerUser(userData);
+        registerUser(userData);
 
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      setSoftwareHouseKey('');
-      setDesignationKey('');
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setSoftwareHouseKey('');
+        setDesignationKey('');
+
+      }
     } else {
       setMessage('Please enter all fields', 'error');
     }
@@ -175,7 +212,7 @@ export default function SignUp(props) {
                 variant="outlined"
                 required
                 error={firstName !== '' & !firstNameValid}
-                helperText={firstName !== '' & !firstNameValid ? 'must be atleast 3 chars' : ''}
+                helperText={firstName !== '' & !firstNameValid ? 'must be atleast 3 chars long' : ''}
                 fullWidth
                 label="First Name"
                 autoFocus
@@ -193,7 +230,7 @@ export default function SignUp(props) {
                 onChange={handleLastName}
                 autoComplete="lname"
                 error={lastName !== '' & !lastNameValid}
-                helperText={lastName !== '' & !lastNameValid ? 'must be atleast 3 chars' : ''}
+                helperText={lastName !== '' & !lastNameValid ? 'must be atleast 3 chars long' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -224,8 +261,8 @@ export default function SignUp(props) {
                 value={password}
                 onChange={handlePassword}
                 autoComplete="off"
-                error={password.length > 0 && password.length <= 5}
-                helperText={password.length > 0 && password.length <= 5 ? 'password must be atleast 6 characters long' : ''}
+                error={password.length > 0 && password.length < 6}
+                helperText={password.length > 0 && password.length < 6 ? 'password must be atleast 6 characters long' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -240,7 +277,22 @@ export default function SignUp(props) {
                 value={confirmPassword}
                 onChange={handleConfirmPassword}
                 error={passwordValidate}
-                helperText={passwordValidate ? 'Password must be same' : ''}
+                helperText={passwordValidate ? 'password must be same' : ''}
+                autoComplete="off"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="softwareHouseKey"
+                label="Software House Key"
+                value={softwareHouseKey}
+                onChange={handleSoftwareHouseKey}
+                error={!(softwareHouseKey !== '' ? softwareHouseKey.length == 20 : true) || softwareHouseKeyValid}
+                helperText={!(softwareHouseKey !== '' ? softwareHouseKey.length == 20 : true) || softwareHouseKeyValid ? 'invalid key intered / must be atleast 20 characters long' : ''}
+                id="softwareHouseKey"
                 autoComplete="off"
               />
             </Grid>
@@ -254,23 +306,8 @@ export default function SignUp(props) {
                 value={designationKey}
                 onChange={handleDesignationKey}
                 id="designationKey"
-                error={designationKey !== ''  && !designationKeyValidate}
-                helperText={designationKey !== '' && !designationKeyValidate ? 'must be atleast 5 chars' : ''}
-                autoComplete="off"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="softwareHouseKey"
-                label="Software House Key"
-                value={softwareHouseKey}
-                onChange={handleSoftwareHouseKey}
-                error={softwareHouseKey !== '' && !softwareHouseKeyValidate}
-                helperText={softwareHouseKey !== '' && !softwareHouseKeyValidate ? 'must be atleast 20 chars' : ''}
-                id="softwareHouseKey"
+                error={!(designationKey !== '' ? designationKey.length == 5 : true) || designationKeyValid}
+                helperText={!(designationKey !== '' ? designationKey.length == 5 : true) || designationKeyValid ? 'invalid key intered / must be atleast 5 characters long' : ''}
                 autoComplete="off"
               />
             </Grid>
