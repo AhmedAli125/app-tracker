@@ -28,7 +28,6 @@ function ModalWindow(props) {
     const handleClose = () => {
         setOpen(false);
         clicked();
-        console.log('closed')
     };
 
     return (

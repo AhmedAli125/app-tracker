@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
-import AuthContext from '../../../context/auth/AuthContext'
+import AuthContext from '../../../context/auth/AuthContext';
 import { Link } from 'react-router-dom';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import AlertContext from '../../../context/alerts/AlertContext'
+import AlertContext from '../../../context/alerts/AlertContext';
 import {
   makeStyles,
   Avatar,
@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp(props) {
-  
-  const authContext = useContext(AuthContext)
+
+  const authContext = useContext(AuthContext);
   const {
     registerUser,
     isLoggedIn,
@@ -48,82 +48,108 @@ export default function SignUp(props) {
     currentDate
   } = authContext;
 
-const alertContext  = useContext(AlertContext)
+  const alertContext = useContext(AlertContext);
   const {
     setMessage
   } = alertContext;
-  
+
   useEffect(() => {
     getUserData();
-    if(isLoggedIn) {
+    if (isLoggedIn) {
       props.history.replace('/dashboard');
     }
-    // console.log(user);
-    
-  },[isLoggedIn, props.history])
+  }, [isLoggedIn, props.history]);
 
   const classes = useStyles();
 
+
+  const [firstNameValid, setFirstNameValid] = useState(false);
   const [firstName, setFirstName] = useState('');
-  const handleFirstName = e => setFirstName(e.target.value);
+  const handleFirstName = e => {
+    setFirstName(e.target.value);
+    setFirstNameValid(validate(/[a-zA-Z]{2}/g, firstName));
+  };
 
   const [lastName, setLastName] = useState('');
-  const handleLastName = e => setLastName(e.target.value);
+  const [lastNameValid, setLastNameValid] = useState(false);
+  const handleLastName = e => {
+    setLastName(e.target.value);
+    setLastNameValid(validate(/[a-zA-Z]{2}/g, lastName));
+  };
 
   const [email, setEmail] = useState('');
-  const handleEmail = e => setEmail(e.target.value);
+  const [emailValid, setEmailValid] = useState(false);
+  const handleEmail = e => {
+    setEmail(e.target.value);
+    setEmailValid(validate(/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/g, email));
+  };
 
   const [password, setPassword] = useState('');
   const handlePassword = e => setPassword(e.target.value);
 
+  const [passwordValidate, setPasswordValidate] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
-  const handleConfirmPassword = e => setConfirmPassword(e.target.value);
+  const handleConfirmPassword = e => {
+    setConfirmPassword(e.target.value);
+    setPasswordValidate(confirmPassword.length < 5 && !checkPassword(password, confirmPassword));
+  };
 
+  const [softwareHouseKeyValidate, setSoftwareHouseKeyValidate] = useState(false);
   const [softwareHouseKey, setSoftwareHouseKey] = useState('');
-  const handleSoftwareHouseKey = e => setSoftwareHouseKey(e.target.value);
+  const handleSoftwareHouseKey = e => {
+    setSoftwareHouseKey(e.target.value);
+    setSoftwareHouseKeyValidate(validate(/[a-z0-9\-\_]{19}/gi, softwareHouseKey))
+  };
 
+  const [designationKeyValidate, setDesignationKeyValidate] = useState(false);
   const [designationKey, setDesignationKey] = useState('');
-  const handleDesignationKey = e => setDesignationKey(e.target.value);
-
-
+  const handleDesignationKey = e => {
+    setDesignationKey(e.target.value);
+    setDesignationKeyValidate(validate(/[a-z0-9]{4}/gi, designationKey));
+  };
 
   const checkPassword = (password, confirmPassword) => {
-    return password === confirmPassword ? true : false
-  }
+    return password === confirmPassword ? true : false;
+  };
 
-  // const checkField = field => field === '' ? false : true
+  const validate = (pattern, field) => {
+    let regex = new RegExp(pattern);
 
-  const signUp = (e) =>{
-    e.preventDefault();
-
-    // let isFirstNameValid = checkField
-    let isPasswordValid = checkPassword(password, confirmPassword)
-
-
-    if(isPasswordValid){
-        let userData = {
-          firstName,
-          lastName,
-          email,
-          password,
-          softwareHouseKey,
-          designationKey,
-          regDate: currentDate() 
-        } 
-      
-      registerUser(userData)
-
-      setFirstName('')
-      setLastName('')
-      setEmail('')
-      setPassword('')
-      setConfirmPassword('')
-      setSoftwareHouseKey('')
-      setDesignationKey('')
-    } else{
-      setMessage('Passwords entered are not same', 'error')
+    if (regex.test(field)) {
+      return true;
+    } else {
+      return false;
     }
-  }
+  };
+
+  const signUp = (e) => {
+    e.preventDefault();
+    let isPasswordValid = checkPassword(password, confirmPassword);
+
+    if (firstNameValid && lastNameValid && emailValid && isPasswordValid && designationKeyValidate && softwareHouseKeyValidate) {
+      let userData = {
+        firstName,
+        lastName,
+        email,
+        password,
+        softwareHouseKey,
+        designationKey,
+        regDate: currentDate()
+      };
+
+      registerUser(userData);
+
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setSoftwareHouseKey('');
+      setDesignationKey('');
+    } else {
+      setMessage('Please enter all fields', 'error');
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -148,6 +174,8 @@ const alertContext  = useContext(AlertContext)
                 name="firstName"
                 variant="outlined"
                 required
+                error={firstName !== '' & !firstNameValid}
+                helperText={firstName !== '' & !firstNameValid ? 'must be atleast 3 chars' : ''}
                 fullWidth
                 label="First Name"
                 autoFocus
@@ -164,6 +192,8 @@ const alertContext  = useContext(AlertContext)
                 value={lastName}
                 onChange={handleLastName}
                 autoComplete="lname"
+                error={lastName !== '' & !lastNameValid}
+                helperText={lastName !== '' & !lastNameValid ? 'must be atleast 3 chars' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -177,7 +207,9 @@ const alertContext  = useContext(AlertContext)
                 onChange={handleEmail}
                 label="Email Address"
                 name="email"
-                autoComplete="email"
+                autoComplete="off"
+                error={email !== '' & !emailValid}
+                helperText={email !== '' & !emailValid ? 'email pattern : username@domain.com' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -192,6 +224,8 @@ const alertContext  = useContext(AlertContext)
                 value={password}
                 onChange={handlePassword}
                 autoComplete="off"
+                error={password.length > 0 && password.length <= 5}
+                helperText={password.length > 0 && password.length <= 5 ? 'password must be atleast 6 characters long' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -205,6 +239,8 @@ const alertContext  = useContext(AlertContext)
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={handleConfirmPassword}
+                error={passwordValidate}
+                helperText={passwordValidate ? 'Password must be same' : ''}
                 autoComplete="off"
               />
             </Grid>
@@ -217,8 +253,9 @@ const alertContext  = useContext(AlertContext)
                 label="Designation Key"
                 value={designationKey}
                 onChange={handleDesignationKey}
-                // type="password"
                 id="designationKey"
+                error={designationKey !== ''  && !designationKeyValidate}
+                helperText={designationKey !== '' && !designationKeyValidate ? 'must be atleast 5 chars' : ''}
                 autoComplete="off"
               />
             </Grid>
@@ -231,7 +268,8 @@ const alertContext  = useContext(AlertContext)
                 label="Software House Key"
                 value={softwareHouseKey}
                 onChange={handleSoftwareHouseKey}
-                // type="password"
+                error={softwareHouseKey !== '' && !softwareHouseKeyValidate}
+                helperText={softwareHouseKey !== '' && !softwareHouseKeyValidate ? 'must be atleast 20 chars' : ''}
                 id="softwareHouseKey"
                 autoComplete="off"
               />
@@ -243,7 +281,7 @@ const alertContext  = useContext(AlertContext)
             variant="contained"
             color="secondary"
             className={classes.submit}
-            onClick={e=>signUp(e)}
+            onClick={e => signUp(e)}
           >
             Sign Up
             </Button>
