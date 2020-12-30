@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import ManagerContext from '../../../../../context/manager/ManagerContext';
-import AuthContext from '../../../../../context/auth/AuthContext'
+import AuthContext from '../../../../../context/auth/AuthContext';
 import './addMember.css';
 
 function Member({ data }) {
@@ -14,14 +14,14 @@ function Member({ data }) {
         selectedMembers
     } = managerContext;
 
-    const authContext = useContext(AuthContext)
+    const authContext = useContext(AuthContext);
 
     const {
         objectToArray
-    } = authContext
+    } = authContext;
 
     // let selected = false;
-    const [selected, setSelected] = useState(false)
+    const [selected, setSelected] = useState(false);
 
     // useEffect(() => {
     //     console.log('useEffect run')
@@ -36,17 +36,17 @@ function Member({ data }) {
     // })
     useEffect(() => {
         // console.log('effect run')
-        setSelected(false)
-        if (selectedMembers) {            
+        setSelected(false);
+        if (selectedMembers) {
             selectedMembers.forEach(member => {
                 if (member.key === data.key) {
                     // selected = true
-                    setSelected(true)
+                    setSelected(true);
                     // console.log('found')
                 }
-        })
+            });
         }
-    })
+    });
 
     // console.log('condition')
 
@@ -57,11 +57,11 @@ function Member({ data }) {
     const [checked, setChecked] = useState(data.isAssigned);
     const handleChange = (e) => {
         if (checkTaskAssigned(data)) {
-            setError(true)
+            setError(true);
         } else {
             setChecked(e.target.checked);
             handleAssignedMember(data);
-            setError(false)
+            setError(false);
         }
     };
 
@@ -69,19 +69,19 @@ function Member({ data }) {
 
     if (checked !== data.isAssigned) {
         setChecked(data.isAssigned);
-                
-                // if (selectedMembers) {
-                //     selectedMembers.forEach(member => {
-                //         if (member.key === data.key) {
-                //             // selected = true
-                //             setSelected(true)
-                //             // console.log('found')
-                //         } else {
-                //             setSelected(false)
 
-                //         }
-                //     })
-                // }
+        // if (selectedMembers) {
+        //     selectedMembers.forEach(member => {
+        //         if (member.key === data.key) {
+        //             // selected = true
+        //             setSelected(true)
+        //             // console.log('found')
+        //         } else {
+        //             setSelected(false)
+
+        //         }
+        //     })
+        // }
     }
 
     // if (checked !== data.isAssigned) {
@@ -91,7 +91,7 @@ function Member({ data }) {
     const checkTaskAssigned = (data) => {
         let taskArray = objectToArray(tasks);
         let memberFound = false;
-        let taskFound = false
+        let taskFound = false;
 
         if (selectedMembers) {
             for (let memberIndex = 0; memberIndex < selectedMembers.length; memberIndex++) {
@@ -109,7 +109,7 @@ function Member({ data }) {
                 }
             }
         }
-        return taskFound
+        return taskFound;
     };
 
     return (
@@ -130,7 +130,7 @@ function Member({ data }) {
                         {
                             error &&
                             <span style={{ color: '#fa0057' }}>
-                                Task already assigned
+                                Task assigned
                             </span>
                         }
                     </div>

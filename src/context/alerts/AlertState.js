@@ -20,6 +20,7 @@ const AlertStates = props => {
     const setMessage = (msg, type) => {
         // console.log(msg, type)
         let alert = null;
+        
         switch (msg) {
             case "auth/network-request-failed":
                 alert = 'An unxpected network error occured! Please check your device is connected to a network';
@@ -32,15 +33,7 @@ const AlertStates = props => {
             case 'Please enter all fields':
                 alert = 'Please enter all fields!';
                 break;
-            
-            case "Email can't be empty":
-                alert = "Please Enter Email Address!";
-                break;
-            
-            case 'Password cant be empty':
-                alert = 'Please Enter Password!';
-                break;
-            
+                        
             case "auth/wrong-password":
                 alert = "The password is invalid!";
                 break;
@@ -49,6 +42,10 @@ const AlertStates = props => {
                 alert = "user not found!";
                 break;
             
+            case 'pleasr select members':
+                alert = 'Pleasr select members';
+                break;
+
             default:
                alert='unexpected error occured!' 
         }

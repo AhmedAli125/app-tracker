@@ -4,11 +4,11 @@ import AddMembers from './addMembers/AddMembers';
 import AddTask from './createTasks/AddTask';
 import TaskList from '../../../ui/projectTasks/TaskList';
 import ManagerContext from '../../../../context/manager/ManagerContext';
-import AuthContext from '../../../../context/auth/AuthContext'
+import AuthContext from '../../../../context/auth/AuthContext';
 import './createProject.css';
 
 function CreateProject(props) {
-    
+
     const managerContext = useContext(ManagerContext);
     const {
         openMemberModalHandler,
@@ -22,39 +22,54 @@ function CreateProject(props) {
         createProject,
         projectDeadline,
         cancelProject,
-        
+
     } = managerContext;
-    
-    const authContext = useContext(AuthContext)
-    const {currentDate} = authContext
-    
-    const [title,setTitle] = useState('')
-    const changeTitle = e => setTitle(e.target.value)
 
-    const [deadline, setDeadline] = useState(currentDate())
-    const changeDate = (e) => {
-        setDeadline(e.target.value)
-        setProjectDeadline(e.target.value)
-        // console.log(deadline)
-    }
+    const authContext = useContext(AuthContext);
+    const {
+        currentDate
+    } = authContext;
 
-
-    useEffect(() => {    
+    useEffect(() => {
         getOrganizationMembers();
-    }, [])
+    }, []);
+
+    const [titleValid, setTitleValid] = useState(false);
+    const [title, setTitle] = useState('');
+    const changeTitle = e => {
+        setTitle(e.target.value);
+        setTitleValid(validate(/^[a-zA-Z_ ]*$/g, e.target.value))
+    };
+
+    const [deadline, setDeadline] = useState(currentDate());
+    const changeDate = (e) => {
+        setDeadline(e.target.value);
+        setProjectDeadline(e.target.value);
+        // console.log(deadline)
+    };
+
 
     const cancelProjectButton = () => {
-        setTitle('')
-        cancelProject()
+        setTitle('');
+        cancelProject();
         props.history.push('/dashboard');
-    }
+    };
 
     const createProjectButton = () => {
-        createProject(title)
-        setTitle('')
-        cancelProject()
+        createProject(title);
+        setTitle('');
+        cancelProject();
         props.history.push('/dashboard');
-    }
+    };
+
+    const validate = (pattern, field) => {
+        let regex = new RegExp(pattern);
+        if (regex.test(field)) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     return (
         <Container>
@@ -66,11 +81,12 @@ function CreateProject(props) {
                 autoComplete="off">
                 <TextField
                     fullWidth={true}
-                    // id="project-title"
+                    error={title !== '' & !titleValid}
+                    // helperText={title !== '' & !titleValid ? 'special characters and numbers are not allowed' : ''}
                     label="Project Title"
                     value={title}
                     onChange={changeTitle}
-                    variant="outlined" 
+                    variant="outlined"
                 />
             </form>
             <div
@@ -80,18 +96,19 @@ function CreateProject(props) {
                 }}
             >
                 <TextField
-                        id="date"
-                        margin='none'
-                        size='small'
-                        label="Project Deadline"
-                        type="date"
-                        variant='outlined'
-                        onChange={changeDate}
-                        defaultValue={deadline}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{inputProps: { min: currentDate() } }}
+                    margin='none'
+                    size='small'
+                    label="Project Deadline"
+                    type="date"
+                    variant='outlined'
+                    onChange={changeDate}
+                    defaultValue={deadline}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    // disabled={deadline < currentDate()}
+                    error={deadline < currentDate()}
+                    InputProps={{ inputProps: { min: currentDate() } }}
                 />
                 <p
                     style={{
@@ -130,7 +147,7 @@ function CreateProject(props) {
                     Task List
                 </Typography>
                 {
-                    tasks && 
+                    tasks &&
                     <TaskList />
                 }
             </div>
@@ -151,7 +168,7 @@ function CreateProject(props) {
                     variant='contained'
                     color='primary'
                     disabled={!(selectedMembers && tasks && projectDeadline)}
-                    onClick = {createProjectButton}
+                    onClick={createProjectButton}
                 >
                     Create
                 </Button>
