@@ -18,7 +18,6 @@ function AddMembers() {
 
     const addMembers = () => {
         getSelectedmembers();
-        closeMemberModalHandler();
     }
 
     return (

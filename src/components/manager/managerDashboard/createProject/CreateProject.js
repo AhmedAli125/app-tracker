@@ -5,6 +5,7 @@ import AddTask from './createTasks/AddTask';
 import TaskList from '../../../ui/projectTasks/TaskList';
 import ManagerContext from '../../../../context/manager/ManagerContext';
 import AuthContext from '../../../../context/auth/AuthContext';
+import AlertContext from '../../../../context/alerts/AlertContext';
 import './createProject.css';
 
 function CreateProject(props) {
@@ -22,13 +23,17 @@ function CreateProject(props) {
         createProject,
         projectDeadline,
         cancelProject,
-
     } = managerContext;
 
     const authContext = useContext(AuthContext);
     const {
         currentDate
     } = authContext;
+
+    const alertContext = useContext(AlertContext);
+    const {
+        setMessage
+    } = alertContext;
 
     useEffect(() => {
         getOrganizationMembers();
@@ -38,7 +43,7 @@ function CreateProject(props) {
     const [title, setTitle] = useState('');
     const changeTitle = e => {
         setTitle(e.target.value);
-        setTitleValid(validate(/^[a-zA-Z_ ]*$/g, e.target.value))
+        setTitleValid(validate(/^[a-zA-Z_ ]{1,23}$/g, e.target.value))
     };
 
     const [deadline, setDeadline] = useState(currentDate());
@@ -56,10 +61,14 @@ function CreateProject(props) {
     };
 
     const createProjectButton = () => {
-        createProject(title);
-        setTitle('');
-        cancelProject();
-        props.history.push('/dashboard');
+        if (title) {
+            createProject(title);
+            setTitle('');
+            cancelProject();
+            props.history.push('/dashboard');
+        } else {
+            setMessage('title', 'error')
+        }
     };
 
     const validate = (pattern, field) => {
@@ -82,7 +91,6 @@ function CreateProject(props) {
                 <TextField
                     fullWidth={true}
                     error={title !== '' & !titleValid}
-                    // helperText={title !== '' & !titleValid ? 'special characters and numbers are not allowed' : ''}
                     label="Project Title"
                     value={title}
                     onChange={changeTitle}

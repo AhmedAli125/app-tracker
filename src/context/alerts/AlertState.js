@@ -31,7 +31,7 @@ const AlertStates = props => {
                 break;
             
             case 'Please enter all fields':
-                alert = 'Please enter all fields!';
+                alert = 'Make shoure all the fields are correctly entered!';
                 break;
                         
             case "auth/wrong-password":
@@ -39,11 +39,23 @@ const AlertStates = props => {
                 break;
             
             case "auth/user-not-found":
-                alert = "user not found!";
+                alert = "User not found!";
                 break;
             
-            case 'pleasr select members':
-                alert = 'Pleasr select members';
+            case 'please select members':
+                alert = 'Please select members!';
+                break;
+            
+            case 'Developer & Tester':
+                alert = 'Please Select atleast 1 Developer and 1 Tester!';
+                break;
+            
+            case 'assign Developer & Tester':
+                alert = 'Assign Developer and Tester to this task!';
+                break;
+            
+            case 'title':
+                alert = 'Project title should not be empty!';
                 break;
 
             default:

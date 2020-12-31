@@ -11,6 +11,7 @@ import Select from '@material-ui/core/Select';
 import Modal from '../../../../ui/modal/ModalWindow';
 import ManagerContext from '../../../../../context/manager/ManagerContext';
 import AuthContext from '../../../../../context/auth/AuthContext';
+import AlertContext from '../../../../../context/alerts/AlertContext';
 
 function AddTask() {
     const managerContext = useContext(ManagerContext);
@@ -19,7 +20,6 @@ function AddTask() {
         selectedMembers,
         createTask,
         projectDeadline,
-        // editTaskFlag,
         editTask
     } = managerContext;
 
@@ -28,11 +28,24 @@ function AddTask() {
         currentDate
     } = authContext;
 
-    const [title, setTitle] = useState(editTask ? editTask.title : null);
-    const changeTitle = e => setTitle(e.target.value);
+    const alertContext = useContext(AlertContext);
+    const {
+        setMessage
+    } = alertContext;
 
-    const [desc, setDesc] = useState(editTask ? editTask.desc : null);
-    const changeDesc = e => setDesc(e.target.value);
+    const [titleValid, setTitleValid] = useState(false);
+    const [title, setTitle] = useState(editTask ? editTask.title : '');
+    const changeTitle = e => {
+        setTitle(e.target.value);
+        setTitleValid(validate(/^[a-zA-Z_ ]{1,20}$/g, e.target.value));
+    };
+
+    const [descValid, setDescValid] = useState(false);
+    const [desc, setDesc] = useState(editTask ? editTask.desc : '');
+    const changeDesc = e => {
+        setDesc(e.target.value);
+        setDescValid(validate(/^[a-zA-Z0-9 ]*$/g, e.target.value));
+    };
 
     const [developer, setDeveloper] = useState(editTask ? editTask.members.developer : null);
     const selectDeveloper = (e) => setDeveloper(e.target.value);
@@ -40,35 +53,72 @@ function AddTask() {
     const [tester, setTester] = useState(editTask ? editTask.members.tester : null);
     const selectTester = (e) => setTester(e.target.value);
 
-    
+    const [devDeadlineValid, setDevDeadlineValid] = useState(false);
     const [developerDeadline, setDeveloperDeadline] = useState(editTask ? editTask.members.developer.deadline : currentDate());
     const setDeveloperDate = e => {
         setDeveloperDeadline(e.target.value);
         setTesterDeadline(e.target.value);
+        setDevDeadlineValid(e.target.value === currentDate())
     };
-    const [testerDeadline, setTesterDeadline] = useState(editTask ? editTask.members.tester.deadline : currentDate());
-    const setTesterDate = e => setTesterDeadline(e.target.value);
 
-    let taskData = {
-        title,
-        desc,
-        developer,
-        tester,
-        developerDeadline,
-        testerDeadline
+    const [testerDeadlineValid, setTesterDeadlineValid] = useState(false);
+    const [testerDeadline, setTesterDeadline] = useState(editTask ? editTask.members.tester.deadline : currentDate());
+    const setTesterDate = e => {
+        setTesterDeadline(e.target.value);
+        setTesterDeadlineValid(e.target.value === developerDeadline)
+    }
+
+    const validate = (pattern, field) => {
+        let regex = new RegExp(pattern);
+        if (regex.test(field)) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     const addTask = () => {
-        createTask(taskData);
-        setTitle('');
-        setDesc('');
-        setDeveloper(null);
-        setTester(null);
-        setDeveloperDeadline(currentDate);
-        setTesterDeadline(currentDate);
-        closeTaskModalHandler();
+        let devDate, testerDate;
+        devDate = developerDeadline === currentDate();
+        testerDate = testerDeadline === developerDeadline;
+
+        // console.log(devDate, testerDate)
+        
+        if (title && desc && developer && tester && !devDate && !testerDate) {
+
+            let taskData = {
+                title,
+                desc,
+                developer,
+                tester,
+                developerDeadline,
+                testerDeadline
+            };
+
+            createTask(taskData);
+
+            setTitle('');
+            setDesc('');
+            setDeveloper(null);
+            setTester(null);
+            setDeveloperDeadline(currentDate);
+            setTesterDeadline(currentDate);
+            closeTaskModalHandler();
+        } else {
+            if (devDate) {
+                setDevDeadlineValid(true);
+            }
+            if (testerDate) {
+                setTesterDeadlineValid(true);
+            }
+            if (developer === null && tester === null) {
+                setMessage('assign Developer & Tester', 'error');
+            } else {
+                setMessage('Please enter all fields', 'error');
+            }
+        }
     };
-    
+
     const cancleTask = () => {
         setTitle('');
         setDesc('');
@@ -82,7 +132,7 @@ function AddTask() {
     return (
         <Modal show={true} clicked={closeTaskModalHandler}>
             <Typography variant='h5' align='left' display='block' >
-                {editTask? 'Update Task' : 'Add Task'}
+                {editTask ? 'Update Task' : 'Add Task'}
             </Typography>
             <div>
                 <form noValidate>
@@ -92,7 +142,10 @@ function AddTask() {
                         value={title}
                         placeholder="Enter Task Title"
                         onChange={changeTitle}
-                        id="outlined-basic" label="Task Title" variant="outlined"
+                        error={!titleValid && title !== ''}
+                        helperText={!titleValid && title !== '' ? 'Numbers / special characters are not allowed and max characters should be 20' : null}
+                        label="Task Title"
+                        variant="outlined"
                         autoComplete='off'
                     />
 
@@ -104,7 +157,10 @@ function AddTask() {
                         value={desc}
                         placeholder="Enter Task Description"
                         onChange={changeDesc}
-                        id="outlined-basic" label="Task Description" variant="outlined"
+                        error={!descValid && desc !== ''}
+                        helperText={!descValid && desc !== '' ? 'Special characters are not allowed' : null}
+                        label="Task Description"
+                        variant="outlined"
                         autoComplete='off'
                     />
 
@@ -119,16 +175,16 @@ function AddTask() {
                             displayEmpty
                             renderValue={
                                 (developer) => {
-                                if (developer === null) {
-                                  return <em>Select Developer</em>;
-                                } else {
-                                    return (`${developer.firstName} ${developer.lastName}`)
-                                }
+                                    if (developer === null) {
+                                        return <em>Select Developer</em>;
+                                    } else {
+                                        return (`${developer.firstName} ${developer.lastName}`);
+                                    }
                                 }
                             }
                             inputProps={{ 'aria-label': 'Without label' }}
                         >
-                            <MenuItem value = "" disabled >
+                            <MenuItem value="" disabled >
                                 <em> Select Developer </em>
                             </MenuItem>
                             {selectedMembers ? selectedMembers.map((member) => {
@@ -154,6 +210,7 @@ function AddTask() {
                         variant='outlined'
                         value={developerDeadline}
                         onChange={setDeveloperDate}
+                        error={developerDeadline < currentDate() || developerDeadline > projectDeadline || devDeadlineValid}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -177,11 +234,11 @@ function AddTask() {
                             displayEmpty
                             renderValue={
                                 (tester) => {
-                                if (tester === null) {
-                                  return <em>Select Tester</em>;
-                                } else {
-                                    return (`${tester.firstName} ${tester.lastName}`)
-                                }
+                                    if (tester === null) {
+                                        return <em>Select Tester</em>;
+                                    } else {
+                                        return (`${tester.firstName} ${tester.lastName}`);
+                                    }
                                 }
                             }
                             inputProps={{ 'aria-label': 'Without label' }}
@@ -212,6 +269,7 @@ function AddTask() {
                         variant='outlined'
                         value={testerDeadline}
                         onChange={setTesterDate}
+                        error={testerDeadline < developerDeadline || testerDeadline >= projectDeadline || testerDeadlineValid}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -233,7 +291,7 @@ function AddTask() {
                             color='primary'
                             onClick={addTask}
                         >
-                            {editTask? 'Update' : 'Add'}
+                            {editTask ? 'Update' : 'Add'}
                         </Button>
                         <Button
                             color='secondary'

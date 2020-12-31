@@ -2,6 +2,7 @@ import React, { useContext, useReducer } from 'react';
 import ManagerContext from './ManagerContext';
 import ManagerReducer from './ManagerReducer';
 import AuthContext from '../auth/AuthContext';
+import AlertContext from '../alerts/AlertContext';
 import Database from '../../config/Database';
 // axios
 //firebase
@@ -43,6 +44,11 @@ const ManagerStates = props => {
         user,
         currentDate
     } = authContext;
+
+    const alertContext = useContext(AlertContext);
+    const {
+        setMessage
+    } = alertContext
 
     const [state, dispatch] = useReducer(ManagerReducer, initialState);
 
@@ -103,6 +109,8 @@ const ManagerStates = props => {
     };
 
     const getSelectedmembers = () => {
+        let isDeveloper = false;
+        let isTester = false;
         // console.log(selected)
         let selectedMembers = [];
         state.organizationMembers.map(member => {
@@ -111,9 +119,24 @@ const ManagerStates = props => {
             }
         });
 
-        // console.log(selectedMembers)
+        if (selectedMembers.length > 0) {
+            isDeveloper = selectedMembers.some(member => member.designation === 'developer')
+            isTester = selectedMembers.some(member => member.designation === 'tester')
+        }
 
-        dispatch({ type: SELECTED_MEMBERS, payload: selectedMembers });
+        // console.log(selectedMembers)
+        if (selectedMembers.length === 0) {
+            setMessage('please select members', 'error');
+            // dispatch({ type: SELECTED_MEMBERS, payload: null });
+        } 
+        else {
+            if (!(isDeveloper && isTester)) {
+                setMessage('Developer & Tester', 'error');
+            } else {
+                closeMemberModalHandler();
+                dispatch({ type: SELECTED_MEMBERS, payload: selectedMembers });
+            }
+        }
     };
 
     const clearSelectedMember = () => {
@@ -241,7 +264,7 @@ const ManagerStates = props => {
             .catch(err => console.log(err));
     };
 
-   
+
 
     return (
         <ManagerContext.Provider
