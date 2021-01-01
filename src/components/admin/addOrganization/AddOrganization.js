@@ -10,6 +10,7 @@ import {
 import AdminContext from '../../../context/admin/AdminContext';
 import AuthContext from '../../../context/auth/AuthContext';
 import Database from '../../../config/Database';
+import AlertContext from '../../../context/alerts/AlertContext'
 
 function AddOrganization() {
   const adminContext = useContext(AdminContext);
@@ -17,34 +18,58 @@ function AddOrganization() {
     registerOrganization
   } = adminContext;
 
+  const alertContext = useContext(AlertContext);
+  const {
+    setMessage
+  } = alertContext;
+
   const authContext = useContext(AuthContext);
   const {
     currentDate
   } = authContext;
 
+  const [organizationValid, setOrganizationValid] = useState(false);
   const [organization, setOrganization] = useState('');
-  const handleOrganization = e => setOrganization(e.target.value);
+  const handleOrganization = e => {
+    setOrganization(e.target.value);
+    setOrganizationValid(validate(/^[a-zA-Z0-9 ]{0,22}$/g, e.target.value))
+  }
 
+  const [emailValid, setEmailValid] = useState(false);
   const [orgEmail, setOrgEmail] = useState('');
-  const handleOrgEmail = e => setOrgEmail(e.target.value);
+  const handleOrgEmail = e => {
+    setOrgEmail(e.target.value);
+    setEmailValid(validate(/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/g, e.target.value));
+  }
 
 
+  const [contactValid, setContactValid] = useState(false);
   const [contact, setContact] = useState('');
-  const handleContact = e => setContact(e.target.value);
+  const handleContact = e => {
+    setContact(e.target.value);
+    setContactValid(validate(/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/g, e.target.value))
+  }
 
+  const [addressValid, setAddressValid] = useState(false);
   const [address, setAddress] = useState('');
-  const handleAddress = e => setAddress(e.target.value);
+  const handleAddress = e => {
+    setAddress(e.target.value);
+    setAddressValid(validate(/^[A-Za-z0-9 ,.#\/-]*$/g, e.target.value))
+  }
 
+  const [isKey, setIsKey] = useState(false)
   const [organizationKey, setOrganizationKey] = useState('');
   const [managerKey, setManagerKey] = useState('');
   const [developerKey, setDeveloperKey] = useState('');
   const [testerKey, setTesterKey] = useState('');
 
   const getKeys = () => {
-
+    
     let organizationKey = Database.database().ref('/organizations/').push().key;
     setOrganizationKey(organizationKey);
-
+    
+    setIsKey(false)
+    
     let manager = generateKey(organizationKey);
     let developer = generateKey(organizationKey);
     let tester = generateKey(organizationKey);
@@ -101,9 +126,40 @@ function AddOrganization() {
     }
   };
 
-  const register = () => {
-    registerOrganization(organizationData)
+  const validate = (pattern, field) => {
+    let regex = new RegExp(pattern);
+    if (regex.test(field)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
+
+  const register = () => {
+
+    if (organization && orgEmail && contact && address && managerKey && developerKey && testerKey) {
+      registerOrganization(organizationData)
+  
+      setOrganization('');
+      setOrganizationKey('')
+      setOrgEmail('')
+      setContact('')
+      setAddress('')
+      setDeveloperKey('')
+      setManagerKey('')
+      setTesterKey('')
+    } else {
+      if (organization && orgEmail && contact && address && managerKey === '' && developerKey === '' && testerKey === '') {
+        setIsKey(true);
+        setMessage('empty keys', 'error');
+      } else {
+        setMessage('Please enter all fields', 'error');
+      }
+    }
+  };
+  
+  const clear = () => {
     setOrganization('');
     setOrganizationKey('')
     setOrgEmail('')
@@ -112,7 +168,7 @@ function AddOrganization() {
     setDeveloperKey('')
     setManagerKey('')
     setTesterKey('')
-  };
+  }
 
   return (
     // <div>
@@ -135,6 +191,8 @@ function AddOrganization() {
           fullWidth={true}
           margin='normal'
           variant="outlined"
+          error={!organizationValid && organization !== ''}
+          helperText={!organizationValid && organization !== '' ? 'Max characters should be 22 / no special characters are allowed' : null}
           onChange={handleOrganization}
         />
 
@@ -145,6 +203,8 @@ function AddOrganization() {
           fullWidth={true}
           margin='normal'
           variant="outlined"
+          error={orgEmail !== '' & !emailValid}
+          helperText={orgEmail !== '' & !emailValid ? 'email pattern : username@domain.com' : null}
           onChange={handleOrgEmail}
         />
 
@@ -155,6 +215,8 @@ function AddOrganization() {
           value={contact}
           margin='normal'
           variant="outlined"
+          error={!contactValid && contact !== ''}
+          helperText={!contactValid && contact !== '' ? 'contact pattern : 03231234567 / 0345-1234567 / +923211234567 / 0092-3331234567' : null}
           onChange={handleContact}
         />
 
@@ -165,6 +227,8 @@ function AddOrganization() {
           value={address}
           margin='normal'
           variant="outlined"
+          error={address !== '' && !addressValid}
+          helperText={address !== '' && !addressValid ? 'Special characters : !, @, $, %, ^, &, *, are not allowed' : null}
           onChange={handleAddress}
         />
 
@@ -175,10 +239,11 @@ function AddOrganization() {
               label='Manager Key'
               fullWidth={true}
               disabled
+              error={isKey}
               value={managerKey}
               margin='normal'
               variant="outlined"
-            />
+              />
           </Grid>
           <Grid item sm='12' md='3' lg='3'>
             <TextField
@@ -187,9 +252,10 @@ function AddOrganization() {
               fullWidth={true}
               disabled
               value={developerKey}
+              error={isKey}
               margin='normal'
               variant="outlined"
-            />
+              />
           </Grid>
           <Grid item sm='12' md='3' lg='3'>
             <TextField
@@ -198,6 +264,7 @@ function AddOrganization() {
               fullWidth={true}
               disabled
               value={testerKey}
+              error={isKey}
               margin='normal'
               variant="outlined"
             />
@@ -227,11 +294,12 @@ function AddOrganization() {
           <Button
             color='primary'
             onClick={() => register()}
-          >
+            >
             Register
           </Button>
           <Button
             color='secondary'
+            onClick={clear}
           >
             Cancel
           </Button>

@@ -57,6 +57,10 @@ const AlertStates = props => {
             case 'title':
                 alert = 'Project title should not be empty!';
                 break;
+            
+            case 'empty keys':
+                alert = 'Get the organization keys first!';
+                break;
 
             default:
                alert='unexpected error occured!' 
