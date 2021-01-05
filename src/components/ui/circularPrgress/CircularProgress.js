@@ -16,6 +16,8 @@ const ProgressCircular = () => {
 
   const classes = useStyles();
 
+  console.log('progress run')
+
   return (
     <Modal show={true} clicked={() => { alert('progress'); }} >
       <div className={classes.container}>

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import { Switch, Route } from 'react-router-dom';
 import AlertContext from '../context/alerts/AlertContext'
 import Auth from './auth/Auth';
@@ -7,6 +7,7 @@ import Dashboard from './ui/dashboard/Dashboard';
 import AlertComponent from './ui/alert/AlertComponent';
 import Modal from './ui/modal/ModalWindow'
 import CircularProgress from './ui/circularPrgress/CircularProgress'
+import Loader from './ui/loader/Loader';
 
 function AppTracker() {
 
@@ -16,13 +17,20 @@ function AppTracker() {
         loading
     } = alertContext;
 
+    // useEffect(() => {
+    //     if (!window.navigator.onLine) {
+    //         console.log('offline')
+    //     }
+    // }, [window.navigator.onLine])
+
+    // console.log('[app tracker] ', loading)
+
     return (
         <>
             {
                 loading &&
-                // <Modal  show={ true } clicked={ () =>{alert('progress')} } >
-                    <CircularProgress />
-                // </Modal>
+                    <Loader />
+                    // <CircularProgress />
             }
             {
                 alertMessage &&

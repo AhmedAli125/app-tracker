@@ -2,16 +2,22 @@ import {
     SET_USER_DATA,
     USER_LOG_OUT,
     SHOW_PROFILE_FLAG,
-    CLOSE_PROFILE_FLAG
+    CLOSE_PROFILE_FLAG,
+    SET_LOGIN_STATUS
 } from '../Type';
 
 export default (state, action) => {
     switch (action.type) {
+        case SET_LOGIN_STATUS:
+            return {
+                ...state,
+                isLoggedIn: true
+            }
         case SET_USER_DATA:
             return {
                 ...state,
                 user: action.payload,
-                isLoggedIn: true
+                // isLoggedIn: true
             };
 
         case USER_LOG_OUT:

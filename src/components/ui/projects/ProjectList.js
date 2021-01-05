@@ -23,14 +23,14 @@ function ProjectList() {
     useEffect(() => {
         getProjects();
         getUpdatedData();
-    }, []);
+    }, [user]);
 
     let projectsArray=[]
     Object.keys(projects)
         .forEach(key => {
             if (user.designation !== 'manager') {
                 if (projects[key].members[user.key]) {
-                    // console.log(projectsObj[key].members[user.key])
+                    // console.log(projects[key].members[user.key])
                     projectsArray.push(projects[key])
                 }
             } else {
@@ -50,7 +50,9 @@ function ProjectList() {
                 spacing='2'
             >
                 {
-                    projectsArray ?
+                    projectsArray
+                        // && projectsArray[0] != '0'
+                        ?
                         projectsArray[0] !== 0 && projectsArray.map(project => {
                             return (
                                 <Grid key={project.key} item sm-12 md-4 lg-3 xl-2>

@@ -35,20 +35,23 @@ function Header() {
         <div className={classes.root}>
             <AppBar position="fixed">
                 <Toolbar>
-                    <Typography variant="h5" className={classes.title}>
+                    {user!==null?<Typography variant="h5" className={classes.title}>
                         {user.designation !== 'admin' ? user.organization : 'App Tracker'}
-                    </Typography>
-                    <Button
+                    </Typography> : null }
+                    
+                    {user !== null ?<Button
                         color="inherit"
                         onClick = {
                             showProfile
                         }
                     >
-                        {`
+                        {`${user.firstName} ${user.lastName}` }
+                        {/* {`
                             ${user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1)} 
                             ${user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1)}
-                        ` }
-                    </Button>
+                        ` } */}
+                    </Button> : null }
+                    
                     <Button
                         color="inherit"
                         onClick={userLogOut}

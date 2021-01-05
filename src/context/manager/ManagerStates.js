@@ -72,7 +72,7 @@ const ManagerStates = props => {
         // console.log('getOrganizationMembers run')
         let members = [];
         let users;
-        Database.database().ref(`/registered-users`).once('value')
+        Database.database().ref(`/registered-users/`).once('value')
             .then(res => {
                 users = { ...res.val() };
                 for (let uid in users) {
@@ -88,7 +88,7 @@ const ManagerStates = props => {
                 }
                 dispatch({ type: GET_ORGANIZATION_MEMBERS, payload: members });
             })
-            .catch(err => console.log(err));
+            .catch(error => console.log(error));
     };
 
     const handleAssignedMember = (data) => {

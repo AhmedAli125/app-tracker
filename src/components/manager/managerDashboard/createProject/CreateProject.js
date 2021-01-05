@@ -35,9 +35,9 @@ function CreateProject(props) {
         setMessage
     } = alertContext;
 
-    useEffect(() => {
-        getOrganizationMembers();
-    }, []);
+    // useEffect(() => {
+    //     getOrganizationMembers();
+    // }, []);
 
     const [titleValid, setTitleValid] = useState(false);
     const [title, setTitle] = useState('');

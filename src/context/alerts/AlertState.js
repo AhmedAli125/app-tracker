@@ -76,7 +76,11 @@ const AlertStates = props => {
 
     const toggleLoading = (flag) => {
         dispatch({type:SET_LOADING, payload: flag})
-    }
+    } 
+
+    // if (!window.navigator.onLine) {
+    //     alert('offline')
+    // }
 
     return (
         <AlertContext.Provider

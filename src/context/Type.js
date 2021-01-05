@@ -35,6 +35,7 @@ export const CLEAR_FILTER = 'CLEAR_FILTER'
 //USERS
 
 export const SET_USER_DATA = 'SET_USER_DATA'  //LogIn
+export const SET_LOGIN_STATUS = 'SET_LOGIN_STATUS'
 export const USER_LOG_OUT = 'USER_LOG_OUT'
 export const USER_SIGN_UP = 'USER_SIGN_UP'  //katana hai
 export const GET_PROJECTS = 'GET_PROJECTS'

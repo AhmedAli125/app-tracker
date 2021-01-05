@@ -7,7 +7,8 @@ import {
     SET_USER_DATA,
     USER_LOG_OUT,
     SHOW_PROFILE_FLAG,
-    CLOSE_PROFILE_FLAG
+    CLOSE_PROFILE_FLAG,
+    SET_LOGIN_STATUS
 } from '../Type';
 
 const AuthStates = props => {
@@ -55,23 +56,27 @@ const AuthStates = props => {
         return getYear() + "-" + getMonth() + "-" + getDate();
       };
     
-    const getUserData = async () => {
+    const getUserData = () => {
         let userData;
-        Database.auth().onAuthStateChanged(await function (user) {
+        Database.auth().onAuthStateChanged(function (user) {
             if (user) {
+                // console.log(user)
                 // key=user.uid
+                toggleLoading(true)
+                dispatch({type:SET_LOGIN_STATUS})
                 Database.database().ref(`/registered-users/${user.uid}`).once('value')
                     .then(
                         (data) => {
                             userData = { ...data.val() };
-                            // console.log(userData);
                             dispatch({ type: SET_USER_DATA, payload: userData });
+                            // console.log(userData);
                             toggleLoading(false)
                         }
                     )
                     .catch(
                         (error) => {
-                            // console.log(error);
+                            console.log('catch block')
+                            console.log(error);
                             toggleLoading(false)
 
                         }
@@ -88,7 +93,7 @@ const AuthStates = props => {
                 getUserData();
             })
             .catch(err => {
-                // setMessage(err.code, 'error')
+                setMessage(err.code, 'error')
                 toggleLoading(false)
             });
     };
