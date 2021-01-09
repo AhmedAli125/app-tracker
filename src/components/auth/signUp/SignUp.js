@@ -159,9 +159,7 @@ export default function SignUp(props) {
     e.preventDefault();
 
     if (firstName && lastName && email && password && designationKey && softwareHouseKey) {
-      console.log('all filled')
       if (firstNameValid && lastNameValid && emailValid && !passwordValidate && !designationKeyValid && !softwareHouseKeyValid) {
-        console.log('all valid')
         let userData = {
           firstName,
           lastName,
@@ -170,10 +168,9 @@ export default function SignUp(props) {
           softwareHouseKey,
           designationKey,
           regDate: currentDate()
-        };
+        }; 
 
         registerUser(userData);
-
         setFirstName('');
         setLastName('');
         setEmail('');
@@ -187,7 +184,7 @@ export default function SignUp(props) {
       setMessage('Please enter all fields', 'error');
     }
   };
-
+  
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

@@ -31,7 +31,7 @@ const AlertStates = props => {
                 break;
             
             case 'Please enter all fields':
-                alert = 'Make shoure all the fields are correctly entered!';
+                alert = 'Make sure all the fields are correctly entered!';
                 break;
                         
             case "auth/wrong-password":
@@ -40,6 +40,10 @@ const AlertStates = props => {
             
             case "auth/user-not-found":
                 alert = "User not found!";
+                break;
+            
+            case "auth/email-already-in-use":
+                alert = "Email Already in use! Please use another valid email address";
                 break;
             
             case 'please select members':
@@ -61,6 +65,33 @@ const AlertStates = props => {
             case 'empty keys':
                 alert = 'Get the organization keys first!';
                 break;
+            case 'create project error':
+                alert = 'Network error! the project is created locally, refresh will cause data loss.';
+                break;
+            
+            case 'edit member error':
+                alert = 'Network error! the Member is updated locally, refresh will cause data loss.';
+                break;
+            
+            case 'organization added':
+                alert = 'Organization Added';
+                break;
+            
+            case 'project created':
+                alert = 'Project Created';
+                break;
+            
+            case 'User updated':
+                alert = 'Member Updated';
+                break;
+            
+            case 'signed up':
+                alert = 'User Registered Successfully!';
+                break;
+            
+            case 'bug reported':
+                alert = 'Bug Reported!';
+                break;
 
             default:
                alert='unexpected error occured!' 
@@ -76,11 +107,7 @@ const AlertStates = props => {
 
     const toggleLoading = (flag) => {
         dispatch({type:SET_LOADING, payload: flag})
-    } 
-
-    // if (!window.navigator.onLine) {
-    //     alert('offline')
-    // }
+    }
 
     return (
         <AlertContext.Provider

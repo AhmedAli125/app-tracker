@@ -189,7 +189,7 @@ function AddTask() {
                             </MenuItem>
                             {selectedMembers ? selectedMembers.map((member) => {
                                 return (
-                                    member.designation === 'developer' ?
+                                    member.designation === 'Developer' ?
                                         <MenuItem
                                             value={member}
                                             key={member.key}
@@ -248,7 +248,7 @@ function AddTask() {
                             </MenuItem>
                             {selectedMembers ? selectedMembers.map((member) => {
                                 return (
-                                    member.designation === 'tester' ?
+                                    member.designation === 'Tester' ?
                                         <MenuItem
                                             value={member}
                                             key={member.key}

@@ -17,11 +17,17 @@ function AppTracker() {
         loading
     } = alertContext;
 
-    // useEffect(() => {
-    //     if (!window.navigator.onLine) {
-    //         console.log('offline')
-    //     }
-    // }, [window.navigator.onLine])
+    useEffect(() => {
+        window.onbeforeunload = function () {
+            if (!window.navigator.onLine) {
+                //     if(event.type === 'beforeunload'){
+                //         console.log('refresh event')
+                return false;
+                //         event.preventDefault()
+                //     }
+            }
+        };
+    })
 
     // console.log('[app tracker] ', loading)
 

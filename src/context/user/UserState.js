@@ -3,6 +3,7 @@ import UserReducer from "./UserReducer";
 import UserContext from './UserContext';
 import AuthContext from '../auth/AuthContext';
 import Database from '../../config/Database';
+import AlertContext from '../alerts/AlertContext';
 import {
     GET_PROJECTS,
     GET_CLICKED_PROJECT,
@@ -20,6 +21,12 @@ const UserState = props => {
         objectToArray
     } = authContext;
 
+     const alertContext = useContext(AlertContext)
+     const {
+         setMessage,
+        //  toggleLoading
+     } = alertContext;
+
     const initialState = {
         projects: {},
         project: null,
@@ -34,26 +41,23 @@ const UserState = props => {
         // let projectsArray = []
         let projectsObj;
 
-        Database.database().ref(`/organizations/${user.softwareHouseKey}/projects`).once('value')
-            .then(res => {
+        Database.database().ref(`/organizations/${user.softwareHouseKey}/projects`).on('value', (res) => {            
                 projectsObj = { ...res.val() };
                 dispatch({ type: GET_PROJECTS, payload: projectsObj });
-            })
-            .catch(err => console.log(err));
+        })
+            // .catch(err => setMessage(err.code, 'error'));
 
     };
 
     const getUpdatedData = () => {
-        let prevProjects = state.projects;
+        // let prevProjects = state.projects;
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects`).on('child_changed', res => {
-            console.log(res.val());
-
-            console.log(prevProjects);
         });
     };
 
     const viewProject = (key) => {
         let project = state.projects[key];
+        console.log(project)
         dispatch({ type: GET_CLICKED_PROJECT, payload: project });
     };
 
@@ -91,7 +95,7 @@ const UserState = props => {
                 .then((res) => {
                     // console.log(res)
                 })
-                .catch(err => console.log(err));
+                .catch(err => setMessage(err.code, 'error'));
         }
         dispatch({
             type: SET_PROJECT_PERCENTAGE,
@@ -140,14 +144,14 @@ const UserState = props => {
         let project = changeTaskStatus('developerStatus', true, 'testerStatus', false);
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set(project)
             .then(res => res)
-            .catch(err => console.log(err));
+            .catch(err => setMessage(err.code, 'error'));
     };
 
     const setTesterStatus = () => {
         let project = changeTaskStatus('developerStatus', true, 'testerStatus', true);
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set(project)
             .then(res => res)
-            .catch(err => console.log(err));
+            .catch(err => setMessage(err.code, 'error'))
     };
 
     const reportBug = (bug) => {
@@ -173,8 +177,8 @@ const UserState = props => {
         dispatch({ type: SET_TASK_STATUS, payload: newProject });
 
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}/tasks/${selectedTask.key}`).set(selectedTask)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+            .then(res => setMessage('bug reported', 'success'))
+            .catch(err => setMessage(err.code, 'error'))
     };
 
     return (

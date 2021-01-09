@@ -45,14 +45,14 @@ function Member({data}) {
         <Card className={classes.root}>
             <CardContent>
                 <Typography variant="h6" component="h2">
-                    {data.firstName.charAt(0).toUpperCase() + data.firstName.slice(1)} {data.lastName.charAt(0).toUpperCase() + data.lastName.slice(1)}
+                    { `${data.firstName} ${data.lastName}`}
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
                     <Typography variant='subtitle2' component='p'>
                         Organization: {data.organization}
                     </Typography>
                     <Typography variant='subtitle2' component='p'>
-                        Designation: {data.designation.charAt(0).toUpperCase() + data.designation.slice(1)}
+                        Designation: {data.designation}
                     </Typography>
                 </Typography>
                 <Typography variant="subtitle2" component="p">

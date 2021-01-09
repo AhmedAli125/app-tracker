@@ -17,16 +17,10 @@ function Dashboard(props) {
     } = authContext;
 
     const alertContext = useContext(AlertContext);
-    const {
-        toggleLoading,
-        loading
-    } = alertContext;
-
-    React.useEffect(() => {
-        // if (!window.navigator.onLine) {
-            console.log('changes online status')
-        // }
-    }, [window.navigator.onLine])
+    // const {
+    //     toggleLoading,
+    //     loading
+    // } = alertContext;
     
     return (
         <>
@@ -42,8 +36,8 @@ function Dashboard(props) {
 
                 isLoggedIn ? (
                     user.designation === 'admin' ? 
-                        (<Admin />) : user.designation === 'manager' ?
-                            (<Manager />) : user.designation === 'developer' || 'tester' ?
+                        (<Admin />) : user.designation === 'Manager' ?
+                            (<Manager />) : user.designation === 'Developer' || 'Tester' ?
                                 (<User />) : null
                 ) : props.history.push('/')     
             }

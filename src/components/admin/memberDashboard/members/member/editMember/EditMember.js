@@ -4,6 +4,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import CloseIcon from '@material-ui/icons/Close';
 import Modal from '../../../../../ui/modal/ModalWindow';
 import AdminContext from '../../../../../../context/admin/AdminContext';
+import AlertContext from '../../../../../../context/alerts/AlertContext'
 
 function EditMember() {
 
@@ -14,6 +15,12 @@ function EditMember() {
         currentMember,
         updateMember
     } = adminContext;
+
+    const alertContext = useContext(AlertContext);
+    const {
+        setMessage
+    } = alertContext;
+
 
     const [firstName, setFirstName] = useState(currentMember.firstName);
     const handleFirstName = (e) => setFirstName(e.target.value);
@@ -41,8 +48,10 @@ function EditMember() {
     };
 
     const saveData = () => {
+        if (!window.navigator.onLine) {
+            setMessage('edit member error', 'error')
+        }
         updateMember(memberData);
-
         closeEditMemberModalHandler();
     }
 

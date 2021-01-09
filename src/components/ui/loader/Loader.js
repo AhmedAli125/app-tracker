@@ -1,5 +1,5 @@
 import React from 'react'
-import loader from '../../../assets/loader.gif'
+import loader from '../../../assets/loaderGif.gif'
 import {
     makeStyles
 } from '@material-ui/core/styles';
@@ -26,7 +26,7 @@ const Loader = () => {
                 style={ {
                     width: '100%',
                     height: '100vh',
-                    backgroundColor: 'whitesmoke',    
+                    backgroundColor: 'white',    
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
@@ -35,7 +35,7 @@ const Loader = () => {
                 <img 
                     src={loader} 
                     alt='loading'
-                    width="300px" 
+                    width="400px" 
                     height="300px"
                  />
             </div>

@@ -77,7 +77,7 @@ const ManagerStates = props => {
                 users = { ...res.val() };
                 for (let uid in users) {
                     if (users[uid].softwareHouseKey === user.softwareHouseKey) {
-                        if (users[uid].designation !== 'admin' && users[uid].designation !== 'manager') {
+                        if (users[uid].designation !== 'admin' && users[uid].designation !== 'Manager') {
                             members.push({
                                 ...users[uid],
                                 isAssigned: false,
@@ -88,7 +88,7 @@ const ManagerStates = props => {
                 }
                 dispatch({ type: GET_ORGANIZATION_MEMBERS, payload: members });
             })
-            .catch(error => console.log(error));
+            .catch(error => setMessage(error.code, 'error'));
     };
 
     const handleAssignedMember = (data) => {
@@ -120,8 +120,8 @@ const ManagerStates = props => {
         });
 
         if (selectedMembers.length > 0) {
-            isDeveloper = selectedMembers.some(member => member.designation === 'developer')
-            isTester = selectedMembers.some(member => member.designation === 'tester')
+            isDeveloper = selectedMembers.some(member => member.designation === 'Developer')
+            isTester = selectedMembers.some(member => member.designation === 'Tester')
         }
 
         // console.log(selectedMembers)
@@ -175,7 +175,7 @@ const ManagerStates = props => {
         } = data;
 
         let task = {
-            title,
+            title: title.charAt(0).toUpperCase() + title.slice(1).toLowerCase(),
             desc,
             key: taskKey,
             members: {
@@ -244,7 +244,7 @@ const ManagerStates = props => {
 
         let project = {
             key: state.projectKey,
-            title,
+            title: title.charAt(0).toUpperCase() + title.slice(1).toLowerCase(),
             isComplete: false,
             createdOn: currentDate(),
             createdBy: user,
@@ -258,10 +258,11 @@ const ManagerStates = props => {
                 Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/0`).remove()
                     .then(() => {
                         dispatch({ type: CREATE_PROJECT });
+                        setMessage('project created', 'success')
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => setMessage(err.code, 'error'));
             })
-            .catch(err => console.log(err));
+            .catch(err => setMessage(err.code, 'error'));
     };
 
 

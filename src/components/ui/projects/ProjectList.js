@@ -28,14 +28,16 @@ function ProjectList() {
     let projectsArray=[]
     Object.keys(projects)
         .forEach(key => {
-            if (user.designation !== 'manager') {
-                if (projects[key].members[user.key]) {
-                    // console.log(projects[key].members[user.key])
-                    projectsArray.push(projects[key])
-                }
+                // if (projects[0] !== 0){
+            if (user.designation !== 'Manager') {
+                    if (projects[key].members[user.key]) {
+                        // console.log(projects[key].members[user.key])
+                        projectsArray.push(projects[key])
+                    }
             } else {
                 projectsArray.push(projects[key])
             }
+                // }
         })        
 
 

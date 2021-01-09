@@ -36,13 +36,19 @@ function TaskList() {
     let taskKeys
     let tasksArray = []
     taskKeys = Object.keys(projectTasks);
-    taskKeys.forEach(task=>{
-        if (user.designation === 'manager') {
+    
+    taskKeys.forEach(task => {
+        if (user.designation === 'Manager') {
             tasksArray.push(projectTasks[task])
         } else {
-            if (projectTasks[task].members[user.designation].key === user.key) {
-                tasksArray.push(projectTasks[task])
-            }
+            // console.log(projectTasks[task].members[user.designation].key)
+            // console.log(user.key)
+            // console.log(projectTasks[task].members[user.designation].key === user.key)
+            // if (projects[0] !== 0) {
+                if (projectTasks[task].members[user.designation.toLowerCase()].key === user.key) {
+                    tasksArray.push(projectTasks[task])
+                }
+            // }
         }
     })
 

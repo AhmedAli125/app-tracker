@@ -103,7 +103,7 @@ const AuthStates = props => {
             // alert('logged out');
             dispatch({ type: USER_LOG_OUT });
         }).catch(function (error) {
-            alert(error);
+            setMessage(error.code, 'error')
         });
     };
 
@@ -111,17 +111,27 @@ const AuthStates = props => {
         // console.log(user);
         const {
             email,
-            password
+            password,
+            // softwareHouseKey,
+            // designationKey,
         } = user;
-        Database.auth().createUserWithEmailAndPassword(email, password)
-        .then((res)=>{
-            let userID = res.user.uid
-            setUserData(user, userID);
-            getUserData();
-        })
-        .catch((err)=>{
-            console.log(err.message)
-        })
+        // Database.database().ref(`/organizations/${softwareHouseKey}`).once('value')
+            // .then(res => {
+                // res = {...res.val()}
+                // let orgKeys = res.organizationKeys;
+                // if (orgKeys[designationKey]) {
+                    Database.auth().createUserWithEmailAndPassword(email, password)
+                    .then((res)=>{
+                        let userID = res.user.uid
+                        setUserData(user, userID);
+                        setMessage('signed up', 'success')
+                        getUserData();
+                    })
+                    .catch((err) => {
+                        setMessage(err.code, 'error')
+                    })
+                // }
+        // })
     }
 
     const setUserData = (data, id) => {
@@ -144,21 +154,25 @@ const AuthStates = props => {
             organization = orgData.name
             userData = {
                 key: id,
-                firstName: firstName,
-                lastName: lastName,
+                firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase(),
+                lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase(),
                 email: email,
                 softwareHouseKey:softwareHouseKey,
                 designationKey:designationKey,
-                designation : designation,
-                organization: organization,
+                designation: designation.charAt(0).toUpperCase() + designation.slice(1),
+                organization: organization.charAt(0).toUpperCase() + organization.slice(1),
                 regDate: regDate
             }
             
             Database.database().ref(`/registered-users/${userData.key}`).set(userData)
-            .then(
-                // res=>console.log(res)
-            )
-            .catch(err=>console.log(err))
+                .then(res =>{
+                    // console.log(window.location.pathname)
+                    if (window.location.pathname === '/dashboard/view-members') {
+                        setMessage('User updated','success')
+                    }
+                    // res=>console.log(res)
+                })
+                .catch(err=>setMessage(err.code, 'error'))
 
         })
     }

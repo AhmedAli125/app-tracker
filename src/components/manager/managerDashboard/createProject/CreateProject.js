@@ -62,6 +62,9 @@ function CreateProject(props) {
 
     const createProjectButton = () => {
         if (title) {
+            if (!window.navigator.onLine) {
+                setMessage('create project error', 'error')
+            }
             createProject(title);
             setTitle('');
             cancelProject();

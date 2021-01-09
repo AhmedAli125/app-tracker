@@ -2,6 +2,7 @@ import React, {useReducer, useContext} from 'react';
 import AdminReducer from './AdminReducer'
 import AdminContext from './AdminContext'
 import AuthContext from '../auth/AuthContext'
+import AlertContext from '../alerts/AlertContext'
 import {
     OPEN_FILTER_MODAL,
     CLOSE_FILTER_MODAL,
@@ -38,6 +39,10 @@ const AdminStates = props => {
         setUserData
     } = authContext
     
+    const alertContext = useContext(AlertContext)
+    const {
+        setMessage
+    } = alertContext;
 
     const [state, dispatch] = useReducer(AdminReducer, initialState);
     
@@ -66,13 +71,12 @@ const AdminStates = props => {
     }
 
     const registerOrganization = (data) => {
-        console.log(data);
         Database.database().ref(`/organizations/${data.id}`).set(data)
             .then((res) => {
-                console.log('org added')
+                setMessage('organization added', 'success')
             })
             .catch(err=>{
-                console.log(err)
+                setMessage(err.code, 'error')
             })
     }
 
@@ -93,7 +97,7 @@ const AdminStates = props => {
             )
             .catch(
                 (error) => {
-                    console.log(error);
+                    setMessage(error.code, 'error')
                 }
             );
     }
@@ -121,7 +125,9 @@ const AdminStates = props => {
             dispatch({type:GET_MEMBERS, payload:users});
 
         })
-        .catch(err=>console.log(err))
+        .catch(err => {
+            setMessage(err.code,'error')
+        })
     }
 
     const updateMember = (data) => {
@@ -133,7 +139,6 @@ const AdminStates = props => {
     }
     
     const clearFilter = (text) => {
-        console.log(text)
         dispatch({type:CLEAR_FILTER})
     }
 
