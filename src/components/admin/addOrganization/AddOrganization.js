@@ -7,6 +7,9 @@ import {
   ButtonGroup,
   Button
 } from '@material-ui/core';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@material-ui/icons/Close';
 import AdminContext from '../../../context/admin/AdminContext';
 import AuthContext from '../../../context/auth/AuthContext';
 import Database from '../../../config/Database';
@@ -107,9 +110,6 @@ function AddOrganization() {
     contact: contact,
     email: orgEmail,
     regDate: date,
-    projects: {
-      0:0
-    },
     organizationKeys: {
       [managerKey]: {
         designation: 'manager',
@@ -278,6 +278,7 @@ function AddOrganization() {
               style={{
                 marginTop: '10px'
               }}
+              startIcon={<VpnKeyIcon/>}
             >
               Get Keys
             </Button>
@@ -294,12 +295,14 @@ function AddOrganization() {
           <Button
             color='primary'
             onClick={() => register()}
+            startIcon={<AddIcon/>}
             >
             Register
           </Button>
           <Button
             color='secondary'
             onClick={clear}
+            startIcon={<CloseIcon/>}
           >
             Cancel
           </Button>

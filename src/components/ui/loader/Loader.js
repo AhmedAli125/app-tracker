@@ -1,5 +1,5 @@
 import React from 'react'
-import loader from '../../../assets/loaderGif.gif'
+import loader from '../../../assets/loaderGifUpdated.gif'
 import {
     makeStyles
 } from '@material-ui/core/styles';
@@ -36,7 +36,7 @@ const Loader = () => {
                     src={loader} 
                     alt='loading'
                     width="400px" 
-                    height="300px"
+                    height="400px"
                  />
             </div>
         </Modal>

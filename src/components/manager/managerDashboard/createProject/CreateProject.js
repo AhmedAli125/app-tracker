@@ -1,5 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Container, Typography, Button, TextField } from '@material-ui/core';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import CreateIcon from '@material-ui/icons/Create';
+import CloseIcon from '@material-ui/icons/Close';
 import AddMembers from './addMembers/AddMembers';
 import AddTask from './createTasks/AddTask';
 import TaskList from '../../../ui/projectTasks/TaskList';
@@ -16,13 +20,13 @@ function CreateProject(props) {
         openTaskModalHandler,
         showTaskModal,
         showAddMemberModal,
-        getOrganizationMembers,
+        // getOrganizationMembers,
         selectedMembers,
         tasks,
         setProjectDeadline,
         createProject,
         projectDeadline,
-        cancelProject,
+        cancelProject
     } = managerContext;
 
     const authContext = useContext(AuthContext);
@@ -43,7 +47,7 @@ function CreateProject(props) {
     const [title, setTitle] = useState('');
     const changeTitle = e => {
         setTitle(e.target.value);
-        setTitleValid(validate(/^[a-zA-Z_ ]{1,23}$/g, e.target.value))
+        setTitleValid(validate(/^[a-zA-Z_ \&\']{1,23}$/g, e.target.value))
     };
 
     const [deadline, setDeadline] = useState(currentDate());
@@ -131,7 +135,8 @@ function CreateProject(props) {
                     variant='contained'
                     color='primary'
                     onClick={openMemberModalHandler}
-                >
+                    startIcon={<PersonAddIcon/>}
+                    >
                     Add Member
                 </Button>
                 <span style={{ width: '10px' }}></span>
@@ -140,6 +145,7 @@ function CreateProject(props) {
                     color='primary'
                     disabled={!(selectedMembers && projectDeadline)}
                     onClick={openTaskModalHandler}
+                    startIcon={<PlaylistAddIcon/>}
                 >
                     Add Tasks
                 </Button>
@@ -180,6 +186,7 @@ function CreateProject(props) {
                     color='primary'
                     disabled={!(selectedMembers && tasks && projectDeadline)}
                     onClick={createProjectButton}
+                    startIcon={<CreateIcon/>}
                 >
                     Create
                 </Button>
@@ -188,6 +195,7 @@ function CreateProject(props) {
                     variant='contained'
                     color='secondary'
                     onClick={cancelProjectButton}
+                    startIcon={<CloseIcon/>}
                 >
                     Cancel
                 </Button>

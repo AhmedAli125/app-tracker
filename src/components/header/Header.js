@@ -1,11 +1,16 @@
 import React, { useContext } from 'react';
-import Profile from '../ui/profile/Profile'
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Button
+} from "@material-ui/core";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonIcon from '@material-ui/icons/Person';
+import Profile from '../ui/profile/Profile';
 import AuthContext from '../../context/auth/AuthContext';
+import Logo from '../../assets/logo-updated.png';
 // import './header.css'
 
 function Header() {
@@ -33,32 +38,90 @@ function Header() {
 
     return (
         <div className={classes.root}>
-            <AppBar position="fixed">
+            <AppBar
+                position="fixed"
+                // style={{
+                //     display: 'flex',
+                //     flexDirection:'column',
+                //     // backgroundColor:'red'
+                // }}
+            >
+                {/* <div
+                    style={{
+                        width: '50px',
+                        height: '50px',
+                        backgroundColor: 'white',
+                        borderRadius: '100%',
+                        // padding:'auto',
+                    }}
+                >
+                    <img
+                        src={Logo}
+                        style={{
+                            width: '50px',
+                            height: '45px',
+                            display:'inline-block',
+                            // backgroundColor: 'gray',
+                            backgroundImage: 'inherit'
+                        }}
+                    />
+                </div> */}
+                {/* <div> */}
                 <Toolbar>
-                    {user!==null?<Typography variant="h5" className={classes.title}>
-                        {user.designation !== 'admin' ? user.organization : 'App Tracker'}
-                    </Typography> : null }
-                    
-                    {user !== null ?<Button
-                        color="inherit"
-                        onClick = {
-                            showProfile
+                    <div style={{display:'flex', flexGrow:'1'}}>
+                        <div
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                // backgroundColor: '#bbdefb',
+                                borderRadius: '100%',
+                                // padding:'5px',
+                            }}
+                        >
+                            <img
+                                src={Logo}
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    display: 'inline-block',
+                                    // backgroundColor: 'gray',
+                                    backgroundImage: 'inherit'
+                                }}
+                            />
+                        </div>
+                        <div style={{marginTop:'5px', marginLeft:'5px'}}>
+                            {
+                                user !== null ?
+                                    <Typography variant="h5" className={classes.title}>
+                                        {/* <img src={Logo} alt='Project Tracker Logo' width='100px' height='100px' /> */}
+                                        {user.designation !== 'admin' ? user.organization : 'App Tracker'}
+                                    </Typography> :
+                                    null
+                            }
+                        </div>
+                    </div>
+                        {
+                            user !== null ?
+                                <Button
+                                    color="inherit"
+                                    onClick={
+                                        showProfile
+                                    }
+                                startIcon={<PersonIcon/>}
+                                >
+                                    {`${user.firstName} ${user.lastName}`}
+                                </Button> :
+                                null
                         }
-                    >
-                        {`${user.firstName} ${user.lastName}` }
-                        {/* {`
-                            ${user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1)} 
-                            ${user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1)}
-                        ` } */}
-                    </Button> : null }
-                    
-                    <Button
-                        color="inherit"
-                        onClick={userLogOut}
-                    >
-                        Log Out
+                        <Button
+                            color="inherit"
+                            onClick={userLogOut}
+                            startIcon={<ExitToAppIcon/>}
+                        >
+                            Log Out
                     </Button>
-                </Toolbar>
+                    </Toolbar>
+                {/* </div> */}
             </AppBar>
             {profileFlag && <Profile />}
         </div>

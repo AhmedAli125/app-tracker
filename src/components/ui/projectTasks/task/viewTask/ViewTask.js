@@ -14,6 +14,7 @@ import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 function ViewTask() {
     const useStyles = makeStyles((theme) => ({
@@ -82,19 +83,19 @@ function ViewTask() {
                     {selectedTask.desc}
                 </Typography>
                 {
-                    user.designation !== 'tester' &&
+                    user.designation !== 'Tester' &&
                     <Typography variant='subtitle2'>
                         {
-                            `${user.designation === 'manager' ?
+                            `${user.designation === 'Manager' ?
                                 'Developer' : 'Task'} Deadline: ${selectedTask.members.developer.deadline}`
                         }
                     </Typography>
                 }
                 {
-                    user.designation !== 'developer' &&
+                    user.designation !== 'Developer' &&
                     <Typography variant='subtitle2'>
                         {
-                            `${user.designation === 'manager' ?
+                            `${user.designation === 'Manager' ?
                                 'Tester' : 'Task'} Deadline: ${selectedTask.members.tester.deadline}`
                         }
                     </Typography>
@@ -131,7 +132,7 @@ function ViewTask() {
 
                 </div>
                 {
-                    user.designation === 'developer' &&
+                    user.designation === 'Developer' &&
                     // 'developer' === 'developer' &&
                     <div className='developerClass'>
                         <div style={{ display: 'flex' }}>
@@ -171,7 +172,7 @@ function ViewTask() {
                     </div>
                 }
                 {
-                    user.designation === 'tester' &&
+                    user.designation === 'Tester' &&
                     // 'tester' === 'tester' &&
                     <div className='testerClass'>
                         <TextField
@@ -244,6 +245,7 @@ function ViewTask() {
                         variant='outlined'
                         color='primary'
                         onClick={closeViewTaskModalHandler}
+                        startIcon={<ArrowBackIosIcon/>}
                     >
                         Back
                     </Button>

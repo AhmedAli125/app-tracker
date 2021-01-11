@@ -1,8 +1,13 @@
 import React, { useContext } from 'react';
 import Modal from '../../../../ui/modal/ModalWindow';
-import Typography from '@material-ui/core/Typography';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Button from '@material-ui/core/Button';
+import {
+    Typography,
+    ButtonGroup,
+    Button
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import ClearAllIcon from '@material-ui/icons/ClearAll';
+import CloseIcon from '@material-ui/icons/Close';
 import ManagerContext from '../../../../../context/manager/ManagerContext';
 import './addMember.css';
 import MemberList from './MemberList';
@@ -31,6 +36,7 @@ function AddMembers() {
                     <Button
                         color='primary'
                         onClick={addMembers}
+                        startIcon={<AddIcon/>}
                     >
                         Add
                     </Button>
@@ -42,12 +48,14 @@ function AddMembers() {
                                 (Object.keys(tasks).length == 0 ? false : true) :
                                 false
                         }
+                        startIcon={<ClearAllIcon/>}
                     >
                         Clear
                     </Button>
                     <Button
                         color='secondary'
                         onClick={closeMemberModalHandler}
+                        startIcon={<CloseIcon/>}
                     >
                         Cancel
                     </Button>

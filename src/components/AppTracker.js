@@ -14,7 +14,7 @@ function AppTracker() {
     const alertContext = useContext(AlertContext);
     const {
         alertMessage,
-        loading
+        loading,
     } = alertContext;
 
     useEffect(() => {

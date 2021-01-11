@@ -40,3 +40,5 @@
 [0105/222331.584:ERROR:exception_snapshot_win.cc(99)] thread ID 1672 not found in process
 [0105/222331.584:ERROR:exception_snapshot_win.cc(99)] thread ID 5440 not found in process
 [0105/222331.584:ERROR:exception_snapshot_win.cc(99)] thread ID 7092 not found in process
+[0110/222000.639:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0111/114618.525:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)

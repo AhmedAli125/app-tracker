@@ -1,14 +1,17 @@
 import React, { useContext, useState } from 'react';
 import {
-    Typography
+    Typography,
+    TextField,
+    ButtonGroup,
+    Button,
+    MenuItem,
+    FormControl,
+    Select
 } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import Modal from '../../../../ui/modal/ModalWindow';
+import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 import ManagerContext from '../../../../../context/manager/ManagerContext';
 import AuthContext from '../../../../../context/auth/AuthContext';
 import AlertContext from '../../../../../context/alerts/AlertContext';
@@ -33,14 +36,14 @@ function AddTask() {
         setMessage
     } = alertContext;
 
-    const [titleValid, setTitleValid] = useState(false);
+    const [titleValid, setTitleValid] = useState(editTask ? true : false);
     const [title, setTitle] = useState(editTask ? editTask.title : '');
     const changeTitle = e => {
         setTitle(e.target.value);
         setTitleValid(validate(/^[a-zA-Z_ ]{1,20}$/g, e.target.value));
     };
 
-    const [descValid, setDescValid] = useState(false);
+    const [descValid, setDescValid] = useState(editTask ? true : false);
     const [desc, setDesc] = useState(editTask ? editTask.desc : '');
     const changeDesc = e => {
         setDesc(e.target.value);
@@ -58,15 +61,15 @@ function AddTask() {
     const setDeveloperDate = e => {
         setDeveloperDeadline(e.target.value);
         setTesterDeadline(e.target.value);
-        setDevDeadlineValid(e.target.value === currentDate())
+        setDevDeadlineValid(e.target.value === currentDate());
     };
 
     const [testerDeadlineValid, setTesterDeadlineValid] = useState(false);
     const [testerDeadline, setTesterDeadline] = useState(editTask ? editTask.members.tester.deadline : currentDate());
     const setTesterDate = e => {
         setTesterDeadline(e.target.value);
-        setTesterDeadlineValid(e.target.value === developerDeadline)
-    }
+        setTesterDeadlineValid(e.target.value === developerDeadline);
+    };
 
     const validate = (pattern, field) => {
         let regex = new RegExp(pattern);
@@ -83,7 +86,7 @@ function AddTask() {
         testerDate = testerDeadline === developerDeadline;
 
         // console.log(devDate, testerDate)
-        
+
         if (title && desc && developer && tester && !devDate && !testerDate) {
 
             let taskData = {
@@ -111,7 +114,7 @@ function AddTask() {
             if (testerDate) {
                 setTesterDeadlineValid(true);
             }
-            if (developer === null && tester === null) {
+            if (developer === null && tester === null && (title !== '' && desc !== '')) {
                 setMessage('assign Developer & Tester', 'error');
             } else {
                 setMessage('Please enter all fields', 'error');
@@ -157,8 +160,8 @@ function AddTask() {
                         value={desc}
                         placeholder="Enter Task Description"
                         onChange={changeDesc}
-                        error={!descValid && desc !== ''}
-                        helperText={!descValid && desc !== '' ? 'Special characters are not allowed' : null}
+                        error={!descValid && desc !== '' && !editTask}
+                        helperText={!descValid && desc !== '' && !editTask ? 'Special characters are not allowed' : null}
                         label="Task Description"
                         variant="outlined"
                         autoComplete='off'
@@ -290,12 +293,14 @@ function AddTask() {
                         <Button
                             color='primary'
                             onClick={addTask}
+                            startIcon={editTask ? <EditIcon/> : <AddIcon/>}
                         >
                             {editTask ? 'Update' : 'Add'}
                         </Button>
                         <Button
                             color='secondary'
                             onClick={cancleTask}
+                            startIcon={<CloseIcon/>}
                         >
                             Cancel
                         </Button>

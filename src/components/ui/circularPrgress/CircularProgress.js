@@ -19,7 +19,7 @@ const ProgressCircular = () => {
   console.log('progress run')
 
   return (
-    <Modal show={true} clicked={() => { alert('progress'); }} >
+    <Modal show={true} clicked={()=>{}} >
       <div className={classes.container}>
         <CircularProgress
           thickness='1.5'

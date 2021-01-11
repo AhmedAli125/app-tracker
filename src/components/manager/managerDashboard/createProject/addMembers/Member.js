@@ -102,7 +102,7 @@ function Member({ data }) {
             }
             if (memberFound && taskArray !== null) {
                 for (let task = 0; task < taskArray.length; task++) {
-                    if (taskArray[task].members[data.designation].key === data.key) {
+                    if (taskArray[task].members[data.designation.toLowerCase()].key === data.key) {
                         taskFound = true;
                         break;
                     }

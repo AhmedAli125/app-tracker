@@ -15,7 +15,6 @@ import {
 
 const UserState = props => {
     const authContext = useContext(AuthContext);
-
     const {
         user,
         objectToArray
@@ -43,6 +42,8 @@ const UserState = props => {
 
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects`).on('value', (res) => {            
                 projectsObj = { ...res.val() };
+                // console.log(projectsObj)
+                // console.log('set project')
                 dispatch({ type: GET_PROJECTS, payload: projectsObj });
         })
             // .catch(err => setMessage(err.code, 'error'));
@@ -52,6 +53,9 @@ const UserState = props => {
     const getUpdatedData = () => {
         // let prevProjects = state.projects;
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects`).on('child_changed', res => {
+            // console.log(res.val());
+
+            // console.log(prevProjects);
         });
     };
 

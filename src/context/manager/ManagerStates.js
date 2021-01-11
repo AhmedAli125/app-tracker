@@ -47,8 +47,9 @@ const ManagerStates = props => {
 
     const alertContext = useContext(AlertContext);
     const {
-        setMessage
-    } = alertContext
+        setMessage,
+        toggleLoading
+    } = alertContext;
 
     const [state, dispatch] = useReducer(ManagerReducer, initialState);
 
@@ -68,13 +69,16 @@ const ManagerStates = props => {
         dispatch({ type: CLOSE_TASK_MODAL });
     };
 
-    const getOrganizationMembers = () => {
-        // console.log('getOrganizationMembers run')
+    const getOrganizationMembers = async() => {
+        console.log('getOrganizationMembers in');
         let members = [];
         let users;
-        Database.database().ref(`/registered-users/`).once('value')
+        toggleLoading(true);
+        await Database.database().ref(`/registered-users`).once('value')
             .then(res => {
                 users = { ...res.val() };
+                console.log('get mambers success');
+                // console.log(users);
                 for (let uid in users) {
                     if (users[uid].softwareHouseKey === user.softwareHouseKey) {
                         if (users[uid].designation !== 'admin' && users[uid].designation !== 'Manager') {
@@ -87,8 +91,14 @@ const ManagerStates = props => {
                     }
                 }
                 dispatch({ type: GET_ORGANIZATION_MEMBERS, payload: members });
+                toggleLoading(false);
             })
-            .catch(error => setMessage(error.code, 'error'));
+            .catch(err => {
+                console.log('get mambers error');
+                console.log(err);
+                toggleLoading(false);
+            });
+        console.log('getOrganizationMembers out');
     };
 
     const handleAssignedMember = (data) => {
@@ -120,15 +130,15 @@ const ManagerStates = props => {
         });
 
         if (selectedMembers.length > 0) {
-            isDeveloper = selectedMembers.some(member => member.designation === 'Developer')
-            isTester = selectedMembers.some(member => member.designation === 'Tester')
+            isDeveloper = selectedMembers.some(member => member.designation === 'Developer');
+            isTester = selectedMembers.some(member => member.designation === 'Tester');
         }
 
         // console.log(selectedMembers)
         if (selectedMembers.length === 0) {
             setMessage('please select members', 'error');
             // dispatch({ type: SELECTED_MEMBERS, payload: null });
-        } 
+        }
         else {
             if (!(isDeveloper && isTester)) {
                 setMessage('Developer & Tester', 'error');
@@ -141,19 +151,22 @@ const ManagerStates = props => {
 
     const clearSelectedMember = () => {
         // console.log(`clearSelectedMember run`)
-        let prevMembers = [...state.organizationMembers];
-        let clearMembers = [];
-        prevMembers.forEach(member => {
-            if (member.isAssigned) {
-                return (
-                    clearMembers.push({ ...member, isAssigned: false })
-                );
-            } else {
-                return clearMembers.push(member);
-            }
-        });
-
-        dispatch({ type: CLEAR_SELECTED_MEMBERS, payload: clearMembers });
+        if (state.organizationMembers) {
+            let clearMembers = [];
+            let prevMembers = [...state.organizationMembers];
+            prevMembers.forEach(member => {
+                if (member.isAssigned) {
+                    return (
+                        clearMembers.push({ ...member, isAssigned: false })
+                    );
+                } else {
+                    return clearMembers.push(member);
+                }
+            });
+            dispatch({ type: CLEAR_SELECTED_MEMBERS, payload: clearMembers });
+        } else {
+            dispatch({ type: CLEAR_SELECTED_MEMBERS, payload: null });
+        }
     };
 
     const generateProjectKey = () => {
@@ -229,6 +242,7 @@ const ManagerStates = props => {
     };
 
     const cancelProject = () => {
+        clearSelectedMember();
         dispatch({ type: CANCEL_PROJECT });
     };
 
@@ -253,17 +267,17 @@ const ManagerStates = props => {
             tasks: state.tasks
         };
 
+        clearSelectedMember();
+
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set(project)
-            .then(res => {
-                Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/0`).remove()
-                    .then(() => {
-                        dispatch({ type: CREATE_PROJECT });
-                        setMessage('project created', 'success')
-                    })
-                    .catch(err => setMessage(err.code, 'error'));
+            .then(res => {            
+                dispatch({ type: CREATE_PROJECT });
+                setMessage('project created', 'success')
             })
             .catch(err => setMessage(err.code, 'error'));
     };
+
+
 
 
 
