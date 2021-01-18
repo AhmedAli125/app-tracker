@@ -70,14 +70,12 @@ const ManagerStates = props => {
     };
 
     const getOrganizationMembers = async() => {
-        console.log('getOrganizationMembers in');
         let members = [];
         let users;
         toggleLoading(true);
         await Database.database().ref(`/registered-users`).once('value')
             .then(res => {
                 users = { ...res.val() };
-                console.log('get mambers success');
                 // console.log(users);
                 for (let uid in users) {
                     if (users[uid].softwareHouseKey === user.softwareHouseKey) {
@@ -98,7 +96,6 @@ const ManagerStates = props => {
                 console.log(err);
                 toggleLoading(false);
             });
-        console.log('getOrganizationMembers out');
     };
 
     const handleAssignedMember = (data) => {

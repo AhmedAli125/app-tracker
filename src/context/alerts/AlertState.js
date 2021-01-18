@@ -86,13 +86,21 @@ const AlertStates = props => {
                 break;
             
             case 'signed up':
-                alert = 'User Registered Successfully!';
+                alert = 'User Registered Successfully! Please click the verification link send to the registered email';
                 break;
             
             case 'bug reported':
                 alert = 'Bug Reported!';
                 break;
-
+            
+            case 'password reset mail sent':
+                alert = 'Email has been sent to your registered email account. Please proceed to reset password'
+                break;
+            
+            case 'email not verified':
+                alert = 'Your email is not verified. Please click the link sent on time of registeration to verify'
+                break;
+            
             default:
                alert='unexpected error occured!' 
         }

@@ -12,7 +12,6 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import AuthContext from '../../../context/auth/AuthContext';
 import AlertContext from '../../../context/alerts/AlertContext';
-import Alert from '../../ui/alert/AlertComponent';
 import '../auth.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -141,6 +140,15 @@ function SignIn(props) {
             helperText={password.length > 0 && password.length < 6 ? 'password must be atleast 6 characters long' : ''}
             autoComplete="current-password"
           />
+          <Link to='/forgot-password' className = 'link'>
+            <Typography
+              color='primary'
+              gutterBottom={ true }
+              variant='subtitle2'
+            >
+              Forgot Password?
+            </Typography>
+          </Link>
           <Button
             type="submit"
             // onSubmit

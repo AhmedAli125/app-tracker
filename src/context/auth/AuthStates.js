@@ -1,8 +1,12 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext, useReducer} from 'react';
 import AuthContext from './AuthContext';
 import AuthReducer from './AuthReducer';
 import Database from '../../config/Database';
 import AlertContext from '../alerts/AlertContext';
+import {
+    useHistory
+} from 'react-router-dom'
+
 import {
     SET_USER_DATA,
     USER_LOG_OUT,
@@ -24,6 +28,8 @@ const AuthStates = props => {
         setMessage,
         toggleLoading
     } = alertContext;
+
+    const history = useHistory();
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
@@ -62,25 +68,27 @@ const AuthStates = props => {
             if (user) {
                 // console.log(user)
                 // key=user.uid
-                toggleLoading(true)
-                dispatch({type:SET_LOGIN_STATUS})
-                Database.database().ref(`/registered-users/${user.uid}`).once('value')
-                    .then(
-                        (data) => {
-                            userData = { ...data.val() };
-                            dispatch({ type: SET_USER_DATA, payload: userData });
-                            // console.log(userData);
-                            toggleLoading(false)
-                        }
-                    )
-                    .catch(
-                        (error) => {
-                            console.log('catch block')
-                            console.log(error);
-                            toggleLoading(false)
+                if (user.emailVerified) {
+                    toggleLoading(true)
+                    dispatch({type:SET_LOGIN_STATUS})
+                    Database.database().ref(`/registered-users/${user.uid}`).once('value')
+                        .then(
+                            (data) => {
+                                userData = { ...data.val() };
+                                dispatch({ type: SET_USER_DATA, payload: userData });
+                                // console.log(userData);
+                                toggleLoading(false)
+                            }
+                        )
+                        .catch(
+                            (error) => {
+                                console.log('catch block')
+                                console.log(error);
+                                toggleLoading(false)
 
-                        }
-                    );
+                            }
+                        );
+                }
             }
         });
     };
@@ -89,8 +97,14 @@ const AuthStates = props => {
         toggleLoading(true)
         await Database.auth().signInWithEmailAndPassword(formData.email, formData.password)
             .then(res => {
-                // console.log(`user id => ${res.user.uid}`);
-                getUserData();
+                if (res.user.emailVerified) {
+                    getUserData();    
+                } else {
+                    setMessage('email not verified', 'error')
+                    setTimeout(() => {
+                        userLogOut()
+                    }, 3000);
+                }
             })
             .catch(err => {
                 setMessage(err.code, 'error')
@@ -111,21 +125,24 @@ const AuthStates = props => {
         // console.log(user);
         const {
             email,
-            password,
-            // softwareHouseKey,
-            // designationKey,
+            password
         } = user;
-        // Database.database().ref(`/organizations/${softwareHouseKey}`).once('value')
-            // .then(res => {
-                // res = {...res.val()}
-                // let orgKeys = res.organizationKeys;
-                // if (orgKeys[designationKey]) {
                     Database.auth().createUserWithEmailAndPassword(email, password)
-                    .then((res)=>{
-                        let userID = res.user.uid
-                        setUserData(user, userID);
-                        setMessage('signed up', 'success')
-                        getUserData();
+                        .then((res) => {
+                            res.user.sendEmailVerification()
+                                .then(function () {
+                                    let userID = res.user.uid
+                                    setUserData(user, userID);
+                                    setMessage('signed up', 'success')
+                                    userLogOut();
+                                    history.push('/');
+                                    // getUserData();
+
+                                })
+                                .catch(function (error) {
+                                    console.log(error)
+                                });
+                                // key = res.user.uid;
                     })
                     .catch((err) => {
                         setMessage(err.code, 'error')
@@ -198,6 +215,29 @@ const AuthStates = props => {
         })
     }
 
+    const forgetPassword = (email) => {
+        Database.database().ref(`/registered-users`).orderByChild('email').equalTo(email).on('value', function (res) {
+            if (res.val()) {
+                Database.auth().sendPasswordResetEmail(email)
+                    .then(function (res) {
+                        setMessage('password reset mail sent', 'success')
+                        // setTimeout(() => {
+                        //     props.history.replace('/')
+                        // }, 3000)
+                    })
+                    .catch(function () {
+                        setMessage('some error', 'error')
+                    });
+                    setTimeout(() => {
+                        history.push('/')
+                    }, 3000);
+                
+            } else {
+                setMessage('auth/user-not-found', 'error')
+            }
+        })
+    }
+
 
     return (
         <AuthContext.Provider
@@ -213,7 +253,8 @@ const AuthStates = props => {
                 setUserData,
                 objectToArray,
                 showProfile,
-                closeProfile
+                closeProfile,
+                forgetPassword
             }}
         >
             {props.children}
