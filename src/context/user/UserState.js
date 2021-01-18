@@ -29,9 +29,10 @@ const UserState = props => {
     const initialState = {
         projects: {},
         project: null,
+        editProject: null,
         showViewTaskModal: false,
         selectedTask: null,
-        projectPercentage: null
+        projectPercentage: null,
     };
 
     const [state, dispatch] = useReducer(UserReducer, initialState);
@@ -61,7 +62,7 @@ const UserState = props => {
 
     const viewProject = (key) => {
         let project = state.projects[key];
-        console.log(project)
+        // console.log(project)
         dispatch({ type: GET_CLICKED_PROJECT, payload: project });
     };
 
@@ -184,6 +185,8 @@ const UserState = props => {
             .then(res => setMessage('bug reported', 'success'))
             .catch(err => setMessage(err.code, 'error'))
     };
+
+    
 
     return (
         <UserContext.Provider

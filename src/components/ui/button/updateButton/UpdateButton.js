@@ -16,9 +16,9 @@ function UpdateButton({clicked}) {
       const classes = useStyles();
 
     return (
-        <IconButton onClick={clicked} aria-label="edit" color='primary' className={classes.margin}>
-          <CreateIcon />
-        </IconButton>
+      <IconButton onClick={clicked} aria-label="edit" color='primary' className={classes.margin}>
+        <CreateIcon />
+      </IconButton>
     )
 }
 

@@ -106,9 +106,11 @@ function Task({buttonClicked, task}) {
       {
         createProjectFlag &&
         <div className='icon-buttons'>
-          <UpdateButton clicked={ () => {
+          <UpdateButton
+            clicked={() => {
             editTaskHandler(task.key)
-          } } />
+            }}
+          />
           <DeleteButton clicked={ () => {
             deleteTask(task.key)
           } } />

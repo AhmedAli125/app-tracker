@@ -1,15 +1,18 @@
 import React, { useContext } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import UserContext from '../../../../context/user/UserContext';
+import AuthContext from '../../../../context/auth/AuthContext'
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   Button,
   Typography,
   CardContent,
+  Paper,
 } from '@material-ui/core';
 import CachedIcon from '@material-ui/icons/Cached';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
+import UpdateButton from '../../button/updateButton/UpdateButton'
 
 function Project({ project }) {
 
@@ -20,13 +23,14 @@ function Project({ project }) {
     root: {
       width: 290,
       // maxWidth: 350,
-      height: 250
+      height: 200,
+      // border:'none',
     },
-    bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
-    },
+    // bullet: {
+      // display: 'inline-block',
+      // margin: '0 2px',
+      // transform: 'scale(0.8)',
+    // },
     success: {
       color: '#006400'
     },
@@ -36,9 +40,9 @@ function Project({ project }) {
     title: {
       fontSize: 14,
     },
-    pos: {
-      marginBottom: 12,
-    },
+    // pos: {
+    //   marginBottom: 12,
+    // },
     textMargin: {
       marginLeft: 10,
     },
@@ -55,6 +59,15 @@ function Project({ project }) {
     },
     link: {
       textDecoration: 'none',
+    },
+    Buttons: {
+      display:'flex',
+      width: 290,
+      // margin: '0 2px',
+      position: 'relative',
+      marginLeft: '8px',
+      marginTop: '-10px',
+      // zIndex:'10'
     }
   });
 
@@ -65,10 +78,15 @@ function Project({ project }) {
     viewProject
   } = userContext;
 
-  // console.log(project)
+  const authContext = useContext(AuthContext);
+  const {
+    user
+  } = authContext;
 
   return (
-    // <div className='projects'>
+    <Paper
+      elevation='1'
+    >
     <Link className={classes.link} to={`${path}/${project.key}`}>
       <Button className={classes.textJustify} onClick={() => viewProject(project.key)}>
         <Card className={classes.root}>
@@ -86,7 +104,6 @@ function Project({ project }) {
               {
                 project.isComplete ?
                   <CheckCircleOutlinedIcon
-
                     className={classes.success}
                   /> :
                   <CachedIcon
@@ -118,7 +135,19 @@ function Project({ project }) {
         </Card>
       </Button>
     </Link>
-    // </div>
+      {
+        user.designation === 'Manager' ?
+          <div className = {classes.Buttons}>
+            <div>
+              <UpdateButton clicked={() => console.log('update')} />
+            </div>
+            <div>
+              <UpdateButton clicked={() => console.log('delete')} />
+            </div>
+          </div> 
+          : null
+      }
+    </Paper>
   );
 }
 
