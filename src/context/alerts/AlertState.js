@@ -59,7 +59,7 @@ const AlertStates = props => {
                 break;
             
             case 'title':
-                alert = 'Project title should not be empty!';
+                alert = 'Project title should not be empty or greater than mentioned limit!';
                 break;
             
             case 'empty keys':
@@ -79,6 +79,14 @@ const AlertStates = props => {
             
             case 'project created':
                 alert = 'Project Created';
+                break;
+            
+            case 'Project Updated':
+                alert = 'Project Updated Successfully';
+                break;
+            
+            case 'Project Deleted':
+                alert = 'Project Successfully Deleted from Database';
                 break;
             
             case 'User updated':

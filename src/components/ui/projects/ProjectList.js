@@ -38,7 +38,8 @@ function ProjectList() {
                 projectsArray.push(projects[key])
             }
                 // }
-        })        
+        })    
+
 
 
     return (

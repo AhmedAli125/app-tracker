@@ -22,6 +22,7 @@ import {
     GENERATE_PROJECT_KEY,
     DELETE_TASK,
     EDIT_TASK,
+    SET_EDIT_PROJECT,
 } from '../Type';
 
 const ManagerStates = props => {
@@ -36,13 +37,15 @@ const ManagerStates = props => {
         projectKey: null,
         createProjectFlag: false,
         // editTaskFlag: false,
-        editTask: null
+        editTask: null,
+        editProject: null
     };
 
     const authContext = useContext(AuthContext);
     const {
         user,
-        currentDate
+        currentDate,
+        objectToArray
     } = authContext;
 
     const alertContext = useContext(AlertContext);
@@ -252,13 +255,12 @@ const ManagerStates = props => {
         let selectedMembers = state.selectedMembers;
         let members = {};
         selectedMembers.forEach(member => members = { ...members, [member.key]: member });
-
         let project = {
-            key: state.projectKey,
+            key: state.projectKey === null ? `${state.editProject.key}` : state.projectKey ,
             title: title.charAt(0).toUpperCase() + title.slice(1).toLowerCase(),
             isComplete: false,
-            createdOn: currentDate(),
-            createdBy: user,
+            createdOn: state.editproject ? state.editproject.createdOn : currentDate(),
+            createdBy: state.editproject ? state.editproject.createdBy : user,
             deadline: state.projectDeadline,
             members,
             tasks: state.tasks
@@ -266,13 +268,54 @@ const ManagerStates = props => {
 
         clearSelectedMember();
 
-        Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set(project)
+        Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${project.key}`).set({...project})
             .then(res => {            
+                if (state.editProject) {
+                    setMessage('Project Updated', 'success')
+                } else {
+                    setMessage('project created', 'success')
+                }
                 dispatch({ type: CREATE_PROJECT });
-                setMessage('project created', 'success')
             })
             .catch(err => setMessage(err.code, 'error'));
     };
+
+    const setEditProject = project => {
+        let tasks = { ...project.tasks }
+        let editSelectedMembers = objectToArray(project.members)
+        let selectedMembers = project.members
+        let organizationMembers = [...state.organizationMembers]
+
+        organizationMembers = organizationMembers.map(member => {
+            if (selectedMembers[member.key]) {
+                member = {
+                    ...member,
+                    isAssigned: true,
+                }
+            }
+
+            return member
+        })
+        
+        dispatch({
+            type: SET_EDIT_PROJECT,
+            payload: {
+                project,
+                tasks,
+                editSelectedMembers,
+                organizationMembers
+            ,}
+        })
+    }
+
+    const deleteProject = (key) => {
+        Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${key}`).remove()
+            .then(() => {
+            setMessage('Project Deleted', 'error')
+            }).catch(err => {
+            setMessage('some error', 'error')
+        })
+    }
 
 
 
@@ -290,6 +333,7 @@ const ManagerStates = props => {
                 projectDeadline: state.projectDeadline,
                 // editTaskFlag: state.editTaskFlag,
                 editTask: state.editTask,
+                editProject: state.editProject,
                 openMemberModalHandler,
                 closeMemberModalHandler,
                 openTaskModalHandler,
@@ -304,7 +348,9 @@ const ManagerStates = props => {
                 createProject,
                 cancelProject,
                 deleteTask,
-                editTaskHandler
+                editTaskHandler,
+                setEditProject,
+                deleteProject
             }}
         >
             {props.children}

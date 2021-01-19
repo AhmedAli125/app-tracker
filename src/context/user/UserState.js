@@ -29,7 +29,6 @@ const UserState = props => {
     const initialState = {
         projects: {},
         project: null,
-        editProject: null,
         showViewTaskModal: false,
         selectedTask: null,
         projectPercentage: null,

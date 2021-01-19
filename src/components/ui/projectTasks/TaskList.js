@@ -8,7 +8,6 @@ import AuthContext from '../../../context/auth/AuthContext.js';
 // import './projectList.css';
 
 function TaskList() {
-    let projectTasks = {};
     
     const authContext = useContext(AuthContext)
     const {
@@ -18,20 +17,23 @@ function TaskList() {
     const managerContext = useContext(ManagerContext);
     const {
         tasks,
-        createProjectFlag
+        createProjectFlag,
+
     } = managerContext;
 
     const userContext = useContext(UserContext);
     const {
         project,
-        openViewTaskModalHandler
+        openViewTaskModalHandler,
+        editProject
     } = userContext;
 
-        if (createProjectFlag) {
-            projectTasks = {...tasks};
-        } else {
-            projectTasks = {...project.tasks};
-        }
+    let projectTasks = {};
+    if (createProjectFlag || editProject) {
+        projectTasks = { ...tasks };
+    } else {
+        projectTasks = { ...project.tasks };
+    }
 
     let taskKeys
     let tasksArray = []

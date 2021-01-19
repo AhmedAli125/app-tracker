@@ -12,7 +12,8 @@ import {
     USER_LOG_OUT,
     SHOW_PROFILE_FLAG,
     CLOSE_PROFILE_FLAG,
-    SET_LOGIN_STATUS
+    SET_LOGIN_STATUS,
+    SET_LOADING
 } from '../Type';
 
 const AuthStates = props => {
@@ -103,6 +104,7 @@ const AuthStates = props => {
                     setMessage('email not verified', 'error')
                     setTimeout(() => {
                         userLogOut()
+                        toggleLoading(false)
                     }, 3000);
                 }
             })

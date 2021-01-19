@@ -18,7 +18,8 @@ function Task({buttonClicked, task}) {
   const {
     createProjectFlag,
     deleteTask,
-    editTaskHandler
+    editTaskHandler,
+    editProject
   } = managerContext
 
   const useStyles = makeStyles({
@@ -55,7 +56,7 @@ function Task({buttonClicked, task}) {
         className={
           classes.textJustify
         }
-        onClick={createProjectFlag ? null : buttonClicked}
+        onClick={createProjectFlag || editProject !== null ? null : buttonClicked}
        >
         <Card className={classes.root}>
           <CardContent>
@@ -97,14 +98,14 @@ function Task({buttonClicked, task}) {
               Deadline :{` ${task.members.tester.deadline}`}
             </Typography>
             
-            { !createProjectFlag &&
+            { (!createProjectFlag && !editProject) &&
               <TaskStatus status={ task.taskStatus }/>
             }
           </CardContent>
         </Card>
        </Button> 
       {
-        createProjectFlag &&
+        createProjectFlag || editProject !== null &&
         <div className='icon-buttons'>
           <UpdateButton
             clicked={() => {

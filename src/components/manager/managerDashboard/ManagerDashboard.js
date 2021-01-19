@@ -22,7 +22,7 @@ function ManagerDashboard() {
     return (
         <>
             <ProjectList />
-            <Link to={`${path}/create-project`}>
+            <Link to={`${path}/project`}>
                 <AddButton 
                     clicked={generateProjectKey} 
                 />

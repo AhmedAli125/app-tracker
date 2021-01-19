@@ -26,7 +26,8 @@ function CreateProject(props) {
         setProjectDeadline,
         createProject,
         projectDeadline,
-        cancelProject
+        cancelProject,
+        editProject
     } = managerContext;
 
     const authContext = useContext(AuthContext);
@@ -42,15 +43,14 @@ function CreateProject(props) {
     // useEffect(() => {
     //     getOrganizationMembers();
     // }, []);
-
     const [titleValid, setTitleValid] = useState(false);
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState(`${editProject ? editProject.title: ''}`);
     const changeTitle = e => {
         setTitle(e.target.value);
         setTitleValid(validate(/^[a-zA-Z_ \&\']{1,23}$/g, e.target.value))
     };
 
-    const [deadline, setDeadline] = useState(currentDate());
+    const [deadline, setDeadline] = useState(editProject ? editProject.deadline : currentDate());
     const changeDate = (e) => {
         setDeadline(e.target.value);
         setProjectDeadline(e.target.value);
@@ -65,7 +65,7 @@ function CreateProject(props) {
     };
 
     const createProjectButton = () => {
-        if (title) {
+        if (title && titleValid) {
             if (!window.navigator.onLine) {
                 setMessage('create project error', 'error')
             }
@@ -184,11 +184,11 @@ function CreateProject(props) {
                 <Button
                     variant='contained'
                     color='primary'
-                    disabled={!(selectedMembers && tasks && projectDeadline)}
+                    disabled={!(selectedMembers && tasks && projectDeadline && titleValid)}
                     onClick={createProjectButton}
                     startIcon={<CreateIcon/>}
                 >
-                    Create
+                    {editProject ? 'Update' : 'Create' }
                 </Button>
                 <span style={{ width: '10px' }}></span>
                 <Button

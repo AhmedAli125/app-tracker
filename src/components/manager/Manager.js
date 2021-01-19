@@ -22,7 +22,7 @@ function Manager() {
             <div className='dashboard-container'>
                 <Switch>
                     <Route path={`${path}`} exact component={ManagerDashboard} />
-                    <Route path={`${path}/create-project`} component={CreateProject} />
+                    <Route path={`${path}/project`} component={CreateProject} />
                     <Route path={`${path}/:id`} component={TaskDashboard} />
                 </Switch>
             </div>

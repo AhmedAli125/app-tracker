@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import {
     AppBar,
@@ -6,6 +6,12 @@ import {
     Typography,
     Button
 } from "@material-ui/core";
+
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import Profile from '../ui/profile/Profile';
@@ -23,7 +29,10 @@ function Header() {
         },
         userProfile: {
             marginRight: "5rem"
-        }
+        },
+        menuButton: {
+            marginRight: theme.spacing(2),
+        },
     }));
 
     const classes = useStyles();
@@ -36,37 +45,22 @@ function Header() {
         showProfile
     } = authContext;
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     return (
         <div className={classes.root}>
             <AppBar
-                position="fixed"
-                // style={{
-                //     display: 'flex',
-                //     flexDirection:'column',
-                //     // backgroundColor:'red'
-                // }}
+                position="fixed"  
             >
-                {/* <div
-                    style={{
-                        width: '50px',
-                        height: '50px',
-                        backgroundColor: 'white',
-                        borderRadius: '100%',
-                        // padding:'auto',
-                    }}
-                >
-                    <img
-                        src={Logo}
-                        style={{
-                            width: '50px',
-                            height: '45px',
-                            display:'inline-block',
-                            // backgroundColor: 'gray',
-                            backgroundImage: 'inherit'
-                        }}
-                    />
-                </div> */}
-                {/* <div> */}
                 <Toolbar>
                     <div style={{display:'flex', flexGrow:'1'}}>
                         <div
@@ -100,26 +94,59 @@ function Header() {
                             }
                         </div>
                     </div>
-                        {
-                            user !== null ?
-                                <Button
-                                    color="inherit"
-                                    onClick={
-                                        showProfile
-                                    }
-                                startIcon={<PersonIcon/>}
-                                >
-                                    {`${user.firstName} ${user.lastName}`}
-                                </Button> :
-                                null
-                        }
-                        <Button
+
+
+                     <div>
+                        <IconButton
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
                             color="inherit"
-                            onClick={userLogOut}
-                            startIcon={<ExitToAppIcon/>}
                         >
-                            Log Out
-                    </Button>
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                            }}
+                            open={open}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={ () => {
+                                handleClose()
+                                showProfile()
+                            } }>
+                            <PersonIcon/>
+                                {
+                                 user !== null ?
+                                    `${user.firstName} ${user.lastName}`
+                                     :null
+                                }
+                            </MenuItem>
+                            <MenuItem
+                                onClick={ () => {
+                                    handleClose()
+                                    userLogOut()
+                                } }
+                                startIcon={<ExitToAppIcon/>}
+                            >
+                            <ExitToAppIcon />
+                                    Log Out
+                            </MenuItem>
+                        </Menu>
+                        </div>
+
+
+                       
                     </Toolbar>
                 {/* </div> */}
             </AppBar>

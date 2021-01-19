@@ -14,6 +14,7 @@ import {
     SET_PROJECT_DEADLINE,
     DELETE_TASK,
     EDIT_TASK,
+    SET_EDIT_PROJECT,
 } from '../Type'
 
 export default (state, action) => {
@@ -25,7 +26,8 @@ export default (state, action) => {
                 projectDeadline: null,
                 tasks: null,
                 projectKey: null,
-                createProjectFlag: false
+                createProjectFlag: false,
+                editProject: null
             }
         case CANCEL_PROJECT:
             return {
@@ -34,7 +36,8 @@ export default (state, action) => {
                 projectDeadline: null,
                 tasks: null,
                 projectKey: null,
-                createProjectFlag: false
+                createProjectFlag: false,
+                editProject: null
             }
         case OPEN_MEMBER_MODAL:
             return{
@@ -108,6 +111,15 @@ export default (state, action) => {
             return{
                 ...state,
                 projectDeadline: action.payload
+            }
+        case SET_EDIT_PROJECT:
+            return {
+                ...state,
+                editProject: action.payload.project,
+                tasks: action.payload.tasks,
+                selectedMembers: action.payload.editSelectedMembers,
+                organizationMembers: action.payload.organizationMembers,
+                projectDeadline: action.payload.project.deadline,
             }
         default:    
             return state;
