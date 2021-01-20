@@ -16,6 +16,7 @@ function TaskDashboard(props) {
         project,
         showViewTaskModal,
     } = userContext;
+    
     return (
         <Container style={{ height: '85vh' }}>
             <div style={{ display: 'flex', marginTop: '10px' }}>

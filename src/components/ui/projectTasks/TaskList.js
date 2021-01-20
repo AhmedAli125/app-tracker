@@ -8,8 +8,8 @@ import AuthContext from '../../../context/auth/AuthContext.js';
 // import './projectList.css';
 
 function TaskList() {
-    
-    const authContext = useContext(AuthContext)
+
+    const authContext = useContext(AuthContext);
     const {
         user
     } = authContext;
@@ -18,18 +18,17 @@ function TaskList() {
     const {
         tasks,
         createProjectFlag,
-
+        editProject
     } = managerContext;
 
     const userContext = useContext(UserContext);
     const {
         project,
         openViewTaskModalHandler,
-        editProject
     } = userContext;
 
     let projectTasks = {};
-    if (createProjectFlag || editProject) {
+    if (createProjectFlag || editProject !== null) {
         projectTasks = { ...tasks };
     } else {
         projectTasks = { ...project.tasks };
@@ -43,14 +42,9 @@ function TaskList() {
         if (user.designation === 'Manager') {
             tasksArray.push(projectTasks[task])
         } else {
-            // console.log(projectTasks[task].members[user.designation].key)
-            // console.log(user.key)
-            // console.log(projectTasks[task].members[user.designation].key === user.key)
-            // if (projects[0] !== 0) {
                 if (projectTasks[task].members[user.designation.toLowerCase()].key === user.key) {
                     tasksArray.push(projectTasks[task])
                 }
-            // }
         }
     })
 

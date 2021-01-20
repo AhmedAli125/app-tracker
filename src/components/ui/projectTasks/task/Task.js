@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import TaskStatus from './taskStatus/TaskStatus'
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import TaskStatus from './taskStatus/TaskStatus'
 import ManagerContext from '../../../../context/manager/ManagerContext';
 import {
   Card,
@@ -12,7 +12,51 @@ import UpdateButton from '../../button/updateButton/UpdateButton';
 import DeleteButton from '../../button/deleteButton/DeleteButton';
 import './task.css'
 
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275,
+    maxWidth: 350,
+    height: 190
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginTop: 8,
+  },
+  sub: {
+    marginBottom: 8,
+  },
+  textJustify: {
+    textAlign: "justify",
+    textTransform: 'none'
+  }
+});
+
 function Task({buttonClicked, task}) {
+
+  // const {
+  //   developerStatus,
+  //   testerStatus,
+  //   issue
+  // } = task.taskStatus
+
+  //   useEffect(() => {
+  //       if (developerStatus) {
+  //         console.log('dev status change')
+  //       }
+  //       if (testerStatus) {
+  //         console.log('tester status change')
+  //       }
+  //       if (issue) {
+  //         console.log('bug status change')
+  //       }
+  //   }, [developerStatus, testerStatus, issue])
 
   const managerContext = useContext(ManagerContext)
   const {
@@ -21,32 +65,6 @@ function Task({buttonClicked, task}) {
     editTaskHandler,
     editProject
   } = managerContext
-
-  const useStyles = makeStyles({
-    root: {
-      minWidth: 275,
-      maxWidth: 350,
-      height: 190
-    },
-    bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
-    },
-    title: {
-      fontSize: 14,
-    },
-    pos: {
-      marginTop: 8,
-    },
-    sub:{
-      marginBottom: 8,
-    },
-    textJustify: {
-      textAlign: "justify",
-      textTransform: 'none'
-    }
-  });
 
   const classes = useStyles();
 
@@ -98,14 +116,15 @@ function Task({buttonClicked, task}) {
               Deadline :{` ${task.members.tester.deadline}`}
             </Typography>
             
-            { (!createProjectFlag && !editProject) &&
+            {
+              (!createProjectFlag && !editProject) &&
               <TaskStatus status={ task.taskStatus }/>
             }
           </CardContent>
         </Card>
        </Button> 
       {
-        createProjectFlag || editProject !== null &&
+        (createProjectFlag || editProject !== null) &&
         <div className='icon-buttons'>
           <UpdateButton
             clicked={() => {

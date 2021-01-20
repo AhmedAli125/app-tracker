@@ -31,15 +31,6 @@ function App() {
             <UserState>
               <div className="App">
                 <AppTracker />
-                {/* {
-                  alertMessage &&
-                  <AlertComponent />
-                } */}
-                {/* <Switch> */}
-                  {/* <PrivateRoute path='/dashboard' component={Dashboard} /> */}
-                  {/* <Route path='/dashboard' component={Dashboard}/> */}
-                  {/* <Route path='/' component={Auth} /> */}
-                {/* </Switch> */}
               </div>
             </UserState>
           </ManagerStates>

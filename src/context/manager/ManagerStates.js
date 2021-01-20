@@ -23,6 +23,8 @@ import {
     DELETE_TASK,
     EDIT_TASK,
     SET_EDIT_PROJECT,
+    OPEN_DELETE_PROJECT_MODAL,
+    CLOSE_DELETE_PROJECT_MODAL
 } from '../Type';
 
 const ManagerStates = props => {
@@ -38,7 +40,9 @@ const ManagerStates = props => {
         createProjectFlag: false,
         // editTaskFlag: false,
         editTask: null,
-        editProject: null
+        editProject: null,
+        showDeleteProjectModal: false,
+        deleteProjectFlag: false
     };
 
     const authContext = useContext(AuthContext);
@@ -308,10 +312,18 @@ const ManagerStates = props => {
         })
     }
 
+    const openDeleteProjectModalHandler = () => {
+        dispatch({ type: OPEN_DELETE_PROJECT_MODAL})
+    }
+    
+    const closeDeleteProjectModalHandler = () => {
+        dispatch({ type: CLOSE_DELETE_PROJECT_MODAL})
+    }
+
     const deleteProject = (key) => {
         Database.database().ref(`/organizations/${user.softwareHouseKey}/projects/${key}`).remove()
             .then(() => {
-            setMessage('Project Deleted', 'error')
+            setMessage('Project Deleted', 'success')
             }).catch(err => {
             setMessage('some error', 'error')
         })
@@ -334,6 +346,8 @@ const ManagerStates = props => {
                 // editTaskFlag: state.editTaskFlag,
                 editTask: state.editTask,
                 editProject: state.editProject,
+                showDeleteProjectModal: state.showDeleteProjectModal,
+                deleteProjectFlag: state.deleteProjectFlag,
                 openMemberModalHandler,
                 closeMemberModalHandler,
                 openTaskModalHandler,
@@ -350,7 +364,9 @@ const ManagerStates = props => {
                 deleteTask,
                 editTaskHandler,
                 setEditProject,
-                deleteProject
+                deleteProject,
+                openDeleteProjectModalHandler,
+                closeDeleteProjectModalHandler
             }}
         >
             {props.children}

@@ -15,6 +15,8 @@ import {
     DELETE_TASK,
     EDIT_TASK,
     SET_EDIT_PROJECT,
+    OPEN_DELETE_PROJECT_MODAL,
+    CLOSE_DELETE_PROJECT_MODAL
 } from '../Type'
 
 export default (state, action) => {
@@ -120,6 +122,16 @@ export default (state, action) => {
                 selectedMembers: action.payload.editSelectedMembers,
                 organizationMembers: action.payload.organizationMembers,
                 projectDeadline: action.payload.project.deadline,
+            }
+        case OPEN_DELETE_PROJECT_MODAL:
+            return {
+                ...state,
+                showDeleteProjectModal: true
+            }
+        case CLOSE_DELETE_PROJECT_MODAL:
+            return {
+                ...state,
+                showDeleteProjectModal: false
             }
         default:    
             return state;

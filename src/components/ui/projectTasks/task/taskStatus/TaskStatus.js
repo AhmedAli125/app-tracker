@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     makeStyles
 } from '@material-ui/core/styles';
@@ -12,7 +12,19 @@ const TaskStatus = ({ status }) => {
         developerStatus,
         testerStatus,
         issue
-    } =  status
+    } = status
+    
+    // useEffect(() => {
+    //     if (developerStatus) {
+    //         console.log('dev status change')
+    //     }
+    //     if (testerStatus) {
+    //         console.log('tester status change')
+    //     }
+    //     if (issue) {
+    //         console.log('bug status change')
+    //     }
+    // }, [developerStatus, testerStatus, issue])
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -43,7 +55,6 @@ const TaskStatus = ({ status }) => {
                 />
             }
             {
-
                 issue.status &&
                 < BugReportIcon
                     fontSize='small' 

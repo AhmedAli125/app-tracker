@@ -65,7 +65,10 @@ function CreateProject(props) {
     };
 
     const createProjectButton = () => {
-        if (title && titleValid) {
+
+        let condition = editProject === null ? (title && titleValid ? true : false) : true
+
+        if (condition) {
             if (!window.navigator.onLine) {
                 setMessage('create project error', 'error')
             }
@@ -97,7 +100,7 @@ function CreateProject(props) {
                 autoComplete="off">
                 <TextField
                     fullWidth={true}
-                    error={title !== '' & !titleValid}
+                    error={editProject === null ? (title !== '' & !titleValid) : (title === '' & !titleValid)}
                     label="Project Title"
                     value={title}
                     onChange={changeTitle}
@@ -184,7 +187,7 @@ function CreateProject(props) {
                 <Button
                     variant='contained'
                     color='primary'
-                    disabled={!(selectedMembers && tasks && projectDeadline && titleValid)}
+                    disabled={!(selectedMembers && tasks && projectDeadline)}
                     onClick={createProjectButton}
                     startIcon={<CreateIcon/>}
                 >
