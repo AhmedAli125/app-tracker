@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const DeleteProject = ({projectKey}) => {
+const DeleteProject = ({ projectKey, projectTitle}) => {
     
     const managerContext = useContext(ManagerContext);
     const {
@@ -44,7 +44,7 @@ const DeleteProject = ({projectKey}) => {
                 severity="warning"
                 style={{ backgroundColor: '#fff4e5'}}
             >
-                Are you sure! Do you want to delete this project?
+                Are you sure! Do you want to delete <strong>{projectTitle}</strong>?
                 <Typography variant='subtitle2'>
                     This project will remove permanently.
                 </Typography> 

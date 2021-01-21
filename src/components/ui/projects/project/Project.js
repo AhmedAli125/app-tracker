@@ -167,7 +167,7 @@ function Project({ project }) {
       </Card>
       {
         showDeleteProjectModal &&
-        <DeleteProject projectKey={project.key} />
+        <DeleteProject projectKey={project.key} projectTitle={project.title} />
       }
     </>
   );
